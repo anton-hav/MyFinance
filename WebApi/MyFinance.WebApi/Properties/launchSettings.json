@@ -4,17 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:48084",
-      "sslPort": 44394
+      "applicationUrl": "http://localhost:38053",
+      "sslPort": 44302
     }
   },
   "profiles": {
-    "MyFinance": {
+    "MyFinance.WebApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7213;http://localhost:5042",
+      "applicationUrl": "https://localhost:7074;http://localhost:5015",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

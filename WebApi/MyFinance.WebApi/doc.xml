@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyFinance.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:MyFinance.WebApi.Program.GetPathToLogFile">
+            <summary>
+                Returns the path for log file recording.
+            </summary>
+            <returns>A string whose value contains a path to the log file</returns>
+        </member>
+    </members>
+</doc>
