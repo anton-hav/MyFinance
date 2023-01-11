@@ -4,11 +4,353 @@
         <name>MyFinance.WebApi</name>
     </assembly>
     <members>
+        <member name="T:MyFinance.WebApi.Controllers.TokenController">
+            <summary>
+                Controller that provides API for authorization methods.
+            </summary>
+            <remarks>This controller is not resource oriented (not a RESTful).</remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.TokenController.#ctor(MyFinance.Core.Abstractions.Services.IUserService,MyFinance.WebApi.Utils.IJwtUtil)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="userService"></param>
+            <param name="jwtUtil"></param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.TokenController.CreateJwtToken(MyFinance.WebApi.Models.Token.Requests.LoginUserRequestModel)">
+            <summary>
+                Create new access token for the login data model
+            </summary>
+            <param name="request">login model</param>
+            <returns>An access token for an authorized user.</returns>
+            <response code="200">Returns the access token for the authorized user</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.TokenController.RefreshToken(MyFinance.WebApi.Models.Token.Requests.RefreshTokenRequestModel)">
+            <summary>
+                Create new token by refresh token.
+            </summary>
+            <param name="request">a refresh token value</param>
+            <returns>new access token for authorized user</returns>
+            <response code="200">Returns the access token for the authorized user</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.TokenController.RevokeToken(MyFinance.WebApi.Models.Token.Requests.RefreshTokenRequestModel)">
+            <summary>
+                Revoke access token by the refresh token value
+            </summary>
+            <param name="request">a refresh token value</param>
+            <returns>The Ok status</returns>
+            <response code="200">an empty</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.TokenController.ValidateToken">
+            <summary>
+                Validate access token.
+            </summary>
+            <returns>true if the token is valid</returns>
+            <response code="200">Returns true if the token is valid</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="T:MyFinance.WebApi.Controllers.UserController">
+            <summary>
+                Controller that provides API endpoints for the User resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.UserController.#ctor(MyFinance.Core.Abstractions.Services.IUserService,MyFinance.Core.Abstractions.Services.IRoleService,AutoMapper.IMapper,MyFinance.WebApi.Utils.IJwtUtil)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="userService"></param>
+            <param name="roleService"></param>
+            <param name="mapper"></param>
+            <param name="jwtUtil"></param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.UserController.GetUserById(System.Guid)">
+            <summary>
+                Get user information with specified id from the storage.
+            </summary>
+            <param name="id">an user unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>An user with specified Id</returns>
+            <response code="200">Returns an user corresponding to the specified identifier.</response>
+            <response code="404">Failed to find record in the database that match the specified id.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.UserController.Create(MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel)">
+            <summary>
+                Register new user
+            </summary>
+            <param name="request">new user model</param>
+            <returns>Access token for newly user</returns>
+            <response code="200">Returns access token for the newly created user</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="409">The same entry already exists in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter">
+            <summary>
+                BadRequest Exception filter.
+                It handles ArgumentException or ArgumentNullException
+                and send response with 400 status code.
+            </summary>
+            <remarks>
+                Use it as an action attribute.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.ConflictOnCreationExceptionFilter">
+            <summary>
+                Conflict Exception filter.
+                It handles ArgumentException and send response with 400 status code.
+            </summary>
+            <remarks>
+                Use it as an action attribute.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.ConflictOnCreationExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.InternalServerErrorFilter">
+            <summary>
+                Root Exception filter.
+                It handles all unhandled exceptions and send response with 500 status code.
+            </summary>
+            <remarks>
+                Use it as an controller attribute.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.InternalServerErrorFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter">
+            <summary>
+                NotFound Exception filter.
+                It handles ArgumentException and send response with 404 status code.
+            </summary>
+            <remarks>
+                Use it as an action attribute.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.GetUserId">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.IsAdmin">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.IsUser">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.GetRoleName">
+            <summary>
+                Gets the role for the current access token.
+            </summary>
+            <returns>the role as a string</returns>
+            <exception cref="T:System.Security.Authentication.AuthenticationException"></exception>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RefreshTokenProfile">
+            <summary>
+            Mapper profile for RefreshToken
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RefreshTokenProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RoleProfile">
+            <summary>
+            Mapper profile for Role
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RoleProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.UserProfile">
+            <summary>
+            Mapper profile for User
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.UserProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.General.Responses.ErrorModel">
+            <summary>
+            Model for returning errors from api
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.ErrorModel.Message">
+            <summary>
+            Error message
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.General.Responses.TokenResponse">
+            <summary>
+                Model for returning access token from the API
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.AccessToken">
+            <summary>
+                An access token as a string.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.Role">
+            <summary>
+                Role name for current user
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.UserId">
+            <summary>
+                Unique identifier of the user for which the access token was created
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.TokenExpiration">
+            <summary>
+                Token expiration
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.RefreshToken">
+            <summary>
+                Refresh token value
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Token.Requests.LoginUserRequestModel">
+            <summary>
+            Login model
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Token.Requests.LoginUserRequestModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Token.Requests.LoginUserRequestModel.Password">
+            <summary>
+            User password
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Token.Requests.RefreshTokenRequestModel">
+            <summary>
+            Model for request new access token by the refresh token value
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Token.Requests.RefreshTokenRequestModel.RefreshToken">
+            <summary>
+            Refresh token value
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel">
+            <summary>
+            Register model
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel.Password">
+            <summary>
+            User password
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel.PasswordConfirmation">
+            <summary>
+            Confirmation of the user password
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.User.Responses.GetUserResponseModel">
+            <summary>
+            Response model for user
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.User.Responses.GetUserResponseModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.User.Responses.GetUserResponseModel.RoleId">
+            <summary>
+            AN unique identifier of user role
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionHandlers.PermissionRequirementHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement)">
+            <summary>
+            Assesses whether the request meets the requirements.
+            </summary>
+            <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
+            <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement"/></param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement">
+            <summary>
+            The class contains criteria for evaluating
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.Permission">
+            <summary>
+            Criteria for valuating
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="permission">criteria as a string</param>
+        </member>
         <member name="M:MyFinance.WebApi.Program.GetPathToLogFile">
             <summary>
                 Returns the path for log file recording.
             </summary>
             <returns>A string whose value contains a path to the log file</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Utils.IJwtUtil">
+            <summary>
+            Signature of the service provides utils for JWT
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.IJwtUtil.GenerateTokenAsync(MyFinance.Core.DataTransferObjects.UserDto)">
+            <summary>
+            Generate token for the current user.
+            </summary>
+            <param name="dto">user as a <see cref="T:MyFinance.Core.DataTransferObjects.UserDto"/></param>
+            <returns>newly token as a <see cref="T:MyFinance.WebApi.Models.General.Responses.TokenResponse"/></returns>
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.IJwtUtil.RemoveRefreshTokenAsync(System.Guid)">
+            <summary>
+            Remove refresh token
+            </summary>
+            <param name="requestRefreshToken"></param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Utils.JwtUtilSha256">
+            <summary>
+            Service provides utils for JWT
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.JwtUtilSha256.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MyFinance.Core.Abstractions.Services.IRefreshTokenService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration">configuration provider as a <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></param>
+            <param name="refreshTokenService">refresh token service as a <see cref="T:MyFinance.Core.Abstractions.Services.IRefreshTokenService"/></param>
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.JwtUtilSha256.GenerateTokenAsync(MyFinance.Core.DataTransferObjects.UserDto)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.JwtUtilSha256.RemoveRefreshTokenAsync(System.Guid)">
+            <inheritdoc />
         </member>
     </members>
 </doc>

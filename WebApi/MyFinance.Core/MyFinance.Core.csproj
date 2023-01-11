@@ -11,10 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\IdentityManagers\" />
-    <Folder Include="Abstractions\" />
-    <Folder Include="Abstractions\Services\" />
-    <Folder Include="DataTransferObjects\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 
 </Project>
