@@ -35,10 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="MappingProfiles\" />
-    <Folder Include="Models\Responses\" />
-    <Folder Include="Models\Requests\" />
+    <Folder Include="Models\Token\Responses\" />
   </ItemGroup>
 
 </Project>
