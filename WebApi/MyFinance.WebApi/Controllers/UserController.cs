@@ -8,6 +8,7 @@ using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.General.Responses;
 using MyFinance.WebApi.Models.User.Requests;
 using MyFinance.WebApi.Models.User.Responses;
+using MyFinance.WebApi.Policies;
 using MyFinance.WebApi.Utils;
 
 namespace MyFinance.WebApi.Controllers;
@@ -52,7 +53,7 @@ public class UserController : ControllerBase
     /// <response code="404">Failed to find record in the database that match the specified id.</response>
     /// <response code="500">Unexpected error on the server side.</response>
     [HttpGet("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Permission("AdminOnly")]
     [TypeFilter(typeof(NotFoundExceptionFilter))]
     [ProducesResponseType(typeof(GetUserResponseModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Nullable), StatusCodes.Status404NotFound)]

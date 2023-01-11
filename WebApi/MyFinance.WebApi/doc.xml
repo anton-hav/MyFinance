@@ -139,6 +139,22 @@
         <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <inheritdoc />
         </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.GetUserId">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.IsAdmin">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.IsUser">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.IdentityManagers.UserManager.GetRoleName">
+            <summary>
+                Gets the role for the current access token.
+            </summary>
+            <returns>the role as a string</returns>
+            <exception cref="T:System.Security.Authentication.AuthenticationException"></exception>
+        </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RefreshTokenProfile">
             <summary>
             Mapper profile for RefreshToken
@@ -268,6 +284,30 @@
             <summary>
             AN unique identifier of user role
             </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionHandlers.PermissionRequirementHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement)">
+            <summary>
+            Assesses whether the request meets the requirements.
+            </summary>
+            <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
+            <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement"/></param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement">
+            <summary>
+            The class contains criteria for evaluating
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.Permission">
+            <summary>
+            Criteria for valuating
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="permission">criteria as a string</param>
         </member>
         <member name="M:MyFinance.WebApi.Program.GetPathToLogFile">
             <summary>

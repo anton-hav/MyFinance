@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyFinance.Core.Abstractions.Services;
+using MyFinance.WebApi.Filters;
 using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.General.Responses;
 using MyFinance.WebApi.Models.Token.Requests;
+using MyFinance.WebApi.Policies;
 using MyFinance.WebApi.Utils;
 using Serilog;
 
@@ -118,5 +120,13 @@ public class TokenController : ControllerBase
     public IActionResult ValidateToken()
     {
         return Ok(true);
+    }
+
+    //TODO DELETE TEST ENDPOINT
+    [HttpGet]
+    [Permission("AdminOnly")]
+    public IActionResult TestEndpoint()
+    {
+        return Ok("It's Ok");
     }
 }
