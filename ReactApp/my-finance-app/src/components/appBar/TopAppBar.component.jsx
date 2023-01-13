@@ -1,22 +1,30 @@
-import { Toolbar, Typography } from "../../imports/ui.imports";
+// Import third party libraries
+import { Box, Toolbar, Typography, Container } from "../../imports/ui.imports";
 // Import custom components
 import { PageNavBarItem } from "./appBarItems/PageNavBarItem.component";
 
-// import AccountTools from "./account-tools.component";
+import AccountTools from "./appBarItems/AccountBarItem.component";
+
+import "./topAppBar.component.css";
 
 export default function TopAppBar(props) {
   const { title, pages } = props;
 
   return (
-    <Toolbar disableGutters>
-      <Typography className="title" variant="h6" noWrap component="a" href="">
-        {title}
-      </Typography>
-      <PageNavBarItem pages={pages} />
+    <Container maxWidth="true">
+      <Toolbar className="app-bar" disableGutters>
+        <Typography className="title" variant="h6" noWrap component="a" href="">
+          {title}
+        </Typography>
 
-      {/* <Box sx={{ flexGrow: 0 }}>
-            <AccountTools />
-          </Box> */}
-    </Toolbar>
+        <Box className="pages-nav">
+          <PageNavBarItem pages={pages} />
+        </Box>
+
+        <Box className="account-tools">
+          <AccountTools />
+        </Box>
+      </Toolbar>
+    </Container>
   );
 }

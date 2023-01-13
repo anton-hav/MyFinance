@@ -1,0 +1,29 @@
+.app-bar {
+    display: flex;
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+}
+
+.app-bar .title {  
+    margin-left: 20px;
+    margin-right: 8px;
+    font-size:xx-large;
+    font-family: monospace;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: white;
+    text-decoration: none;
+    align-items: left;
+  }
+
+.app-bar .pages-nav {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.app-bar .account-tools {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+}

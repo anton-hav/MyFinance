@@ -4,6 +4,8 @@ import App from "./App";
 import ErrorPage from "./pages/Error.page";
 import Home from "./pages/Home.page";
 import About from "./pages/About.page";
+import Login from "./pages/Login.page";
+import Register from "./pages/Register.page";
 
 // Import utils
 
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
           {
             path: "/about",
             element: <About />,
+          },
+          {
+            path: "/login",
+            element: <Login />,
+          },
+          {
+            path: "/register",
+            element: <Register />,
           },
         ],
       },

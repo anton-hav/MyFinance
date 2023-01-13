@@ -4,6 +4,86 @@
         <name>MyFinance.WebApi</name>
     </assembly>
     <members>
+        <member name="T:MyFinance.WebApi.Policies.PermissionAttribute">
+            <summary>
+            Custom authorize attribute for policy permission.
+            </summary>
+            <remarks>
+            Provides access based on specified requirements. Eligible requirements: AdminOnly, UserOnly
+            </remarks>
+        </member>
+        <member name="F:MyFinance.WebApi.Policies.PermissionAttribute.POLICY_PREFIX">
+            <summary>
+            Prefix for the policy name.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Policies.PermissionAttribute.RequiredPermission">
+            <summary>
+            Policy requirement.
+            </summary>
+            <remarks>
+            Contains policy rules and used as the part of the policy name.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionAttribute.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Policies.PermissionRequirement">
+            <summary>
+            The class contains criteria for evaluating
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Policies.PermissionRequirement.Permission">
+            <summary>
+            Criteria for valuating
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionRequirement.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="permission">criteria as a string</param>
+        </member>
+        <member name="T:MyFinance.WebApi.Policies.PermissionRequirementHandler">
+            <summary>
+                A processor for evaluating policy requirements.
+            </summary>
+            <remarks>
+                It is used because the role names are stored in the configuration file and can be changed.
+            </remarks>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionRequirementHandler.#ctor(MyFinance.Core.Abstractions.Services.IRoleService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="roleService"></param>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:MyFinance.WebApi.Policies.PermissionRequirementHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,MyFinance.WebApi.Policies.PermissionRequirement)">
+            <inheritdoc />
+            <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
+            <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirement" /></param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Authorization.PermissionPolicyProvider">
+            <summary>
+            Policy provider for dynamically generate policy.
+            </summary>
+        </member>
+        <member name="F:MyFinance.WebApi.Authorization.PermissionPolicyProvider.POLICY_PREFIX">
+            <summary>
+            Prefix for the policy name.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetDefaultPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetFallbackPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:MyFinance.WebApi.Controllers.TokenController">
             <summary>
                 Controller that provides API for authorization methods.
@@ -270,6 +350,11 @@
             Confirmation of the user password
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.User.Requests.RegisterUserRequestModel.FullName">
+            <summary>
+            Full name
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.Models.User.Responses.GetUserResponseModel">
             <summary>
             Response model for user
@@ -284,30 +369,6 @@
             <summary>
             AN unique identifier of user role
             </summary>
-        </member>
-        <member name="M:MyFinance.WebApi.Policies.PermissionHandlers.PermissionRequirementHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement)">
-            <summary>
-            Assesses whether the request meets the requirements.
-            </summary>
-            <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext"/></param>
-            <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement"/></param>
-            <returns>Task</returns>
-        </member>
-        <member name="T:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement">
-            <summary>
-            The class contains criteria for evaluating
-            </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.Permission">
-            <summary>
-            Criteria for valuating
-            </summary>
-        </member>
-        <member name="M:MyFinance.WebApi.Policies.PermissionRequirements.PermissionRequirement.#ctor(System.String)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="permission">criteria as a string</param>
         </member>
         <member name="M:MyFinance.WebApi.Program.GetPathToLogFile">
             <summary>

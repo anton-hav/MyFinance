@@ -17,4 +17,8 @@ public class RegisterUserRequestModel
     /// Confirmation of the user password
     /// </summary>
     public string PasswordConfirmation { get; set; }
+    /// <summary>
+    /// Full name
+    /// </summary>
+    public string? FullName { get; set; }
 }
