@@ -27,7 +27,7 @@ const adminSettings = ["Admin panel", ...authorizedSettings];
 const nonAuthorizedSettings = ["Login", "Register"];
 
 export default function AccountTools() {
-  const { token, setToken } = useToken();
+  const { token } = useToken();
 
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -37,17 +37,11 @@ export default function AccountTools() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const revokeToken = () => {
-    _userService.revokeRefreshToken(token.refreshToken);
-  };
-
   /**
    * Handler for the Logout menu item.
    */
   const handleLogout = () => {
-    revokeToken();
-    const newToken = new TokenDto();
-    setToken(newToken);
+    _userService.logout();
   };
 
   /**

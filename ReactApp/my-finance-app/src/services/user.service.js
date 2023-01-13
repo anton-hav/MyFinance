@@ -1,5 +1,7 @@
 // Import services
 import ApiService from "./api.service";
+// Import storage providers
+import { TokenStorage } from "../storage/token.storage";
 // Import custom types and utils
 import TokenDto from "../types/dto/token.dto";
 import UserDto from "../types/dto/user.dto";
@@ -13,13 +15,14 @@ export default class UserService {
     this._tokenEndpoints = environment.tokenEndpoints;
     this._apiService = new ApiService();
     this._logger = new Logger();
+    this._tokenStore = new TokenStorage();
   }
 
   /**
    * Get access token for user login data (email, password)
    * @param {string} email - user email address
    * @param {string} password - user password
-   * @returns access token or null if authentication failed
+   * @returns a boolean indicating whether the user is authorized
    */
   async login(email, password) {
     let response = await this._apiService.post(
@@ -31,17 +34,17 @@ export default class UserService {
     );
     if (response !== null && response !== undefined) {
       let token = TokenDto.fromResponse(response);
-      return token;
+      this._tokenStore.set(token);
+      return true;
     }
 
-    // Todo: rework this code with throw exception instead
-    // Null will be returned only if the API is available,
-    // but the necessary data could not be found.
-    if (response === null) {
-      return null;
-    }
+    return false;
+  }
 
-    throw new Error("Failed to authenticate");
+  async logout() {
+    const token = this._tokenStore.get();
+    this._tokenStore.delete();
+    this.revokeRefreshToken(token.refreshToken);
   }
 
   /**
@@ -59,7 +62,8 @@ export default class UserService {
       fullName,
     });
     let token = TokenDto.fromResponse(response);
-    return token;
+    this._tokenStore.set(token);
+    return token.accessToken !== null;
   }
 
   async getTokenByRefreshToken(refreshToken) {
@@ -77,12 +81,11 @@ export default class UserService {
     });
   }
 
-  async validateToken(accessToken) {
+  async validateToken() {
     try {
       let response = await this._apiService.post(
         this._tokenEndpoints.validateToken,
-        {},
-        accessToken
+        {}
       );
       if (response) return true;
     } catch (error) {
@@ -96,17 +99,12 @@ export default class UserService {
 
   /**
    * Get user information by user id.
-   * @param {string} accessToken - access token
    * @param {string} userId - user id.
    * @returns an user information as an UserDto object
    */
-  async getUserInformationById(accessToken, userId) {
+  async getUserInformationById(userId) {
     try {
-      let response = await this._apiService.getById(
-        this._userEndpoint,
-        userId,
-        accessToken
-      );
+      let response = await this._apiService.getById(this._userEndpoint, userId);
       let user = UserDto.fromResponse(response);
       user.id = userId;
       return user;

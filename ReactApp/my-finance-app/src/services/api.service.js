@@ -1,10 +1,23 @@
+// Import third-party utils
+import { queryString } from "../imports/utils.import";
+// Import interceptors
+import { JwtInterceptor } from "../interceptors/jwt.interceptor";
 // Import custom types and utils
 import { environment } from "../environment/environment";
 import Logger from "../utils/logger";
 import UnauthorizedError from "../types/errors/unauthorized.error";
 import BadRequestError from "../types/errors/bad-request.error";
 import ConflictError from "../types/errors/conflict.error";
-import UrlSearchParameters from "../types/url-parameters/url-parameters.parameters";
+
+const jwtInterceptor = new JwtInterceptor();
+const originalFetch = fetch;
+fetch = (...args) =>
+  (async (args) => {
+    jwtInterceptor.intercept(args);
+    var result = await originalFetch(...args);
+    // intercept response here
+    return result;
+  })(args);
 
 export default class ApiService {
   constructor() {
@@ -15,21 +28,21 @@ export default class ApiService {
     return environment.apiUrl + url;
   }
 
-  async get(url, parameters = {}, token) {
-    let fullUrl = new URL(`${this._getFullUrl(url)}`);
-    if (parameters instanceof UrlSearchParameters) {
-      let searchParams = parameters.toURLSearchParams();
-      fullUrl.search = searchParams.toString();
-    }
+  /**
+   * GET request with parameters to the API
+   * @param {string} url - endpoint name
+   * @param {*} parameters - request parameters as Object
+   * @returns
+   */
+  async get(endpoint, parameters = {}) {
+    let fullUrl = new URL(`${this._getFullUrl(endpoint)}`);
 
-    const requestHeaders = new Headers();
-    if (token) {
-      requestHeaders.append("Authorization", `Bearer ${token}`);
+    if (Object.keys(parameters).length > 0) {
+      fullUrl += "?" + queryString.stringify(parameters);
     }
 
     let response = await fetch(fullUrl, {
       method: "GET",
-      headers: requestHeaders,
     });
     if (response.status === 400) {
       throw new BadRequestError();
@@ -37,30 +50,26 @@ export default class ApiService {
     return response.json();
   }
 
-  async getById(url, id, token) {
+  /**
+   * GET request by id to the API
+   * @param {string} url - endpoint name
+   * @param {*} id - id of the endpoint resource
+   * @returns
+   */
+  async getById(url, id) {
     let fullUrl = new URL(`${this._getFullUrl(url)}/${id}`);
-
-    const requestHeaders = new Headers();
-    if (token) {
-      requestHeaders.append("Authorization", `Bearer ${token}`);
-    }
 
     let response = await fetch(fullUrl, {
       method: "GET",
-      headers: requestHeaders,
     });
     return response.json();
   }
 
-  async post(url, data, token) {
+  async post(url, data) {
     let fullUrl = new URL(`${this._getFullUrl(url)}`);
 
     const requestHeaders = new Headers();
     requestHeaders.append("Content-Type", "application/json");
-
-    if (token) {
-      requestHeaders.append("Authorization", `Bearer ${token}`);
-    }
 
     let response = await fetch(fullUrl, {
       method: "POST",
@@ -83,31 +92,18 @@ export default class ApiService {
     throw new Error("Not implemented");
   }
 
-  async patch(url, data, id, token) {
+  async patch(url, data, id) {
     let fullUrl = new URL(`${this._getFullUrl(url)}/${id}`);
 
     const requestHeaders = new Headers();
     requestHeaders.append("Content-Type", "application/json");
-
-    if (token) {
-      requestHeaders.append("Authorization", `Bearer ${token}`);
-    }
 
     let response = await fetch(fullUrl, {
       method: "PATCH",
       headers: requestHeaders,
       body: JSON.stringify(data),
     });
-    if (response.status === 400) {
-      throw new BadRequestError();
-    } else if (response.status === 401) {
-      throw new UnauthorizedError();
-    } else if (response.status === 409) {
-      throw new ConflictError();
-    }
-    if (response.status === 200 || response.status === 201) {
-      return response.json();
-    }
+    return response.json();
   }
 
   async delete(url, id) {

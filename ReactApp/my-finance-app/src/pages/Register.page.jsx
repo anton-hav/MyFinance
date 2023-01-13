@@ -6,33 +6,37 @@ import { Register as RegisterComponent } from "../components/register/Register.c
 // Import services
 import UserService from "../services/user.service";
 // Import custom types and utils
-import TokenDto from "../types/dto/token.dto";
 import ConflictError from "../types/errors/conflict.error";
-import useToken from "../utils/hooks/useToken.hook";
 
 const _userService = new UserService();
 
 export default function Register() {
-  const { setToken } = useToken();
   const [existingEmails, setExistingEmails] = useState([]);
 
   const navigate = useNavigate();
 
+  /**
+   * Handle submit click event from the register form
+   * @param {Object} values - data from the register form
+   */
   const handleSubmit = async (values) => {
     try {
-      const accessToken = await _userService.register(
+      // Try registrate new user
+      const result = await _userService.register(
         values.email,
         values.password,
         values.passwordConfirmation,
         values.fullName
       );
 
-      if (accessToken instanceof TokenDto) {
-        setToken(accessToken);
+      // If registration successful navigate to previous page
+      if (result) {
         navigate("/");
       }
     } catch (error) {
+      // If registration failed check if user is already exists
       if (error instanceof ConflictError) {
+        // add user to existingEmails (to reduce the number of requests to the API)
         let existing = existingEmails.slice();
         existing.push(values.email);
         setExistingEmails(existing);
