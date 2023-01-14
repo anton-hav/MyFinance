@@ -51,4 +51,11 @@ public class Category : IBaseEntity
     ///     Navigation property
     /// </remarks>
     public List<Category> Children { get; set; }
+    /// <summary>
+    ///     Category creator.
+    /// </summary>
+    /// <remarks>
+    ///     Navigation property
+    /// </remarks>
+    public User User { get; set; }
 }
