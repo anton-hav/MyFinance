@@ -5,14 +5,10 @@ import { useNavigate } from "../imports/navigation.imports";
 import { Login as LoginComponent } from "../components/login/Login.component";
 // Import services
 import UserService from "../services/user.service";
-// Import custom types and utils
-import TokenDto from "../types/dto/token.dto";
-import useToken from "../utils/hooks/useToken.hook";
 
 const _userService = new UserService();
 
 export default function Login() {
-  const { setToken } = useToken();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -20,9 +16,8 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const accessToken = await _userService.login(email, password);
-    if (accessToken instanceof TokenDto) {
-      setToken(accessToken);
+    const result = await _userService.login(email, password);
+    if (result) {
       navigate(-1);
     }
   };
