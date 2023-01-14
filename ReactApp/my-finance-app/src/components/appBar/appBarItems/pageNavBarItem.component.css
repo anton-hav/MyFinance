@@ -1,0 +1,11 @@
+.nav-link {
+    text-decoration: none;
+    color: white;;
+  }
+
+.nav-link .button {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: white;
+  display: block;
+}

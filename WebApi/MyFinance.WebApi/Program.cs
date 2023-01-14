@@ -1,12 +1,23 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyFinance.Business.ServiceImplementations;
+using MyFinance.Core.Abstractions.IdentityManagers;
+using MyFinance.Core.Abstractions.Services;
 using MyFinance.Data.Abstractions;
+using MyFinance.Data.Abstractions.Repositories;
 using MyFinance.Data.Repositories;
+using MyFinance.Data.Repositories.Repositories;
 using MyFinance.DataBase;
+using MyFinance.DataBase.Entities;
+using MyFinance.WebApi.Authorization;
+using MyFinance.WebApi.IdentityManagers;
+using MyFinance.WebApi.Policies;
+using MyFinance.WebApi.Utils;
 using Serilog;
 using Serilog.Events;
 
@@ -108,11 +119,24 @@ public class Program
         builder.Services.AddHttpContextAccessor();
 
         // Add business services
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IRoleService, RoleService>();
+        builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        builder.Services.AddScoped<IJwtUtil, JwtUtilSha256>();
 
         // Add identity managers
+        builder.Services.AddScoped<IUserManager, UserManager>();
 
         // Add repositories
+        builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+        builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
+        builder.Services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Add authorization handlers and provider.
+        builder.Services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
+        builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
 
         var app = builder.Build();
 
