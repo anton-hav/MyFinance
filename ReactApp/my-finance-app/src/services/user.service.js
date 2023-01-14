@@ -41,6 +41,9 @@ export default class UserService {
     return false;
   }
 
+  /**
+   * Remove token from the storage and revoke refresh token.
+   */
   async logout() {
     const token = this._tokenStore.get();
     this._tokenStore.delete();

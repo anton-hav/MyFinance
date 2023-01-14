@@ -27,11 +27,10 @@ export class TokenStorage {
     }
   }
 
+  /**
+   * Remove the token from the local storage.
+   */
   delete() {
     localStorage.removeItem(TokenStorage.storageName);
-  }
-
-  check() {
-    throw new Error("Not implemented");
   }
 }

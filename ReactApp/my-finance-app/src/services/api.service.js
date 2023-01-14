@@ -10,28 +10,20 @@ import UnauthorizedError from "../types/errors/unauthorized.error";
 import BadRequestError from "../types/errors/bad-request.error";
 import ConflictError from "../types/errors/conflict.error";
 
-const originalFetch = fetch;
-const jwtInterceptor = new JwtInterceptor(originalFetch);
-const authErrorInterceptor = new AuthErrorInterceptor(
-  jwtInterceptor.wrappedFetch
-);
-fetch = (...args) => authErrorInterceptor.wrappedFetch(args);
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-// const jwtInterceptor = new JwtInterceptor();
-// const originalFetch = fetch;
-// fetch = (...args) =>
-//   (async (args) => {
-//     jwtInterceptor.intercept(args);
-//     var result = await originalFetch(...args);
-//     // intercept response here
-//     return result;
-//   })(args);
-
 export default class ApiService {
-  constructor() {
+  constructor(fetch = (...args) => window.fetch(...args)) {
     this._logger = new Logger();
+    // Wrapes the original fetch function to the interceptors.
+    const originalFetch = fetch;
+    // JWT interceptor that add JWT bearer to the header for every request.
+    const jwtInterceptor = new JwtInterceptor(originalFetch);
+    // Authontication interceptor that refresh token and replay request
+    // when response has status code 401 or 403.
+    const authErrorInterceptor = new AuthErrorInterceptor(
+      jwtInterceptor.wrappedFetch,
+      this
+    );
+    this._fetch = (...args) => authErrorInterceptor.wrappedFetch(args);
   }
 
   _getFullUrl(url) {
@@ -51,7 +43,7 @@ export default class ApiService {
       fullUrl += "?" + queryString.stringify(parameters);
     }
 
-    let response = await fetch(fullUrl, {
+    let response = await this._fetch(fullUrl, {
       method: "GET",
     });
     if (response.status === 400) {
@@ -69,7 +61,7 @@ export default class ApiService {
   async getById(url, id) {
     let fullUrl = new URL(`${this._getFullUrl(url)}/${id}`);
 
-    let response = await fetch(fullUrl, {
+    let response = await this._fetch(fullUrl, {
       method: "GET",
     });
     return response.json();
@@ -81,7 +73,7 @@ export default class ApiService {
     const requestHeaders = new Headers();
     requestHeaders.append("Content-Type", "application/json");
 
-    let response = await fetch(fullUrl, {
+    let response = await this._fetch(fullUrl, {
       method: "POST",
       headers: requestHeaders,
       body: JSON.stringify(data),
@@ -108,7 +100,7 @@ export default class ApiService {
     const requestHeaders = new Headers();
     requestHeaders.append("Content-Type", "application/json");
 
-    let response = await fetch(fullUrl, {
+    let response = await this._fetch(fullUrl, {
       method: "PATCH",
       headers: requestHeaders,
       body: JSON.stringify(data),
@@ -119,7 +111,7 @@ export default class ApiService {
   async delete(url, id) {
     let fullUrl = new URL(`${this._getFullUrl(url)}/${id}`);
 
-    let response = await fetch(fullUrl, {
+    let response = await this._fetch(fullUrl, {
       method: "DELETE",
     });
     if (response.ok) return true;
