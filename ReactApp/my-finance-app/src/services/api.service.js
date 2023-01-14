@@ -2,6 +2,7 @@
 import { queryString } from "../imports/utils.import";
 // Import interceptors
 import { JwtInterceptor } from "../interceptors/jwt.interceptor";
+import { AuthErrorInterceptor } from "../interceptors/authError.interceptor";
 // Import custom types and utils
 import { environment } from "../environment/environment";
 import Logger from "../utils/logger";
@@ -9,15 +10,24 @@ import UnauthorizedError from "../types/errors/unauthorized.error";
 import BadRequestError from "../types/errors/bad-request.error";
 import ConflictError from "../types/errors/conflict.error";
 
-const jwtInterceptor = new JwtInterceptor();
 const originalFetch = fetch;
-fetch = (...args) =>
-  (async (args) => {
-    jwtInterceptor.intercept(args);
-    var result = await originalFetch(...args);
-    // intercept response here
-    return result;
-  })(args);
+const jwtInterceptor = new JwtInterceptor(originalFetch);
+const authErrorInterceptor = new AuthErrorInterceptor(
+  jwtInterceptor.wrappedFetch
+);
+fetch = (...args) => authErrorInterceptor.wrappedFetch(args);
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// const jwtInterceptor = new JwtInterceptor();
+// const originalFetch = fetch;
+// fetch = (...args) =>
+//   (async (args) => {
+//     jwtInterceptor.intercept(args);
+//     var result = await originalFetch(...args);
+//     // intercept response here
+//     return result;
+//   })(args);
 
 export default class ApiService {
   constructor() {

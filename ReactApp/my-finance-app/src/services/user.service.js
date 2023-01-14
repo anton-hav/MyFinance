@@ -66,6 +66,7 @@ export default class UserService {
     return token.accessToken !== null;
   }
 
+  // todo: remove this method because it moved to authInterceptor
   async getTokenByRefreshToken(refreshToken) {
     let response = await this._apiService.post(
       this._tokenEndpoints.refreshToken,
