@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyFinance.DataBase;
 
@@ -11,9 +12,11 @@ using MyFinance.DataBase;
 namespace MyFinance.DataBase.Migrations
 {
     [DbContext(typeof(MyFinanceDbContext))]
-    partial class MyFinanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230114230132_AddCategoriesTableInDatabase")]
+    partial class AddCategoriesTableInDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +47,6 @@ namespace MyFinance.DataBase.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ParentCategoryId");
-
-                    b.HasIndex("UserId");
 
                     b.HasIndex("Name", "Type", "UserId")
                         .IsUnique();
@@ -126,15 +127,7 @@ namespace MyFinance.DataBase.Migrations
                         .WithMany("Children")
                         .HasForeignKey("ParentCategoryId");
 
-                    b.HasOne("MyFinance.DataBase.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ParentCategory");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.RefreshToken", b =>

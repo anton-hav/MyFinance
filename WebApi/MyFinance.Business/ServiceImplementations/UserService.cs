@@ -28,6 +28,8 @@ public class UserService : IUserService
         _roleService = roleService;
     }
 
+    #region READ
+
     /// <inheritdoc />
     /// <exception cref="ArgumentException"></exception>
     public async Task<UserDto> GetUserByIdAsync(Guid id)
@@ -109,6 +111,10 @@ public class UserService : IUserService
         return entity == null;
     }
 
+    #endregion READ
+
+    #region CREATE
+
     /// <inheritdoc />
     public async Task<int> RegisterUserAsync(UserDto dto)
     {
@@ -125,6 +131,8 @@ public class UserService : IUserService
         await _unitOfWork.Users.AddAsync(user);
         return await _unitOfWork.Commit();
     }
+
+    #endregion CREATE
 
     /// <summary>
     ///     Creates MD5 hash

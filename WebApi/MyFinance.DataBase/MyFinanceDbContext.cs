@@ -8,6 +8,7 @@ public class MyFinanceDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -17,6 +18,15 @@ public class MyFinanceDbContext : DbContext
 
         builder.Entity<Role>()
             .HasIndex(role => role.Name)
+            .IsUnique();
+
+        builder.Entity<Category>()
+            .HasIndex(category => new
+            {
+                category.Name,
+                category.Type,
+                category.UserId,
+            })
             .IsUnique();
     }
 

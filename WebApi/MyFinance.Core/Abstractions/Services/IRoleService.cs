@@ -2,7 +2,8 @@
 
 public interface IRoleService
 {
-    //READ
+    #region READ
+
     /// <summary>
     ///     Gets the role Id for a default user role.
     /// </summary>
@@ -27,9 +28,5 @@ public interface IRoleService
     /// <returns>The role name as a string</returns>
     string GetDefaultRoleNameForAdmin();
 
-    //CREATE
-
-    //UPDATE
-
-    //REMOVE
+    #endregion READ
 }

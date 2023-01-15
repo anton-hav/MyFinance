@@ -7,7 +7,7 @@ namespace MyFinance.WebApi.Filters.ExceptionFilters;
 
 /// <summary>
 ///     BadRequest Exception filter.
-///     It handles ArgumentException or ArgumentNullException
+///     It handles <see cref="ArgumentException"/> or <see cref="ArgumentNullException"/>
 ///     and send response with 400 status code.
 /// </summary>
 /// <remarks>

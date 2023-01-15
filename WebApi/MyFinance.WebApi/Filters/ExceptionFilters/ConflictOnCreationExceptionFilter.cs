@@ -8,7 +8,7 @@ namespace MyFinance.WebApi.Filters.ExceptionFilters;
 
 /// <summary>
 ///     Conflict Exception filter.
-///     It handles ArgumentException and send response with 400 status code.
+///     It handles <see cref="ConflictWithExistingRecordException"/> and send response with 409 status code.
 /// </summary>
 /// <remarks>
 ///     Use it as an action attribute.
@@ -19,7 +19,6 @@ public class ConflictOnCreationExceptionFilter : Attribute, IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         var ex = context.Exception;
-        Console.WriteLine(ex.GetType());
         if (ex.GetType() == typeof(ConflictWithExistingRecordException))
         {
             Log.Warning($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
