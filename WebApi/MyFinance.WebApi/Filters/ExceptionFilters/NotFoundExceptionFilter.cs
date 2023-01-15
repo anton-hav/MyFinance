@@ -7,10 +7,11 @@ namespace MyFinance.WebApi.Filters.ExceptionFilters;
 
 /// <summary>
 ///     NotFound Exception filter.
-///     It handles ArgumentException and send response with 404 status code.
+///     It handles <see cref="ArgumentException"/> and send response with 404 status code.
 /// </summary>
 /// <remarks>
-///     Use it as an action attribute.
+///     Use it as an action attribute. It should be set after <see cref="BadRequestExceptionFilter" />
+///     and closer to the action if it is used in conjunction with <see cref="BadRequestExceptionFilter" />.
 /// </remarks>
 public class NotFoundExceptionFilter : Attribute, IExceptionFilter
 {

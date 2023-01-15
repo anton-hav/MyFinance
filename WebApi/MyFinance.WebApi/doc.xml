@@ -84,6 +84,101 @@
         <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
             <inheritdoc />
         </member>
+        <member name="T:MyFinance.WebApi.Controllers.CategoriesController">
+            <summary>
+                Controller that provides API endpoints for the Categories resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="mapper">mapper from IOC</param>
+            <param name="categoryService">category service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.GetCategoryById(System.Guid)">
+            <summary>
+                Get a category from the storage with specified id.
+            </summary>
+            <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>A category with specified Id</returns>
+            <response code="200">Returns a category corresponding to the specified identifier.</response>
+            <response code="404">Failed to find record in the database that match the specified id.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.GetCategories(MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel)">
+            <summary>
+                Get categories from storage.
+            </summary>
+            <param name="model">category request model</param>
+            <returns>child categories for the requested category id</returns>
+            <response code="200">Returns all categories that match the specified parameters.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.AddCategory(MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel)">
+            <summary>
+                Add a new category to storage.
+            </summary>
+            <param name="model">a category</param>
+            <returns>A newly created category</returns>
+            <response code="201">Returns the newly created category</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="409">The same entry already exists in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.PatchCategory(System.Guid,MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel)">
+            <summary>
+                Patch a category with specified Id in storage.
+            </summary>
+            <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
+            <param name="model">a category used for patching</param>
+            <returns>A category with specified Id.</returns>
+            <response code="200">Returns the updated category</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
+            <response code="409">The same entry already exists in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.DeleteCategory(System.Guid)">
+            <summary>
+                Delete a category with specified Id from the storage.
+            </summary>
+            <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns></returns>
+            <response code="204">Successful deletion</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="409">
+                Fail to find a record with the specified Id in the storage
+                or the entry with the same property already exists in the storage.
+            </response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.CheckCategoryForEditAsync(System.Guid,System.String,System.Guid,MyFinance.Core.CategoryType)">
+            <summary>
+                Validate a category model for update.
+            </summary>
+            <param name="id">a unique identifier that defines the category to be updated </param>
+            <param name="categoryName">a category name</param>
+            <param name="userId">the unique identifier of the creator</param>
+            <param name="categoryType">category type as a <see cref="T:MyFinance.Core.CategoryType" /></param>
+            <returns>A boolean</returns>
+            <exception cref="T:System.ArgumentNullException">If the id is empty.</exception>
+            <exception cref="T:MyFinance.Core.Exceptions.ConflictWithExistingRecordException">If the same entry already exists in the storage.</exception>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.IsCategoryTheSameAsync(System.Guid,System.String,System.Guid,MyFinance.Core.CategoryType)">
+            <summary>
+                Check if the existing category is the same.
+            </summary>
+            <remarks>
+                This check is necessary to ensure idempotent behavior of the PUT and PATCH method.
+            </remarks>
+            <param name="id">category unique identifier</param>
+            <param name="categoryName">category name</param>
+            <param name="userId">the unique identifier of the creator</param>
+            <param name="categoryType">category type as a <see cref="T:MyFinance.Core.CategoryType" /></param>
+            <returns>A boolean</returns>
+        </member>
         <member name="T:MyFinance.WebApi.Controllers.TokenController">
             <summary>
                 Controller that provides API for authorization methods.
@@ -173,7 +268,7 @@
         <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter">
             <summary>
                 BadRequest Exception filter.
-                It handles ArgumentException or ArgumentNullException
+                It handles <see cref="T:System.ArgumentException"/> or <see cref="T:System.ArgumentNullException"/>
                 and send response with 400 status code.
             </summary>
             <remarks>
@@ -186,7 +281,7 @@
         <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.ConflictOnCreationExceptionFilter">
             <summary>
                 Conflict Exception filter.
-                It handles ArgumentException and send response with 400 status code.
+                It handles <see cref="T:MyFinance.Core.Exceptions.ConflictWithExistingRecordException"/> and send response with 409 status code.
             </summary>
             <remarks>
                 Use it as an action attribute.
@@ -210,10 +305,11 @@
         <member name="T:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter">
             <summary>
                 NotFound Exception filter.
-                It handles ArgumentException and send response with 404 status code.
+                It handles <see cref="T:System.ArgumentException"/> and send response with 404 status code.
             </summary>
             <remarks>
-                Use it as an action attribute.
+                Use it as an action attribute. It should be set after <see cref="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter" />
+                and closer to the action if it is used in conjunction with <see cref="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter" />.
             </remarks>
         </member>
         <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
@@ -234,6 +330,16 @@
             </summary>
             <returns>the role as a string</returns>
             <exception cref="T:System.Security.Authentication.AuthenticationException"></exception>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.CategoryProfile">
+            <summary>
+            Mapper profile for Category
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.CategoryProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
         </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RefreshTokenProfile">
             <summary>
@@ -264,6 +370,113 @@
             <summary>
             Mapper profile constructor
             </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel">
+            <summary>
+                Request model to create category
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel.Name">
+            <summary>
+                Category name
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel.Type">
+            <summary>
+                Category type.
+                (Income = 0, Expenses = 1)
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel.ParentCategoryId">
+            <summary>
+                The unique identifier of the parent category for the current entry.
+            </summary>
+            <remarks>
+                For the root category the value is null.
+                Only one root category per category type is allowed.
+            </remarks>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel">
+            <summary>
+                Request model to get categories.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel.Type">
+            <summary>
+                Category type.
+                (Income = 0, Expenses = 1)
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel.ParentCategoryId">
+            <summary>
+                The unique identifier of the parent category for the requested records.
+                (For the root category the value should be empty).
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel">
+            <summary>
+            Request model to create or update category
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.Id">
+            <summary>
+                An unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.Name">
+            <summary>
+                Category name
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.Type">
+            <summary>
+                Category type.
+                (Income = 0, Expenses = 1)
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.ParentCategoryId">
+            <summary>
+                The unique identifier of the parent category for the current entry.
+            </summary>
+            <remarks>
+                For the root category the value is null.
+                Only one root category per category type is allowed.
+            </remarks>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel">
+            <summary>
+            Response model for the category
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.Id">
+            <summary>
+                An unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.Name">
+            <summary>
+                Category name
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.Type">
+            <summary>
+                Category type.
+                (Income = 0, Expenses = 1)
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.UserId">
+            <summary>
+                The unique identifier of the creator.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.ParentCategoryId">
+            <summary>
+                The unique identifier of the parent category for the current entry.
+            </summary>
+            <remarks>
+                For the root category the value is null.
+                Only one root category per category type is allowed.
+            </remarks>
         </member>
         <member name="T:MyFinance.WebApi.Models.General.Responses.ErrorModel">
             <summary>
