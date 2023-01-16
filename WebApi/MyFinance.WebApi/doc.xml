@@ -147,11 +147,8 @@
             <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
             <returns></returns>
             <response code="204">Successful deletion</response>
-            <response code="400">Request contains null object or invalid object type</response>
-            <response code="409">
-                Fail to find a record with the specified Id in the storage
-                or the entry with the same property already exists in the storage.
-            </response>
+            <response code="400">Request contains null object or invalid object type.</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
             <response code="500">Unexpected error on the server side.</response>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.CheckCategoryForEditAsync(System.Guid,System.String,System.Guid,MyFinance.Core.CategoryType)">
