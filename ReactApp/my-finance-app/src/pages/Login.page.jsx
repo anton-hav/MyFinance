@@ -2,13 +2,13 @@ import { useState } from "react";
 // Import third party libraries
 import { useNavigate } from "../imports/navigation.imports";
 // Import custom components
-import { Login as LoginComponent } from "../components/login/Login.component";
+import { Login as LoginComponent } from "../components/topLevel/login/Login.component";
 // Import services
 import UserService from "../services/user.service";
 
 const _userService = new UserService();
 
-export default function Login() {
+export default function LoginPage() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 

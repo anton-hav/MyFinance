@@ -5,7 +5,7 @@ import {
   Button,
   Paper,
   Link,
-} from "../../imports/ui.imports";
+} from "../../../imports/ui.imports";
 
 import "./login.component.css";
 

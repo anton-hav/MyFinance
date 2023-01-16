@@ -4,7 +4,7 @@
         <name>MyFinance.WebApi</name>
     </assembly>
     <members>
-        <member name="T:MyFinance.WebApi.Policies.PermissionAttribute">
+        <member name="T:MyFinance.WebApi.Authorization.PermissionAttribute">
             <summary>
             Custom authorize attribute for policy permission.
             </summary>
@@ -12,12 +12,12 @@
             Provides access based on specified requirements. Eligible requirements: AdminOnly, UserOnly
             </remarks>
         </member>
-        <member name="F:MyFinance.WebApi.Policies.PermissionAttribute.POLICY_PREFIX">
+        <member name="F:MyFinance.WebApi.Authorization.PermissionAttribute.POLICY_PREFIX">
             <summary>
             Prefix for the policy name.
             </summary>
         </member>
-        <member name="P:MyFinance.WebApi.Policies.PermissionAttribute.RequiredPermission">
+        <member name="P:MyFinance.WebApi.Authorization.PermissionAttribute.RequiredPermission">
             <summary>
             Policy requirement.
             </summary>
@@ -25,7 +25,26 @@
             Contains policy rules and used as the part of the policy name.
             </remarks>
         </member>
-        <member name="M:MyFinance.WebApi.Policies.PermissionAttribute.#ctor(System.String)">
+        <member name="M:MyFinance.WebApi.Authorization.PermissionAttribute.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Authorization.PermissionPolicyProvider">
+            <summary>
+            Policy provider for dynamically generate policy.
+            </summary>
+        </member>
+        <member name="F:MyFinance.WebApi.Authorization.PermissionPolicyProvider.POLICY_PREFIX">
+            <summary>
+            Prefix for the policy name.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetDefaultPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetFallbackPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Policies.PermissionRequirement">
@@ -64,25 +83,6 @@
             <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
             <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirement" /></param>
             <returns>Task</returns>
-        </member>
-        <member name="T:MyFinance.WebApi.Authorization.PermissionPolicyProvider">
-            <summary>
-            Policy provider for dynamically generate policy.
-            </summary>
-        </member>
-        <member name="F:MyFinance.WebApi.Authorization.PermissionPolicyProvider.POLICY_PREFIX">
-            <summary>
-            Prefix for the policy name.
-            </summary>
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetDefaultPolicyAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetFallbackPolicyAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
-            <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Controllers.CategoriesController">
             <summary>
