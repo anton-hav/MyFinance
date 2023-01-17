@@ -19,6 +19,8 @@
   justify-content: left;
   background-color: #0772B3;
   font-size: calc(10px + 2vmin);
+  /*Z-index is necessary for correct interaction with the drawer*/
+  z-index: 10; 
 }
 
 .layout .body {
@@ -41,6 +43,8 @@
   align-items: center;
   justify-content:flex-start;
   font-size: calc(10px + 2vmin);
+  /*Z-index is necessary for correct interaction with the drawer*/
+  z-index: 10;
 }
 
 .footer .copy {

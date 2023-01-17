@@ -18,6 +18,13 @@ import { IconButton } from "@mui/material";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { Container } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import MuiDrawer from "@mui/material/Drawer";
+import { List } from "@mui/material";
+import { ListItem } from "@mui/material";
+import { ListItemButton } from "@mui/material";
+import { ListItemIcon } from "@mui/material";
+import { ListItemText } from "@mui/material";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -36,4 +43,11 @@ export {
   Menu,
   MenuItem,
   Container,
+  styled,
+  MuiDrawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 };
