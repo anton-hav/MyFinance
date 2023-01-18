@@ -384,15 +384,6 @@
                 (Income = 0, Expenses = 1)
             </summary>
         </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
-        </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel">
             <summary>
                 Request model to get categories.
@@ -402,12 +393,6 @@
             <summary>
                 Category type.
                 (Income = 0, Expenses = 1)
-            </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the requested records.
-                (For the root category the value should be empty).
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel">
@@ -430,15 +415,6 @@
                 Category type.
                 (Income = 0, Expenses = 1)
             </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
         </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel">
             <summary>
@@ -465,15 +441,6 @@
             <summary>
                 The unique identifier of the creator.
             </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
         </member>
         <member name="T:MyFinance.WebApi.Models.General.Responses.ErrorModel">
             <summary>
