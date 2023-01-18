@@ -1,10 +1,9 @@
 import { useState } from "react";
 // Import third party libraries
-import { CategoryIcon } from "../imports/icons.imports";
-import { Box, Typography } from "../imports/ui.imports";
+import { CategoryIcon, SummarizeIcon } from "../imports/icons.imports";
+import { Box } from "../imports/ui.imports";
 
 // Import custom components
-import Cabinet from "../components/topLevel/cabinet/Cabinet.component";
 import CabinetDrawer from "../components/topLevel/cabinetDrawer/CabinetDrawer.component";
 import SummarySection from "../components/topLevel/summarySection/SummarySection.component";
 import CategoriesSection from "../components/topLevel/categoriesSection/CategoriesSection.component";
@@ -12,7 +11,13 @@ import CategoriesSection from "../components/topLevel/categoriesSection/Categori
 import "./cabinet.page.css";
 
 const sections = [
-  [{ title: "Summary", icon: <CategoryIcon />, component: <SummarySection /> }],
+  [
+    {
+      title: "Summary",
+      icon: <SummarizeIcon />,
+      component: <SummarySection />,
+    },
+  ],
   [
     {
       title: "Categories",

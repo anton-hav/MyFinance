@@ -42,7 +42,15 @@ export class JwtInterceptor {
     const isApiUrl = url.href.startsWith(this._apiUrl);
 
     if (isApiUrl && token?.accessToken) {
-      params.headers.set("Authorization", `Bearer ${token.accessToken}`);
+      // checks if the method is "GET"
+      if (params.method === "GET") {
+        // creates new headers object and assign to the request
+        const requestHeaders = new Headers();
+        requestHeaders.append("Authorization", `Bearer ${token.accessToken}`);
+        params.headers = requestHeaders;
+      } else {
+        params.headers.set("Authorization", `Bearer ${token.accessToken}`);
+      }
     }
   }
 }

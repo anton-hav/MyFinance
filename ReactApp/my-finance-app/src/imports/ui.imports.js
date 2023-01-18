@@ -25,6 +25,20 @@ import { ListItem } from "@mui/material";
 import { ListItemButton } from "@mui/material";
 import { ListItemIcon } from "@mui/material";
 import { ListItemText } from "@mui/material";
+import { Grid } from "@mui/material";
+
+import { alpha } from "@mui/material/styles";
+
+import { Table } from "@mui/material";
+import { TableBody } from "@mui/material";
+import { TableCell } from "@mui/material";
+import { TableContainer } from "@mui/material";
+import { TableHead } from "@mui/material";
+import { TablePagination } from "@mui/material";
+import { TableRow } from "@mui/material";
+import { TableSortLabel } from "@mui/material";
+import { Checkbox } from "@mui/material";
+import { visuallyHidden } from "@mui/utils";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -50,4 +64,16 @@ export {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Grid,
+  alpha,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Checkbox,
+  visuallyHidden,
 };

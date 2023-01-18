@@ -10,6 +10,9 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -20,4 +23,7 @@ export {
   MailIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  SummarizeIcon,
+  DeleteIcon,
+  FilterListIcon,
 };

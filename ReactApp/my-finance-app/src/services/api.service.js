@@ -40,7 +40,7 @@ export default class ApiService {
     let fullUrl = new URL(`${this._getFullUrl(endpoint)}`);
 
     if (Object.keys(parameters).length > 0) {
-      fullUrl += "?" + queryString.stringify(parameters);
+      fullUrl.search += "?" + queryString.stringify(parameters);
     }
 
     let response = await this._fetch(fullUrl, {
