@@ -1,24 +1,23 @@
-.add-category {
-    width: 75%;
-    margin-right: 30px;
+.edit-category {
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start,
 }
 
-.add-category .form{
+.edit-category .form{
     display: flex;
     width: 100%;
     flex-direction: row;    
     justify-content: space-between;
 }
 
-.add-category .form .text-field {
+.edit-category .form .text-field {
     display: flex;
     flex-grow: 1;
 }
 
-.add-category .form .button {
+.edit-category .form .button {
     display: flex;
 }

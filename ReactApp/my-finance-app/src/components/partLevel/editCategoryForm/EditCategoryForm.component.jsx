@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { Box, TextField, Button } from "../../../imports/ui.imports";
 import { useFormik, yup } from "../../../imports/formBuilder.import";
 
-import "./addNewCategoryForm.component.css";
+import "./editCategoryForm.component.css";
 
-export function AddNewCategoryForm(props) {
-  const { existingCategoryNames, onAddCategorySubmit } = props;
+export function EditCategoryForm(props) {
+  const { category, existingCategoryNames, onEditCategorySubmit } = props;
 
   // Form validation schema congiguration provided by yup.
   const validationSchema = yup.object({
@@ -22,12 +22,13 @@ export function AddNewCategoryForm(props) {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      id: category.id,
+      name: category.name,
+      type: category.type,
     },
     validationSchema: validationSchema,
     onSubmit: (value) => {
-      onAddCategorySubmit(value);
-      value.name = "";
+      onEditCategorySubmit(value);
     },
     enableReinitialze: true,
   });
@@ -42,14 +43,14 @@ export function AddNewCategoryForm(props) {
   }, [existingCategoryNames]);
 
   return (
-    <Box className="add-category">
+    <Box className="edit-category">
       <form onSubmit={formik.handleSubmit} className="form">
         <TextField
           className="text-field"
           fullWidth
           id="category-name"
           name="name"
-          label="Add new category"
+          label="Edit category name"
           placeholder="Enter a new category name"
           type="text"
           variant="standard"

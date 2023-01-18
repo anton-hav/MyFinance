@@ -24,6 +24,9 @@ export default function CategoriesSection() {
     setExistingExpendituresCategoryNames,
   ] = useState([]);
 
+  /**
+   * Effect of changes in incomeCategories.
+   */
   useEffect(() => {
     /**
      * Get income categories from the server and set to the state.
@@ -103,6 +106,15 @@ export default function CategoriesSection() {
     }
   };
 
+  /**
+   * Handle save click event from the edit category form.
+   * @param {Object} values - data from the add new category form
+   * @param {*} categoryType - type of the category (see CategoryTypes module)
+   */
+  const handleEditCategorySubmit = async (values, categoryType) => {
+    console.log(values);
+  };
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -134,6 +146,9 @@ export default function CategoriesSection() {
             onAddCategorySubmit={(values) =>
               handleAddCategorySubmit(values, CategoryTypes.getIncomeType())
             }
+            onEditCategorySubmit={(values) =>
+              handleEditCategorySubmit(values, CategoryTypes.getIncomeType())
+            }
             existingCategoryNames={existingIncomeCategoryNames}
           />
         </Paper>
@@ -148,6 +163,12 @@ export default function CategoriesSection() {
               })}
               onAddCategorySubmit={(values) =>
                 handleAddCategorySubmit(values, CategoryTypes.getExpensesType())
+              }
+              onEditCategorySubmit={(values) =>
+                handleEditCategorySubmit(
+                  values,
+                  CategoryTypes.getExpensesType()
+                )
               }
               existingCategoryNames={existingExpendituresCategoryNames}
             />

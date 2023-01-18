@@ -1,18 +1,12 @@
 export default class CategoryDto {
   id = null;
   name = "";
-  parentId = null;
-  children = [];
+  type = null;
 
-  constructor(id, name, parentId, children) {
+  constructor(id, name, categoryType) {
     if (id !== undefined) this.id = id;
-    this.name = name;
-    if (parentId !== undefined) this.parentId = parentId;
-    if (children !== undefined) {
-      this.children = children;
-    } else {
-      this.children = [];
-    }
+    if (name !== undefined) this.name = name;
+    if (categoryType !== undefined) this.categoryType = categoryType;
   }
 
   /**
@@ -22,10 +16,8 @@ export default class CategoryDto {
   clone() {
     let id = this.id;
     let name = this.name;
-    let parentId = this.parentId;
-    let children =
-      this.children.length > 0 ? this.children.map((c) => c.clone()) : [];
-    return new CategoryDto(id, name, parentId, children);
+    let type = this.type;
+    return new CategoryDto(id, name, type);
   }
 
   /**
@@ -34,10 +26,6 @@ export default class CategoryDto {
    * @returns a new CategoryDto object
    */
   static fromResponse(response) {
-    return new CategoryDto(
-      response.id,
-      response.name,
-      response.parentCategoryId
-    );
+    return new CategoryDto(response.id, response.name, response.type);
   }
 }

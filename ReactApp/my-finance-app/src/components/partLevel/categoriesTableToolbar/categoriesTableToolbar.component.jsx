@@ -2,10 +2,11 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 // Import third party libraries
-import { DeleteIcon } from "../../../imports/icons.imports";
+import { DeleteIcon, EditIcon } from "../../../imports/icons.imports";
 
 // Import custom part level components
 import { AddNewCategoryForm } from "../addNewCategoryForm/AddNewCategoryForm.component";
+import { EditCategoryForm } from "../editCategoryForm/EditCategoryForm.component";
 
 import {
   alpha,
@@ -17,14 +18,19 @@ import {
 } from "../../../imports/ui.imports";
 
 export function CategoriesTableToolbar(props) {
-  const { numSelected, onAddCategorySubmit, existingCategoryNames } = props;
+  const {
+    selected,
+    onAddCategorySubmit,
+    existingCategoryNames,
+    onEditCategorySubmit,
+  } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(selected.length > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -33,18 +39,35 @@ export function CategoriesTableToolbar(props) {
         }),
       }}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
+      {selected.length > 0 ? (
+        selected.length === 1 ? (
+          <Box
+            sx={{
+              display: "flex",
+              flex: "1 1 100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <EditCategoryForm
+              category={selected[0]}
+              existingCategoryNames={existingCategoryNames}
+              onEditCategorySubmit={onEditCategorySubmit}
+            />
+          </Box>
+        ) : (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {selected.length} selected
+          </Typography>
+        )
       ) : null}
 
-      {numSelected > 0 ? (
+      {selected.length > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -57,6 +80,7 @@ export function CategoriesTableToolbar(props) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            transform: "translateZ(0px)",
           }}
         >
           <AddNewCategoryForm
@@ -68,7 +92,3 @@ export function CategoriesTableToolbar(props) {
     </Toolbar>
   );
 }
-
-CategoriesTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};

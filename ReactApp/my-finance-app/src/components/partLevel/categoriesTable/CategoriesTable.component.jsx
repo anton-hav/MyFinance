@@ -13,8 +13,8 @@ import {
   Checkbox,
 } from "../../../imports/ui.imports";
 // Import custom part components
-import { CategoriesTableToolbar } from "../categoriesTableToolbar/categoriesTableToolbar.component";
-import { CategoriesTableHead } from "../categoriesTableHead/categoriesTableHead.component";
+import { CategoriesTableToolbar } from "../categoriesTableToolbar/CategoriesTableToolbar.component";
+import { CategoriesTableHead } from "../categoriesTableHead/CategoriesTableHead.component";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,7 +50,12 @@ function stableSort(array, comparator) {
 }
 
 export function CategoriesTable(props) {
-  const { rows, onAddCategorySubmit, existingCategoryNames } = props;
+  const {
+    rows,
+    onAddCategorySubmit,
+    onEditCategorySubmit,
+    existingCategoryNames,
+  } = props;
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [selected, setSelected] = useState([]);
@@ -111,8 +116,9 @@ export function CategoriesTable(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <CategoriesTableToolbar
-          numSelected={selected.length}
+          selected={rows.filter((row) => selected.includes(row.name))}
           onAddCategorySubmit={onAddCategorySubmit}
+          onEditCategorySubmit={onEditCategorySubmit}
           existingCategoryNames={existingCategoryNames}
         />
         <TableContainer>
