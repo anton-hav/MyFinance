@@ -8,4 +8,5 @@ export const environment = {
     revokeToken: "Token/Revoke",
     validateToken: "Token/Validate",
   },
+  categoriesEndpoint: "Categories",
 };

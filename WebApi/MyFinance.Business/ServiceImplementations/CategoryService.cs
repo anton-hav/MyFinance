@@ -56,37 +56,17 @@ public class CategoryService : ICategoryService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(Guid? parentId,
-        CategoryType categoryType, Guid userId)
+    public async Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(CategoryType categoryType, Guid userId)
     {
         var entities = await _unitOfWork.Categories
             .Get()
             .AsNoTracking()
-            .Where(entity => entity.ParentCategoryId.Equals(parentId)
-                             && entity.Type.Equals(categoryType)
-                             && entity.UserId.Equals(userId))
+            .Where(entity => entity.Type.Equals(categoryType)
+                              && entity.UserId.Equals(userId))
             .Select(entity => _mapper.Map<CategoryDto>(entity))
             .ToArrayAsync();
 
         return entities;
-    }
-
-    /// <inheritdoc />
-    public async Task<IEnumerable<Guid>> GetInnerCategoryIdsByCurrentCategoryIdAsync(Guid categoryId)
-    {
-        var result = new List<Guid> { categoryId };
-
-        var children = await _unitOfWork.Categories.Get()
-            .AsNoTracking()
-            .Where(entity => entity.ParentCategoryId.Equals(categoryId))
-            .Select(entity => entity.Id)
-            .ToListAsync();
-
-        if (!children.Any()) return result;
-
-        foreach (var child in children)
-            result.AddRange(await GetInnerCategoryIdsByCurrentCategoryIdAsync(child));
-        return result;
     }
 
     /// <inheritdoc />
@@ -114,32 +94,15 @@ public class CategoryService : ICategoryService
     }
 
     /// <inheritdoc />
-    public async Task<bool> IsRootCategoryExistByUserIdAndCategoryTypeAsync(Guid userId, CategoryType categoryType)
+    public async Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId)
     {
         var entity = await _unitOfWork.Categories
             .Get()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(entity => entity.ParentCategoryId.Equals(null)
-                                           && entity.Type.Equals(categoryType));
-
-        return entity != null;
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentException"></exception>
-    public async Task<bool> IsCategoryRootByIdAndUserIdAsync(Guid id, Guid userId, CategoryType categoryType)
-    {
-        var entity = await _unitOfWork.Categories
-            .Get()
-            .Where(entity => entity.Id.Equals(id)
-                             && entity.UserId.Equals(userId)
-                             && entity.Type.Equals(categoryType))
+            .Where(entity => entity.Id.Equals(id) && entity.UserId.Equals(userId))
             .AsNoTracking()
             .FirstOrDefaultAsync();
 
-        if (entity == null) throw new ArgumentException("The category specified by parameters does not exist.");
-
-        return entity.ParentCategoryId == null;
+        return entity != null;
     }
 
     #endregion READ
@@ -176,14 +139,6 @@ public class CategoryService : ICategoryService
             {
                 PropertyName = nameof(dto.Name),
                 PropertyValue = dto.Name
-            });
-
-
-        if (!dto.ParentCategoryId.Equals(sourceDto.ParentCategoryId))
-            patchList.Add(new PatchModel
-            {
-                PropertyName = nameof(dto.ParentCategoryId),
-                PropertyValue = dto.ParentCategoryId
             });
 
         await _unitOfWork.Categories.PatchAsync(id, patchList);

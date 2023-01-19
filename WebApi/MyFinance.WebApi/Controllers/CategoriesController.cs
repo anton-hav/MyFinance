@@ -5,6 +5,7 @@ using MyFinance.Core.Abstractions.IdentityManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.Core.Exceptions;
+using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.Categories.Requests;
 using MyFinance.WebApi.Models.Categories.Responses;
@@ -76,7 +77,7 @@ public class CategoriesController : ControllerBase
     {
         var userId = _userManager.GetUserId();
         var categories =
-            await _categoryService.GetCategoriesBySearchParametersAsync(model.ParentCategoryId, model.Type, userId);
+            await _categoryService.GetCategoriesBySearchParametersAsync(model.Type, userId);
         var response = _mapper.Map<IEnumerable<CategoryResponseModel>>(categories);
 
         return Ok(response);
@@ -107,26 +108,7 @@ public class CategoriesController : ControllerBase
         if (isExist)
             throw new ConflictWithExistingRecordException("The same entry already exists in the storage.",
                 nameof(model));
-
-        if (model.ParentCategoryId == null)
-        {
-            var isRootCategoryExist =
-                await _categoryService.IsRootCategoryExistByUserIdAndCategoryTypeAsync(userId, model.Type);
-            if (isRootCategoryExist)
-                throw new ConflictWithExistingRecordException(
-                    "Root category already exist. The parent category identifier for the new entry must not be null.",
-                    nameof(model));
-        }
-        else
-        {
-            var isParentCategoryExist =
-                await _categoryService.IsCategoryExistByIdAsync((Guid)model.ParentCategoryId);
-            if (!isParentCategoryExist)
-                throw new ArgumentException(
-                    "The record with the specified unique identifier of the parent category does not exist.",
-                    nameof(model));
-        }
-
+        
         var dto = _mapper.Map<CategoryDto>(model);
         dto.Id = Guid.NewGuid();
         dto.UserId = userId;
@@ -201,7 +183,10 @@ public class CategoriesController : ControllerBase
         if (id.Equals(default))
             throw new ArgumentNullException(nameof(id), "A non-empty Id is required.");
 
-        var isExistById = await _categoryService.IsCategoryExistByIdAsync(id);
+        var userId = _userManager.GetUserId();
+
+        var isExistById = await _categoryService.IsUserOwnerForCategoryByCategoryIdAndUserId(id, userId);
+
         if (!isExistById)
             throw new ArgumentException("Fail to find a record with the specified Id in the storage",
                 nameof(id));

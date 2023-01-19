@@ -4,7 +4,7 @@
         <name>MyFinance.WebApi</name>
     </assembly>
     <members>
-        <member name="T:MyFinance.WebApi.Policies.PermissionAttribute">
+        <member name="T:MyFinance.WebApi.Authorization.PermissionAttribute">
             <summary>
             Custom authorize attribute for policy permission.
             </summary>
@@ -12,12 +12,12 @@
             Provides access based on specified requirements. Eligible requirements: AdminOnly, UserOnly
             </remarks>
         </member>
-        <member name="F:MyFinance.WebApi.Policies.PermissionAttribute.POLICY_PREFIX">
+        <member name="F:MyFinance.WebApi.Authorization.PermissionAttribute.POLICY_PREFIX">
             <summary>
             Prefix for the policy name.
             </summary>
         </member>
-        <member name="P:MyFinance.WebApi.Policies.PermissionAttribute.RequiredPermission">
+        <member name="P:MyFinance.WebApi.Authorization.PermissionAttribute.RequiredPermission">
             <summary>
             Policy requirement.
             </summary>
@@ -25,7 +25,26 @@
             Contains policy rules and used as the part of the policy name.
             </remarks>
         </member>
-        <member name="M:MyFinance.WebApi.Policies.PermissionAttribute.#ctor(System.String)">
+        <member name="M:MyFinance.WebApi.Authorization.PermissionAttribute.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyFinance.WebApi.Authorization.PermissionPolicyProvider">
+            <summary>
+            Policy provider for dynamically generate policy.
+            </summary>
+        </member>
+        <member name="F:MyFinance.WebApi.Authorization.PermissionPolicyProvider.POLICY_PREFIX">
+            <summary>
+            Prefix for the policy name.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetDefaultPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetFallbackPolicyAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Policies.PermissionRequirement">
@@ -64,25 +83,6 @@
             <param name="context">authorization context as a <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext" /></param>
             <param name="requirement">permission requirement as a <see cref="T:MyFinance.WebApi.Policies.PermissionRequirement" /></param>
             <returns>Task</returns>
-        </member>
-        <member name="T:MyFinance.WebApi.Authorization.PermissionPolicyProvider">
-            <summary>
-            Policy provider for dynamically generate policy.
-            </summary>
-        </member>
-        <member name="F:MyFinance.WebApi.Authorization.PermissionPolicyProvider.POLICY_PREFIX">
-            <summary>
-            Prefix for the policy name.
-            </summary>
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetDefaultPolicyAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetFallbackPolicyAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:MyFinance.WebApi.Authorization.PermissionPolicyProvider.GetPolicyAsync(System.String)">
-            <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Controllers.CategoriesController">
             <summary>
@@ -147,11 +147,8 @@
             <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
             <returns></returns>
             <response code="204">Successful deletion</response>
-            <response code="400">Request contains null object or invalid object type</response>
-            <response code="409">
-                Fail to find a record with the specified Id in the storage
-                or the entry with the same property already exists in the storage.
-            </response>
+            <response code="400">Request contains null object or invalid object type.</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
             <response code="500">Unexpected error on the server side.</response>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.CheckCategoryForEditAsync(System.Guid,System.String,System.Guid,MyFinance.Core.CategoryType)">
@@ -387,15 +384,6 @@
                 (Income = 0, Expenses = 1)
             </summary>
         </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
-        </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel">
             <summary>
                 Request model to get categories.
@@ -405,12 +393,6 @@
             <summary>
                 Category type.
                 (Income = 0, Expenses = 1)
-            </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the requested records.
-                (For the root category the value should be empty).
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel">
@@ -433,15 +415,6 @@
                 Category type.
                 (Income = 0, Expenses = 1)
             </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
         </member>
         <member name="T:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel">
             <summary>
@@ -468,15 +441,6 @@
             <summary>
                 The unique identifier of the creator.
             </summary>
-        </member>
-        <member name="P:MyFinance.WebApi.Models.Categories.Responses.CategoryResponseModel.ParentCategoryId">
-            <summary>
-                The unique identifier of the parent category for the current entry.
-            </summary>
-            <remarks>
-                For the root category the value is null.
-                Only one root category per category type is allowed.
-            </remarks>
         </member>
         <member name="T:MyFinance.WebApi.Models.General.Responses.ErrorModel">
             <summary>

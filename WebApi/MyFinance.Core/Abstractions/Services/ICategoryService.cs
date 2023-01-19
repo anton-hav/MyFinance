@@ -27,20 +27,11 @@ public interface ICategoryService
     /// <summary>
     ///     Get categories from storage by search parameters.
     /// </summary>
-    /// <param name="parentId">an unique identifier of the parent category</param>
     /// <param name="categoryType">category type as a <see cref="CategoryType" /></param>
     /// <param name="userId">the unique identifier of the creator as a <see cref="Guid" /></param>
     /// <returns>child categories for the requested category id.</returns>
-    Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(Guid? parentId, CategoryType categoryType,
+    Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(CategoryType categoryType,
         Guid userId);
-
-    /// <summary>
-    ///     Get unique identifiers of all inner categories from the storage by current category unique identifier.
-    ///     The result includes the current category identifier.
-    /// </summary>
-    /// <param name="categoryId">a current category unique identifier</param>
-    /// <returns>a current unique identifier and unique identifiers of all inner categories</returns>
-    Task<IEnumerable<Guid>> GetInnerCategoryIdsByCurrentCategoryIdAsync(Guid categoryId);
 
     /// <summary>
     ///     Checks if the record with the same parameters exists in the storage.
@@ -59,22 +50,12 @@ public interface ICategoryService
     Task<bool> IsCategoryExistByIdAsync(Guid id);
 
     /// <summary>
-    ///     Checks if the root category (with parentId equals null) exists in the storage
-    ///     for the current user and the category type.
+    /// Checks if user is creator for specified category.
     /// </summary>
-    /// <param name="userId">a creator unique identifier as a <see cref="Guid" /></param>
-    /// <param name="categoryType">category type as a <see cref="CategoryType" /></param>
-    /// <returns>A boolean</returns>
-    Task<bool> IsRootCategoryExistByUserIdAndCategoryTypeAsync(Guid userId, CategoryType categoryType);
-
-    /// <summary>
-    ///     Checks if the category with the specified Id and user Id is the root category.
-    /// </summary>
-    /// <param name="id">an unique identifier as a <see cref="Guid" /></param>
-    /// <param name="userId">the creator unique identifier as a <see cref="Guid" /></param>
-    /// <param name="categoryType">category type as a <see cref="CategoryType" /></param>
-    /// <returns>A boolean</returns>
-    Task<bool> IsCategoryRootByIdAndUserIdAsync(Guid id, Guid userId, CategoryType categoryType);
+    /// <param name="id">category unique identifier as a <see cref="Guid" /></param>
+    /// <param name="userId">an unique identifier of the current user as a <see cref="Guid"/></param>
+    /// <returns></returns>
+    Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId);
 
     #endregion READ
 

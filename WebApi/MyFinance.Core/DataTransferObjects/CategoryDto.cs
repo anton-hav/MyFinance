@@ -24,29 +24,4 @@ public class CategoryDto
     ///     The unique identifier of the creator.
     /// </summary>
     public Guid UserId { get; set; }
-
-    /// <summary>
-    ///     The unique identifier of the parent category for the current entry.
-    /// </summary>
-    /// <remarks>
-    ///     For the root category the value is null.
-    ///     Only one root category per category type is allowed.
-    /// </remarks>
-    public Guid? ParentCategoryId { get; set; }
-
-    /// <summary>
-    ///     Parent category.
-    /// </summary>
-    /// <remarks>
-    ///     Navigation property
-    /// </remarks>
-    public CategoryDto? ParentCategory { get; set; }
-
-    /// <summary>
-    ///     List of child categories
-    /// </summary>
-    /// <remarks>
-    ///     Navigation property
-    /// </remarks>
-    public List<CategoryDto> Children { get; set; }
 }

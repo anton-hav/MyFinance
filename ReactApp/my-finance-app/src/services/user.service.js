@@ -70,14 +70,14 @@ export default class UserService {
   }
 
   // todo: remove this method because it moved to authInterceptor
-  async getTokenByRefreshToken(refreshToken) {
-    let response = await this._apiService.post(
-      this._tokenEndpoints.refreshToken,
-      { refreshToken: refreshToken }
-    );
-    let token = TokenDto.fromResponse(response);
-    return token;
-  }
+  // async getTokenByRefreshToken(refreshToken) {
+  //   let response = await this._apiService.post(
+  //     this._tokenEndpoints.refreshToken,
+  //     { refreshToken: refreshToken }
+  //   );
+  //   let token = TokenDto.fromResponse(response);
+  //   return token;
+  // }
 
   async revokeRefreshToken(refreshToken) {
     await this._apiService.post(this._tokenEndpoints.revokeToken, {
@@ -85,20 +85,16 @@ export default class UserService {
     });
   }
 
+  /**
+   * Validate token on the API service.
+   * @returns true if the token is valid
+   */
   async validateToken() {
-    try {
-      let response = await this._apiService.post(
-        this._tokenEndpoints.validateToken,
-        {}
-      );
-      if (response) return true;
-    } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        this._logger.warn(error);
-        throw error;
-      }
-      this._logger.error(error);
-    }
+    let response = await this._apiService.post(
+      this._tokenEndpoints.validateToken,
+      {}
+    );
+    return response ? true : false;
   }
 
   /**

@@ -32,9 +32,6 @@ namespace MyFinance.DataBase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("ParentCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -42,8 +39,6 @@ namespace MyFinance.DataBase.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParentCategoryId");
 
                     b.HasIndex("UserId");
 
@@ -122,17 +117,11 @@ namespace MyFinance.DataBase.Migrations
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.Category", b =>
                 {
-                    b.HasOne("MyFinance.DataBase.Entities.Category", "ParentCategory")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentCategoryId");
-
                     b.HasOne("MyFinance.DataBase.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ParentCategory");
 
                     b.Navigation("User");
                 });
@@ -157,11 +146,6 @@ namespace MyFinance.DataBase.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("MyFinance.DataBase.Entities.Category", b =>
-                {
-                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.Role", b =>

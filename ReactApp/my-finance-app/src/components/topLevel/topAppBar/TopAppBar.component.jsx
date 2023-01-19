@@ -1,9 +1,14 @@
 // Import third party libraries
-import { Box, Toolbar, Typography, Container } from "../../imports/ui.imports";
+import {
+  Box,
+  Toolbar,
+  Typography,
+  Container,
+} from "../../../imports/ui.imports";
 // Import custom components
-import { PageNavBarItem } from "./appBarItems/PageNavBarItem.component";
+import { PageNavBarItem } from "../../partLevel/pageNavBarItem/PageNavBarItem.component";
 
-import AccountTools from "./appBarItems/AccountBarItem.component";
+import AccountTools from "../../partLevel/accountBarItem/AccountBarItem.component";
 
 import "./topAppBar.component.css";
 

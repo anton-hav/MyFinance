@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+}
+
+.wrapper .header {
+    all: initial;
+    display: flex;
+    margin-top: 65px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+}

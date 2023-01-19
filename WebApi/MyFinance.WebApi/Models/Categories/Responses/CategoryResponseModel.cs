@@ -27,13 +27,4 @@ public class CategoryResponseModel
     ///     The unique identifier of the creator.
     /// </summary>
     public Guid UserId { get; set; }
-
-    /// <summary>
-    ///     The unique identifier of the parent category for the current entry.
-    /// </summary>
-    /// <remarks>
-    ///     For the root category the value is null.
-    ///     Only one root category per category type is allowed.
-    /// </remarks>
-    public Guid? ParentCategoryId { get; set; }
 }

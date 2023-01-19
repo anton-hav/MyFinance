@@ -2,14 +2,15 @@ import { createBrowserRouter } from "./imports/navigation.imports";
 // Import pages
 import App from "./App";
 import ErrorPage from "./pages/Error.page";
-import Home from "./pages/Home.page";
-import About from "./pages/About.page";
-import Login from "./pages/Login.page";
-import Register from "./pages/Register.page";
-
+import HomePage from "./pages/Home.page";
+import AboutPage from "./pages/About.page";
+import LoginPage from "./pages/Login.page";
+import RegisterPage from "./pages/Register.page";
+import CabinetPage from "./pages/Cabinet.page";
 // Import utils
 
 // Import guards
+import RootGuard from "./guards/root.guard";
 
 const router = createBrowserRouter([
   {
@@ -22,23 +23,29 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Home />,
+            element: <HomePage />,
           },
           {
             path: "/home",
-            element: <Home />,
+            element: <HomePage />,
           },
           {
             path: "/about",
-            element: <About />,
+            element: <AboutPage />,
           },
           {
             path: "/login",
-            element: <Login />,
+            element: <LoginPage />,
           },
           {
             path: "/register",
-            element: <Register />,
+            element: <RegisterPage />,
+          },
+          {
+            path: "/dashboard",
+            element: (
+              <RootGuard component=<CabinetPage /> authorised={["User"]} />
+            ),
           },
         ],
       },

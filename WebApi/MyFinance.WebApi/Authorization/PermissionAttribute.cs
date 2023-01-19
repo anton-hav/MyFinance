@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace MyFinance.WebApi.Policies;
+namespace MyFinance.WebApi.Authorization;
 
 /// <summary>
 /// Custom authorize attribute for policy permission.
