@@ -7,7 +7,7 @@ using MyFinance.WebApi.Models.Categories.Responses;
 namespace MyFinance.WebApi.MappingProfiles;
 
 /// <summary>
-/// Mapper profile for Category
+/// Mapper profile for the Category
 /// </summary>
 public class CategoryProfile : Profile
 {

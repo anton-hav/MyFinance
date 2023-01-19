@@ -16,4 +16,8 @@ public interface IRecordRepository : IRepository<Record>
     /// <param name="id">an unique identifier as a <see cref="Guid" /></param>
     /// <returns>A boolean</returns>
     Task<bool> IsRecordExistByIdAsync(Guid id);
+
+    // ...
+    // more Record-specific methods here.
+    // ...
 }

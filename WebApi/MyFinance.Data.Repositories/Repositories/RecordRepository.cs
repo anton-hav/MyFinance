@@ -32,4 +32,8 @@ public class RecordRepository : Repository<Record>, IRecordRepository
         return entity != null;
     }
 
+    // ...
+    // more Record-specific methods here.
+    // ...
+
 }
