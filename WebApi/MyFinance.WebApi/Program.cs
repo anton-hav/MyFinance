@@ -123,6 +123,7 @@ public class Program
         builder.Services.AddScoped<IRoleService, RoleService>();
         builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         builder.Services.AddScoped<IJwtUtil, JwtUtilSha256>();
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
 
         // Add identity managers
         builder.Services.AddScoped<IUserManager, UserManager>();
@@ -131,6 +132,7 @@ public class Program
         builder.Services.AddScoped<IRepository<User>, Repository<User>>();
         builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
         builder.Services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
+        builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // Add authorization handlers and provider.

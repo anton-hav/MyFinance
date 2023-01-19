@@ -22,6 +22,8 @@ public class RoleService : IRoleService
         _configuration = configuration;
     }
 
+    #region READ
+
     /// <inheritdoc />
     /// <exception cref="ArgumentException"></exception>
     public async Task<Guid> GetRoleIdForDefaultRoleAsync()
@@ -77,4 +79,6 @@ public class RoleService : IRoleService
 
         return roleName;
     }
+
+    #endregion READ
 }

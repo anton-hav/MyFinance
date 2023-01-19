@@ -8,8 +8,8 @@ import {
   Paper,
   Divider,
   Link,
-} from "../../imports/ui.imports";
-import { useFormik, yup } from "../../imports/formBuilder.import";
+} from "../../../imports/ui.imports";
+import { useFormik, yup } from "../../../imports/formBuilder.import";
 
 import "./register.component.css";
 

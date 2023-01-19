@@ -2,9 +2,7 @@
 
 public interface IRefreshTokenService
 {
-    // READ
-
-    // CREATE
+    #region CREATE
 
     /// <summary>
     /// Create a new update marker with the specified value for the specified user.
@@ -14,9 +12,9 @@ public interface IRefreshTokenService
     /// <returns>the number of successfully created records in the storage.</returns>
     Task<int> CreateRefreshTokenAsync(Guid tokenValue, Guid userId);
 
-    // UPDATE
+    #endregion CREATE
 
-    // DELETE
+    #region DELETE
 
     /// <summary>
     /// Removes token from storage specified token value
@@ -24,4 +22,6 @@ public interface IRefreshTokenService
     /// <param name="tokenValue">token value as a <see cref="Guid"/></param>
     /// <returns>the number of successfully removed records in the storage.</returns>
     Task<int> RemoveRefreshTokenAsync(Guid tokenValue);
+
+    #endregion DELETE
 }

@@ -4,7 +4,8 @@ namespace MyFinance.Core.Abstractions.Services;
 
 public interface IUserService
 {
-    //READ
+    #region READ
+
     /// <summary>
     ///     Get user with specified id from the storage.
     /// </summary>
@@ -49,7 +50,9 @@ public interface IUserService
     /// <returns>The Boolean</returns>
     bool IsUserTheFirst();
 
-    //CREATE
+    #endregion READ
+
+    #region CREATE
 
     /// <summary>
     ///     Creates a new user record in the data source.
@@ -61,7 +64,5 @@ public interface IUserService
     /// <returns>the number of successfully created records.</returns>
     Task<int> RegisterUserAsync(UserDto dto);
 
-    //UPDATE
-
-    //REMOVE
+    #endregion CREATE
 }

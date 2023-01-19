@@ -2,7 +2,7 @@ import { useState } from "react";
 // Import third party libraries
 import { useNavigate } from "../imports/navigation.imports";
 // Import custom components
-import { Register as RegisterComponent } from "../components/register/Register.component";
+import { Register as RegisterComponent } from "../components/topLevel/register/Register.component";
 // Import services
 import UserService from "../services/user.service";
 // Import custom types and utils
@@ -10,7 +10,7 @@ import ConflictError from "../types/errors/conflict.error";
 
 const _userService = new UserService();
 
-export default function Register() {
+export default function RegisterPage() {
   const [existingEmails, setExistingEmails] = useState([]);
 
   const navigate = useNavigate();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyFinance.Core.Abstractions.Services;
+using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.Filters;
 using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.General.Responses;

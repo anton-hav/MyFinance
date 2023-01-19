@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.Core.Exceptions;
+using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.General.Responses;
 using MyFinance.WebApi.Models.User.Requests;

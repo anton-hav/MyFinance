@@ -1,11 +1,11 @@
 import { Box, LinearProgress } from "../imports/ui.imports";
 import { Outlet, useNavigation } from "../imports/navigation.imports";
 // Import custom components
-import TopAppBar from "../components/appBar/TopAppBar.component";
+import TopAppBar from "../components/topLevel/topAppBar/TopAppBar.component";
 
 import "./layout.css";
 
-const pages = ["home", "about"];
+const pages = ["home", "about", "dashboard"];
 const title = "My Finance";
 
 export default function Layout() {

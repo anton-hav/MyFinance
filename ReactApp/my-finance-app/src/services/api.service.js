@@ -40,7 +40,7 @@ export default class ApiService {
     let fullUrl = new URL(`${this._getFullUrl(endpoint)}`);
 
     if (Object.keys(parameters).length > 0) {
-      fullUrl += "?" + queryString.stringify(parameters);
+      fullUrl.search += "?" + queryString.stringify(parameters);
     }
 
     let response = await this._fetch(fullUrl, {
@@ -105,7 +105,14 @@ export default class ApiService {
       headers: requestHeaders,
       body: JSON.stringify(data),
     });
-    return response.json();
+    if (response.status === 400) {
+      throw new BadRequestError();
+    } else if (response.status === 409) {
+      throw new ConflictError();
+    }
+    if (response.status === 200 || response.status === 201) {
+      return response.json();
+    }
   }
 
   async delete(url, id) {

@@ -1,0 +1,8 @@
+.cabinet-wrapper {
+    display: flex;
+}
+
+.cabinet-wrapper .container {
+    flex-grow: 1;
+    padding: 24px;
+}
