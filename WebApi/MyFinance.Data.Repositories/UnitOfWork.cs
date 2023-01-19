@@ -12,18 +12,24 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Role> Roles { get; }
     public IRepository<RefreshToken> RefreshToken { get; }
     public IRepository<Category> Categories { get; }
+    public IRepository<Record> Records { get; }
+    public IRecordRepository AdditionRecords { get; }
 
     public UnitOfWork(MyFinanceDbContext dbContext, 
         IRepository<User> users, 
         IRepository<Role> roles, 
         IRepository<RefreshToken> refreshToken, 
-        IRepository<Category> categories)
+        IRepository<Category> categories, 
+        IRepository<Record> records, 
+        IRecordRepository additionRecords)
     {
         _dbContext = dbContext;
         Users = users;
         Roles = roles;
         RefreshToken = refreshToken;
         Categories = categories;
+        Records = records;
+        AdditionRecords = additionRecords;
     }
     
     public async Task<int> Commit()
