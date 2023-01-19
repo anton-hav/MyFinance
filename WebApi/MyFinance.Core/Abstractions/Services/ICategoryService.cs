@@ -49,6 +49,14 @@ public interface ICategoryService
     /// <returns>A boolean</returns>
     Task<bool> IsCategoryExistByIdAsync(Guid id);
 
+    /// <summary>
+    /// Checks if user is creator for specified category.
+    /// </summary>
+    /// <param name="id">category unique identifier as a <see cref="Guid" /></param>
+    /// <param name="userId">an unique identifier of the current user as a <see cref="Guid"/></param>
+    /// <returns></returns>
+    Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId);
+
     #endregion READ
 
     #region CREATE

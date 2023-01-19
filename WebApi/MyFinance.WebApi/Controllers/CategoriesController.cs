@@ -183,7 +183,10 @@ public class CategoriesController : ControllerBase
         if (id.Equals(default))
             throw new ArgumentNullException(nameof(id), "A non-empty Id is required.");
 
-        var isExistById = await _categoryService.IsCategoryExistByIdAsync(id);
+        var userId = _userManager.GetUserId();
+
+        var isExistById = await _categoryService.IsUserOwnerForCategoryByCategoryIdAndUserId(id, userId);
+
         if (!isExistById)
             throw new ArgumentException("Fail to find a record with the specified Id in the storage",
                 nameof(id));

@@ -93,6 +93,18 @@ public class CategoryService : ICategoryService
         return entity != null;
     }
 
+    /// <inheritdoc />
+    public async Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId)
+    {
+        var entity = await _unitOfWork.Categories
+            .Get()
+            .Where(entity => entity.Id.Equals(id) && entity.UserId.Equals(userId))
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+
+        return entity != null;
+    }
+
     #endregion READ
 
     #region CREATE
