@@ -59,6 +59,7 @@ export default class CategoryService {
    * Create new category to the database via API.
    * @param {string} categoryName - category name
    * @param {number} categoryType - number that represent category type (see CategoryTypes)
+   * @return a newly category.
    */
   async createNewCategory(categoryName, categoryType) {
     let response = await this._apiService.post(this._categoriesEndpoint, {
@@ -67,5 +68,37 @@ export default class CategoryService {
     });
     let category = CategoryDto.fromResponse(response);
     return category;
+  }
+
+  // UPDATE
+
+  /**
+   * Update the category trough the API
+   * @param {*} category - an access token
+   * @returns a boolean (true if record successfully updated)
+   */
+  async updateCategory(category) {
+    let response = await this._apiService.patch(
+      this._categoriesEndpoint,
+      category,
+      category.id
+    );
+    let result = CategoryDto.fromResponse(response);
+    return result instanceof CategoryDto;
+  }
+
+  // DELETE
+
+  /**
+   * Remove a category from the database via API.
+   * @param {string} categoryId - an unique identifier of the category.
+   * @returns a boolean(true if record successfully removed)
+   */
+  async removeCategory(categoryId) {
+    let response = await this._apiService.delete(
+      this._categoriesEndpoint,
+      categoryId
+    );
+    return response;
   }
 }

@@ -42,8 +42,8 @@ export class JwtInterceptor {
     const isApiUrl = url.href.startsWith(this._apiUrl);
 
     if (isApiUrl && token?.accessToken) {
-      // checks if the method is "GET"
-      if (params.method === "GET") {
+      // checks if the method is "GET" or "DELETE"
+      if (["GET", "DELETE"].includes(params.method)) {
         // creates new headers object and assign to the request
         const requestHeaders = new Headers();
         requestHeaders.append("Authorization", `Bearer ${token.accessToken}`);

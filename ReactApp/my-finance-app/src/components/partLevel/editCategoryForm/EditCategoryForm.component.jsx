@@ -61,7 +61,7 @@ export function EditCategoryForm(props) {
         />
 
         <Box className="button">
-          <Button type="submit">Add</Button>
+          <Button type="submit">Save</Button>
         </Box>
       </form>
     </Box>

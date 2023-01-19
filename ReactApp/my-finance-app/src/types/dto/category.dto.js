@@ -6,7 +6,7 @@ export default class CategoryDto {
   constructor(id, name, categoryType) {
     if (id !== undefined) this.id = id;
     if (name !== undefined) this.name = name;
-    if (categoryType !== undefined) this.categoryType = categoryType;
+    if (categoryType !== undefined) this.type = categoryType;
   }
 
   /**

@@ -6,7 +6,6 @@ import { CategoriesTable } from "../../partLevel/index";
 // Import services
 import CategoryService from "../../../services/category.service";
 // Import types and utils
-import CategoryDto from "../../../types/dto/category.dto";
 import useToken from "../../../utils/hooks/useToken.hook";
 import CategoryTypes from "../../../utils/categoryTypes";
 import ConflictError from "../../../types/errors/conflict.error";
@@ -63,6 +62,14 @@ export default function CategoriesSection() {
     }
   }, [expendituresCategories]);
 
+  const cleanUpCategoriesState = (categoryType) => {
+    if (categoryType === CategoryTypes.getIncomeType().value) {
+      setIncomeCategories([]);
+    } else if (categoryType === CategoryTypes.getExpensesType().value) {
+      setExpendituresCategories([]);
+    }
+  };
+
   /**
    * Handle submit click event from the add new category form.
    * @param {Object} values - data from the add new category form
@@ -79,13 +86,7 @@ export default function CategoriesSection() {
       // If new category was created clean up the category list.
       // This is necessary to get the actual categories from the server.
       if (result.id !== null) {
-        if (categoryType.value === CategoryTypes.getIncomeType().value) {
-          setIncomeCategories([]);
-        } else if (
-          categoryType.value === CategoryTypes.getExpensesType().value
-        ) {
-          setExpendituresCategories([]);
-        }
+        cleanUpCategoriesState(categoryType.value);
       }
     } catch (error) {
       // If creation failed check if the category already exists
@@ -109,67 +110,95 @@ export default function CategoriesSection() {
   /**
    * Handle save click event from the edit category form.
    * @param {Object} values - data from the add new category form
-   * @param {*} categoryType - type of the category (see CategoryTypes module)
    */
-  const handleEditCategorySubmit = async (values, categoryType) => {
-    console.log(values);
+  const handleEditCategorySubmit = async (values) => {
+    try {
+      // Try add new category
+      const result = await _categoryService.updateCategory(values);
+
+      // If new category was created clean up the category list.
+      // This is necessary to get the actual categories from the server.
+      if (result) {
+        cleanUpCategoriesState(values.type);
+      }
+    } catch (error) {
+      // If creation failed check if the category already exists
+      if (error instanceof ConflictError) {
+        // add the category name to existingCategoryNames (to reduce the number of requests to the API)
+        if (values.type === CategoryTypes.getIncomeType().value) {
+          let existing = existingIncomeCategoryNames.slice();
+          existing.push(values.name);
+          setExistingIncomeCategoryNames(existing);
+        } else if (values.type === CategoryTypes.getExpensesType().value) {
+          let existing = existingExpendituresCategoryNames.slice();
+          existing.push(values.name);
+          setExistingExpendituresCategoryNames(existing);
+        }
+      }
+    }
+  };
+
+  /**
+   * Handle delete category click event.
+   * @param {*} event - React event
+   * @param {*} values - selected categories for deletion.
+   */
+  const handleDeleteCategory = async (event, values) => {
+    const result = await Promise.all(
+      values.map(async (category) => {
+        const result = await _categoryService.removeCategory(category.id);
+        return result;
+      })
+    );
+    cleanUpCategoriesState(values.pop().type);
+    setExistingExpendituresCategoryNames([]);
   };
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <Paper>
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-            dolor purus non enim praesent elementum facilisis leo vel. Risus at
-            ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-            rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-            sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-            integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-            eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-            quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-            vivamus at augue. At augue eget arcu dictum varius duis at
-            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
+        <Paper sx={{ padding: 1 }}>
+          <Typography variant="h3">Categories pannel</Typography>
+          <Typography paragraph sx={{ paddingLeft: 4, textAlign: "start" }}>
+            All the necessary tools for working with categories are placed here.
+            In addition, category-specific analytics will appear here.
+          </Typography>
+          <Typography paragraph sx={{ paddingLeft: 4, textAlign: "start" }}>
+            This panel gives you the following options:
+            <br />- add new categories, <br />- rename existing categories,{" "}
+            <br />- delete unnecessary categories.
           </Typography>
         </Paper>
       </Grid>
       <Grid item xs={6}>
-        <Paper>
+        <Paper sx={{ padding: 1 }}>
           <Typography variant="h4">Income categories</Typography>
           <CategoriesTable
             rows={incomeCategories.map((category) => {
-              return { name: category.name, records: 1 };
+              return { category: category, name: category.name, records: 1 };
             })}
             onAddCategorySubmit={(values) =>
               handleAddCategorySubmit(values, CategoryTypes.getIncomeType())
             }
-            onEditCategorySubmit={(values) =>
-              handleEditCategorySubmit(values, CategoryTypes.getIncomeType())
-            }
+            onEditCategorySubmit={handleEditCategorySubmit}
+            onDeleteCategory={handleDeleteCategory}
             existingCategoryNames={existingIncomeCategoryNames}
           />
         </Paper>
       </Grid>
       <Grid item xs={6}>
         <Paper>
-          <Paper>
+          <Paper sx={{ padding: 1 }}>
             <Typography variant="h4">Expenditures categories</Typography>
             <CategoriesTable
               rows={expendituresCategories.map((category) => {
-                return { name: category.name, records: 1 };
+                return { category: category, name: category.name, records: 1 };
               })}
               onAddCategorySubmit={(values) =>
                 handleAddCategorySubmit(values, CategoryTypes.getExpensesType())
               }
-              onEditCategorySubmit={(values) =>
-                handleEditCategorySubmit(
-                  values,
-                  CategoryTypes.getExpensesType()
-                )
-              }
+              onEditCategorySubmit={handleEditCategorySubmit}
+              onDeleteCategory={handleDeleteCategory}
               existingCategoryNames={existingExpendituresCategoryNames}
             />
           </Paper>

@@ -27,7 +27,6 @@ export function AddNewCategoryForm(props) {
     validationSchema: validationSchema,
     onSubmit: (value) => {
       onAddCategorySubmit(value);
-      value.name = "";
     },
     enableReinitialze: true,
   });

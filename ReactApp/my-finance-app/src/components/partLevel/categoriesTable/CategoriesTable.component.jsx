@@ -54,6 +54,7 @@ export function CategoriesTable(props) {
     rows,
     onAddCategorySubmit,
     onEditCategorySubmit,
+    onDeleteCategory,
     existingCategoryNames,
   } = props;
   const [order, setOrder] = useState("asc");
@@ -106,6 +107,26 @@ export function CategoriesTable(props) {
     setPage(0);
   };
 
+  /**
+   * Handle delete categories event
+   * @param {*} event - React event
+   * @param {Array} categories - selected categories for deletion
+   */
+  const handleDeleteCategory = (event, categories) => {
+    // Clean up array of selected items
+    setSelected([]);
+    // Set new page.
+    const newPage =
+      page > 0
+        ? Math.max(
+            0,
+            Math.ceil((rows.length - categories.length) / rowsPerPage) - 1
+          )
+        : 0;
+    setPage(newPage);
+    onDeleteCategory(event, categories);
+  };
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -119,11 +140,12 @@ export function CategoriesTable(props) {
           selected={rows.filter((row) => selected.includes(row.name))}
           onAddCategorySubmit={onAddCategorySubmit}
           onEditCategorySubmit={onEditCategorySubmit}
+          onDeleteCategory={handleDeleteCategory}
           existingCategoryNames={existingCategoryNames}
         />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 600 }}
             aria-labelledby="tableTitle"
             size={"medium"}
           >

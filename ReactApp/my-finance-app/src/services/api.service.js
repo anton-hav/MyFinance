@@ -105,7 +105,14 @@ export default class ApiService {
       headers: requestHeaders,
       body: JSON.stringify(data),
     });
-    return response.json();
+    if (response.status === 400) {
+      throw new BadRequestError();
+    } else if (response.status === 409) {
+      throw new ConflictError();
+    }
+    if (response.status === 200 || response.status === 201) {
+      return response.json();
+    }
   }
 
   async delete(url, id) {

@@ -1,8 +1,7 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 
 // Import third party libraries
-import { DeleteIcon, EditIcon } from "../../../imports/icons.imports";
+import { DeleteIcon } from "../../../imports/icons.imports";
 
 // Import custom part level components
 import { AddNewCategoryForm } from "../addNewCategoryForm/AddNewCategoryForm.component";
@@ -23,6 +22,7 @@ export function CategoriesTableToolbar(props) {
     onAddCategorySubmit,
     existingCategoryNames,
     onEditCategorySubmit,
+    onDeleteCategory,
   } = props;
 
   return (
@@ -50,7 +50,7 @@ export function CategoriesTableToolbar(props) {
             }}
           >
             <EditCategoryForm
-              category={selected[0]}
+              category={selected[0].category}
               existingCategoryNames={existingCategoryNames}
               onEditCategorySubmit={onEditCategorySubmit}
             />
@@ -69,7 +69,14 @@ export function CategoriesTableToolbar(props) {
 
       {selected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton
+            onClick={(event) =>
+              onDeleteCategory(
+                event,
+                selected.map((s) => s.category)
+              )
+            }
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
