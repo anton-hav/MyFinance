@@ -94,7 +94,7 @@ public class CategoryService : ICategoryService
     }
 
     /// <inheritdoc />
-    public async Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId)
+    public async Task<bool> IsUserOwnerForCategoryAsync(Guid id, Guid userId)
     {
         var entity = await _unitOfWork.Categories
             .Get()

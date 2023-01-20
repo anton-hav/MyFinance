@@ -29,7 +29,7 @@ public interface ICategoryService
     /// </summary>
     /// <param name="categoryType">category type as a <see cref="CategoryType" /></param>
     /// <param name="userId">the unique identifier of the creator as a <see cref="Guid" /></param>
-    /// <returns>child categories for the requested category id.</returns>
+    /// <returns>categories that matches search parameters</returns>
     Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(CategoryType categoryType,
         Guid userId);
 
@@ -54,8 +54,8 @@ public interface ICategoryService
     /// </summary>
     /// <param name="id">category unique identifier as a <see cref="Guid" /></param>
     /// <param name="userId">an unique identifier of the current user as a <see cref="Guid"/></param>
-    /// <returns></returns>
-    Task<bool> IsUserOwnerForCategoryByCategoryIdAndUserId(Guid id, Guid userId);
+    /// <returns>A boolean</returns>
+    Task<bool> IsUserOwnerForCategoryAsync(Guid id, Guid userId);
 
     #endregion READ
 

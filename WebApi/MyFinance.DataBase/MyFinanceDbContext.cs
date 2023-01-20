@@ -9,6 +9,7 @@ public class MyFinanceDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Record> Records { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
