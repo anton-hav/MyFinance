@@ -5,7 +5,8 @@
 // IMPORTS ----------------------------------------------------------------
 
 import { CategoriesTable } from "./categoriesTable/CategoriesTable.component";
+import { AddNewRecordForm } from "./addNewRecordForm/AddNewRecordForm.component";
 
 // EXPORTS ----------------------------------------------------------------
 
-export { CategoriesTable };
+export { CategoriesTable, AddNewRecordForm };

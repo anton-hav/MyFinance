@@ -12,7 +12,7 @@ import ConflictError from "../../../types/errors/conflict.error";
 
 const _categoryService = new CategoryService();
 
-export default function CategoriesSection() {
+export function CategoriesSection() {
   const [incomeCategories, setIncomeCategories] = useState([]);
   const [expendituresCategories, setExpendituresCategories] = useState([]);
   const { token } = useToken();
@@ -158,7 +158,7 @@ export default function CategoriesSection() {
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <Paper sx={{ padding: 1 }}>
-          <Typography variant="h3">Categories pannel</Typography>
+          <Typography variant="h1">Categories panel</Typography>
           <Typography paragraph sx={{ paddingLeft: 4, textAlign: "start" }}>
             All the necessary tools for working with categories are placed here.
             In addition, category-specific analytics will appear here.
@@ -172,7 +172,7 @@ export default function CategoriesSection() {
       </Grid>
       <Grid item xs={6}>
         <Paper sx={{ padding: 1 }}>
-          <Typography variant="h4">Income categories</Typography>
+          <Typography variant="h2">Income categories</Typography>
           <CategoriesTable
             rows={incomeCategories.map((category) => {
               return { category: category, name: category.name, records: 1 };
@@ -189,7 +189,7 @@ export default function CategoriesSection() {
       <Grid item xs={6}>
         <Paper>
           <Paper sx={{ padding: 1 }}>
-            <Typography variant="h4">Expenditures categories</Typography>
+            <Typography variant="h2">Expenditures categories</Typography>
             <CategoriesTable
               rows={expendituresCategories.map((category) => {
                 return { category: category, name: category.name, records: 1 };

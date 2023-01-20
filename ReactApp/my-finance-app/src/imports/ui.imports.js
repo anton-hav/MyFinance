@@ -39,6 +39,13 @@ import { TableRow } from "@mui/material";
 import { TableSortLabel } from "@mui/material";
 import { Checkbox } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
+import Masonry from "@mui/lab/Masonry";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+import InputAdornment from "@mui/material/InputAdornment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -76,4 +83,11 @@ export {
   TableSortLabel,
   Checkbox,
   visuallyHidden,
+  Masonry,
+  ThemeProvider,
+  createTheme,
+  InputAdornment,
+  AdapterDayjs,
+  LocalizationProvider,
+  DateTimePicker,
 };

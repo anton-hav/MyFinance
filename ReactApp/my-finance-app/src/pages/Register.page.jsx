@@ -2,7 +2,7 @@ import { useState } from "react";
 // Import third party libraries
 import { useNavigate } from "../imports/navigation.imports";
 // Import custom components
-import { Register as RegisterComponent } from "../components/topLevel/register/Register.component";
+import { Register as RegisterComponent } from "../components/topLevel/index";
 // Import services
 import UserService from "../services/user.service";
 // Import custom types and utils
