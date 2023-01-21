@@ -22,6 +22,7 @@
 .add-record .form .line-wrapper .type-toggler {
     display:flex;
     flex-grow: 0;
+    margin-bottom: 20px;
 }
 
 .add-record .form .line-wrapper .category-selector {

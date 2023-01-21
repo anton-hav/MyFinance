@@ -77,6 +77,9 @@ export function AddNewRecordForm(props) {
       .test("existing", "Category is not exist.", function (value) {
         return categories.find((c) => c.id === value) !== undefined;
       }),
+    comment: yup
+      .string()
+      .max(254, "Comment is too long. It must be less than 255 characters."),
   });
 
   // Initialise form buider with Formik
@@ -84,8 +87,8 @@ export function AddNewRecordForm(props) {
     initialValues: {
       price: "",
       categoryId: "",
-      createdDate: "",
-      //   comment: "",
+      createdDate: ``,
+      comment: "",
     },
     validationSchema: validationSchema,
     onSubmit: (value) => {
@@ -155,6 +158,23 @@ export function AddNewRecordForm(props) {
             />
           </Box>
         </Box>
+
+        <TextField
+          className="text-field"
+          fullWidth
+          id="comment"
+          name="comment"
+          label="Comment"
+          placeholder="Enter your comment here..."
+          type="text"
+          multiline
+          minRows={3}
+          maxRows={5}
+          value={formik.values.comment}
+          onChange={formik.handleChange}
+          error={formik.touched.comment && Boolean(formik.errors.comment)}
+          helperText={formik.touched.comment && formik.errors.comment}
+        />
 
         <Box className="button">
           <Button type="submit">Add</Button>
