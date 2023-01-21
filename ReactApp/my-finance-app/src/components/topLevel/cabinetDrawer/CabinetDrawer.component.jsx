@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, {
 ];
  * @returns CabinetDrawer component.
  */
-export default function CabinetDrawer(props) {
+export function CabinetDrawer(props) {
   const { sections, onItemSelect } = props;
   const [open, setOpen] = useState(false);
 

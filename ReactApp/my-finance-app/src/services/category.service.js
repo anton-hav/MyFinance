@@ -12,14 +12,14 @@ export default class CategoryService {
     this._apiService = new ApiService();
   }
 
-  // READ
+  //#region READ
 
   /**
-   * Get categories by user id and category type from the API.
+   * Get categories by category type from the API.
    * @param {CategoryTypes} categoryType - an unique identifier of the creator.
-   * @returns categories matching the requested user id and category type.
+   * @returns categories matching the requested category type.
    */
-  async getCategoriesByUserIdAndCategoryTypeFromApi(categoryType) {
+  async getCategoriesByCategoryTypeFromApi(categoryType) {
     let categoriesRequestModel = new CategoryRequestModel(categoryType.value);
     let response = await this._apiService.get(
       this._categoriesEndpoint,
@@ -30,33 +30,31 @@ export default class CategoryService {
   }
 
   /**
-   * Get income categories by user id.
-   * @returns income categories for the specified user.
+   * Get income categories.
+   * @returns income categories.
    */
-  async getIncomeCategoriesByUserIdFromApi() {
+  async getIncomeCategoriesFromApi() {
     const categoryType = CategoryTypes.getIncomeType();
-    const result = await this.getCategoriesByUserIdAndCategoryTypeFromApi(
-      categoryType
-    );
+    const result = await this.getCategoriesByCategoryTypeFromApi(categoryType);
     return result;
   }
 
   /**
-   * Get expenses categories by user id.
-   * @returns expenses categories for the specified user.
+   * Get expenses categories.
+   * @returns expenses categories.
    */
-  async getExpensesCategoriesByUserIdFromApi() {
+  async getExpensesCategoriesFromApi() {
     const categoryType = CategoryTypes.getExpensesType();
-    const result = await this.getCategoriesByUserIdAndCategoryTypeFromApi(
-      categoryType
-    );
+    const result = await this.getCategoriesByCategoryTypeFromApi(categoryType);
     return result;
   }
 
-  // CREATE
+  //#endregion READ
+
+  //#region CREATE
 
   /**
-   * Create new category to the database via API.
+   * Create new category in the database via API.
    * @param {string} categoryName - category name
    * @param {number} categoryType - number that represent category type (see CategoryTypes)
    * @return a newly category.
@@ -70,7 +68,9 @@ export default class CategoryService {
     return category;
   }
 
-  // UPDATE
+  //#endregion CREATE
+
+  //#region UPDATE
 
   /**
    * Update the category trough the API
@@ -87,7 +87,9 @@ export default class CategoryService {
     return result instanceof CategoryDto;
   }
 
-  // DELETE
+  //#endregion UPDATE
+
+  //#region DELETE
 
   /**
    * Remove a category from the database via API.
@@ -101,4 +103,6 @@ export default class CategoryService {
     );
     return response;
   }
+
+  //#endregion DELETE
 }

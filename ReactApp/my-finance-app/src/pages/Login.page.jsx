@@ -2,7 +2,7 @@ import { useState } from "react";
 // Import third party libraries
 import { useNavigate } from "../imports/navigation.imports";
 // Import custom components
-import { Login as LoginComponent } from "../components/topLevel/login/Login.component";
+import { Login as LoginComponent } from "../components/topLevel/index";
 // Import services
 import UserService from "../services/user.service";
 
