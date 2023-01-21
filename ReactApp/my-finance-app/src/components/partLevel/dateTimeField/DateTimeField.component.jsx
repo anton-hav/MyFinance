@@ -34,6 +34,7 @@ export function DateTimeField(props) {
             variant="standard"
           />
         )}
+        inputFormat="DD/MM/YYYY HH:mm"
         label={label}
         value={innerValue}
         onChange={(newValue) => handleChange(newValue)}

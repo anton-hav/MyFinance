@@ -41,6 +41,9 @@ export function CategoriesSection() {
     }
   }, [incomeCategories]);
 
+  /**
+   * Effect of changes in expendituresCategories.
+   */
   useEffect(() => {
     /**
      * Get expense categories from the server and set to the state.

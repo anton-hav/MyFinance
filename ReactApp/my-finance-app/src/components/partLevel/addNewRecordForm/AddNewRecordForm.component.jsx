@@ -26,8 +26,11 @@ const _categoryService = new CategoryService();
 
 // Pattern for number field validation
 const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/;
+// Start date for cratedDate field
+const today = new Date();
 
 export function AddNewRecordForm(props) {
+  const { onSubmit } = props;
   const [categoryType, setCategoryType] = useState(expenses.value);
   const [categories, setCategories] = useState([]);
 
@@ -70,7 +73,10 @@ export function AddNewRecordForm(props) {
       .date()
       .typeError("Date of the record must be a valid date.")
       .max(new Date(), "You cannot make future records.")
-      .required("Is required"),
+      .required("Is required")
+      .test("check-date", "Date is checked", function (val) {
+        return val;
+      }),
     categoryId: yup
       .string("Select a category")
       .required("Is required")
@@ -87,12 +93,14 @@ export function AddNewRecordForm(props) {
     initialValues: {
       price: "",
       categoryId: "",
-      createdDate: ``,
+      createdDate: today,
       comment: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (value) => {
-      console.log(value);
+    onSubmit: (value, { resetForm }) => {
+      // Put value to the parent component via the props.onSubmit
+      onSubmit(value);
+      resetForm();
     },
     enableReinitialize: true,
   });
@@ -177,7 +185,7 @@ export function AddNewRecordForm(props) {
         />
 
         <Box className="button">
-          <Button type="submit">Add</Button>
+          <Button type="submit">Create</Button>
         </Box>
       </form>
     </Box>

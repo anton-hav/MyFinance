@@ -12,7 +12,7 @@ export default class CategoryService {
     this._apiService = new ApiService();
   }
 
-  // READ
+  //#region READ
 
   /**
    * Get categories by category type from the API.
@@ -49,10 +49,12 @@ export default class CategoryService {
     return result;
   }
 
-  // CREATE
+  //#endregion READ
+
+  //#region CREATE
 
   /**
-   * Create new category to the database via API.
+   * Create new category in the database via API.
    * @param {string} categoryName - category name
    * @param {number} categoryType - number that represent category type (see CategoryTypes)
    * @return a newly category.
@@ -66,7 +68,9 @@ export default class CategoryService {
     return category;
   }
 
-  // UPDATE
+  //#endregion CREATE
+
+  //#region UPDATE
 
   /**
    * Update the category trough the API
@@ -83,7 +87,9 @@ export default class CategoryService {
     return result instanceof CategoryDto;
   }
 
-  // DELETE
+  //#endregion UPDATE
+
+  //#region DELETE
 
   /**
    * Remove a category from the database via API.
@@ -97,4 +103,6 @@ export default class CategoryService {
     );
     return response;
   }
+
+  //#endregion DELETE
 }

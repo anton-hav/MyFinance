@@ -67,7 +67,7 @@ export function Register(props) {
     <Box className="register">
       <Paper>
         <Box className="paper">
-          <Typography variant="h5">Create account</Typography>
+          <Typography variant="h1">Create account</Typography>
 
           <form onSubmit={formik.handleSubmit}>
             <Box className="form">
