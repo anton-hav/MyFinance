@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // Import third party libraries
 import {
   Box,
@@ -6,18 +6,50 @@ import {
   Button,
   Typography,
   InputAdornment,
-  Divider,
 } from "../../../imports/ui.imports";
 import { useFormik, yup } from "../../../imports/formBuilder.import";
-
 // Import custom part-level components
 import { DateTimeField } from "../dateTimeField/DateTimeField.component";
-
+import { SelectCategory } from "../selectCategory/SelectCategory.component";
+import { RecordTypeButtonToggler } from "../recordTypeButtonToggler/RecordTypeButtonToggler.component";
+// Import services
+import CategoryService from "../../../services/category.service";
+// Import custom types and utils
+import CategoryTypes from "../../../utils/categoryTypes";
+// Import syles
 import "./addNewRecordForm.component.css";
 
+const income = CategoryTypes.getIncomeType();
+const expenses = CategoryTypes.getExpensesType();
+
+const _categoryService = new CategoryService();
+
+// Pattern for number field validation
 const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/;
 
 export function AddNewRecordForm(props) {
+  const [categoryType, setCategoryType] = useState(expenses.value);
+  const [categories, setCategories] = useState([]);
+
+  // If category type in categoryTypes is changed
+  useEffect(() => {
+    const getCategoriesFromApi = async () => {
+      let result;
+      if (categoryType === income.value) {
+        result = await _categoryService.getIncomeCategoriesFromApi();
+      } else if (categoryType === expenses.value) {
+        result = await _categoryService.getExpensesCategoriesFromApi();
+      }
+
+      setCategories(result);
+      formik.setFieldValue("categoryId", "");
+    };
+
+    // Get categories that match the categoryType
+    getCategoriesFromApi();
+  }, [categoryType]);
+
+  // Form validation schema configuration provided by yup.
   const validationSchema = yup.object({
     price: yup
       .number()
@@ -39,12 +71,19 @@ export function AddNewRecordForm(props) {
       .typeError("Date of the record must be a valid date.")
       .max(new Date(), "You cannot make future records.")
       .required("Is required"),
+    categoryId: yup
+      .string("Select a category")
+      .required("Is required")
+      .test("existing", "Category is not exist.", function (value) {
+        return categories.find((c) => c.id === value) !== undefined;
+      }),
   });
 
+  // Initialise form buider with Formik
   const formik = useFormik({
     initialValues: {
       price: "",
-      //   categoryId: "",
+      categoryId: "",
       createdDate: "",
       //   comment: "",
     },
@@ -55,17 +94,14 @@ export function AddNewRecordForm(props) {
     enableReinitialize: true,
   });
 
-  console.log(formik.errors.createdDate);
-
   return (
     <Box className="add-record">
       <Typography paragraph>Create new record here.</Typography>
 
       <form onSubmit={formik.handleSubmit} className="form">
-        <Box className="first-line-wrapper">
+        <Box className="line-wrapper">
           <TextField
             className="text-field"
-            // fullWidth
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">$</InputAdornment>
@@ -95,6 +131,29 @@ export function AddNewRecordForm(props) {
             }
             helperText={formik.touched.createdDate && formik.errors.createdDate}
           />
+        </Box>
+
+        <Box className="line-wrapper">
+          <Box className="type-toggler">
+            <RecordTypeButtonToggler
+              value={categoryType}
+              onChange={setCategoryType}
+            />
+          </Box>
+
+          <Box className="category-selector">
+            <SelectCategory
+              source={categories}
+              id="categoryId"
+              name="categoryId"
+              value={formik.values.categoryId}
+              onChange={formik.setFieldValue}
+              error={
+                formik.touched.categoryId && Boolean(formik.errors.categoryId)
+              }
+              helperText={formik.touched.categoryId && formik.errors.categoryId}
+            />
+          </Box>
         </Box>
 
         <Box className="button">

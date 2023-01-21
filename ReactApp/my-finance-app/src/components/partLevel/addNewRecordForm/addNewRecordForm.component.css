@@ -12,11 +12,24 @@
     align-items: center;
 }
 
-.add-record .form .first-line-wrapper {
+.add-record .form .line-wrapper {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+.add-record .form .line-wrapper .type-toggler {
+    display:flex;
+    flex-grow: 0;
+}
+
+.add-record .form .line-wrapper .category-selector {
+    display: flex;
+    padding-left: 25px;
+    flex-grow: 1;
+    justify-content: center;
+
 }
 
 .add-record .form .text-field {

@@ -46,6 +46,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { InputLabel } from "@mui/material";
+import { FormHelperText } from "@mui/material";
+import { FormControl } from "@mui/material";
+import { Select } from "@mui/material";
+import { ToggleButton } from "@mui/material";
+import { ToggleButtonGroup } from "@mui/material";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -90,4 +96,10 @@ export {
   AdapterDayjs,
   LocalizationProvider,
   DateTimePicker,
+  InputLabel,
+  FormHelperText,
+  FormControl,
+  Select,
+  ToggleButton,
+  ToggleButtonGroup,
 };

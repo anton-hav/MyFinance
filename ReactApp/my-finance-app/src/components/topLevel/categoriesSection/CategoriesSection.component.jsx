@@ -15,7 +15,6 @@ const _categoryService = new CategoryService();
 export function CategoriesSection() {
   const [incomeCategories, setIncomeCategories] = useState([]);
   const [expendituresCategories, setExpendituresCategories] = useState([]);
-  const { token } = useToken();
   const [existingIncomeCategoryNames, setExistingIncomeCategoryNames] =
     useState([]);
   const [
@@ -31,8 +30,7 @@ export function CategoriesSection() {
      * Get income categories from the server and set to the state.
      */
     const setIncomeCategoriesFromServer = async () => {
-      const categories =
-        await _categoryService.getIncomeCategoriesByUserIdFromApi(token.userId);
+      const categories = await _categoryService.getIncomeCategoriesFromApi();
       if (categories !== undefined) {
         setIncomeCategories(categories);
       }
@@ -48,10 +46,7 @@ export function CategoriesSection() {
      * Get expense categories from the server and set to the state.
      */
     const setExpendituresCategoriesFromServer = async () => {
-      const categories =
-        await _categoryService.getExpensesCategoriesByUserIdFromApi(
-          token.userId
-        );
+      const categories = await _categoryService.getExpensesCategoriesFromApi();
       if (categories !== undefined) {
         setExpendituresCategories(categories);
       }
@@ -144,7 +139,7 @@ export function CategoriesSection() {
    * @param {*} values - selected categories for deletion.
    */
   const handleDeleteCategory = async (event, values) => {
-    const result = await Promise.all(
+    await Promise.all(
       values.map(async (category) => {
         const result = await _categoryService.removeCategory(category.id);
         return result;

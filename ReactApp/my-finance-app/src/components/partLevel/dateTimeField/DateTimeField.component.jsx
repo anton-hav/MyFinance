@@ -23,8 +23,6 @@ export function DateTimeField(props) {
     onChange(name, newValue);
   };
 
-  console.log("error on the date picker: ", error);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateTimePicker
@@ -33,6 +31,7 @@ export function DateTimeField(props) {
             {...props}
             error={error ? true : false}
             helperText={helperText ? helperText : null}
+            variant="standard"
           />
         )}
         label={label}
