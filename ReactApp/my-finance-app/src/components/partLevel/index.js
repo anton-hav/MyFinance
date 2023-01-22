@@ -7,7 +7,8 @@
 import { CategoriesTable } from "./categoriesTable/CategoriesTable.component";
 import { AddNewRecordForm } from "./addNewRecordForm/AddNewRecordForm.component";
 import { SmartSnackBar } from "./smartSnackBar/SmartSnackBar.component";
+import { RecordsListView } from "./recordsListView/RecordsListView.component";
 
 // EXPORTS ----------------------------------------------------------------
 
-export { CategoriesTable, AddNewRecordForm, SmartSnackBar };
+export { CategoriesTable, AddNewRecordForm, SmartSnackBar, RecordsListView };
