@@ -84,7 +84,7 @@ public class RecordsController : ControllerBase
         searchParams.User = new UserSearchParameters { UserId = userId };
         var categories =
             await _recordService.GetRecordsBySearchParametersAsync(searchParams);
-        var response = _mapper.Map<IEnumerable<CategoryResponseModel>>(categories);
+        var response = _mapper.Map<IEnumerable<RecordResponseModel>>(categories);
 
         return Ok(response);
     }
