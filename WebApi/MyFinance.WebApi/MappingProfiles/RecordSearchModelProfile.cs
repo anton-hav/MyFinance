@@ -7,7 +7,7 @@ using MyFinance.WebApi.Models.Records.Requests;
 namespace MyFinance.WebApi.MappingProfiles;
 
 /// <summary>
-///     Mapper profile for RecordSearchModelProfile
+///     Mapper profile for RecordSearchModel
 /// </summary>
 public class RecordSearchModelProfile : Profile
 {
