@@ -11,14 +11,27 @@ export default module = {
     { periodName: "All", value: 5 },
   ],
 
+  /**
+   * Get period name of the period by default.
+   * @returns
+   */
   getPeriodNameByDefault() {
     return this._periods[0].periodName;
   },
 
+  /**
+   * Get array of period names
+   * @returns period names
+   */
   getPeriodsAsArrayOfString() {
     return this._periods.map((period) => period.periodName);
   },
 
+  /**
+   * Convert period names to array of search parameters.
+   * @param {*} periodName - period name
+   * @returns array of search parameters that contains two entity such date from and date to.
+   */
   convertPeriodNameToSearchParameters(periodName) {
     let dateFrom;
     let dateTo = dayjs(new Date());
