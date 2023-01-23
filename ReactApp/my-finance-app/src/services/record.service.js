@@ -59,5 +59,15 @@ export default class RecordService {
 
   //#region DELETE
 
+  /**
+   * Remove a transaction record from the database via API.
+   * @param {string} categoryId - an unique identifier of the record.
+   * @returns a boolean(true if record successfully removed)
+   */
+  async deleteRecord(id) {
+    let response = await this._apiService.delete(this._recordsEndpoint, id);
+    return response;
+  }
+
   //#endregion DELETE
 }

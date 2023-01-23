@@ -7,20 +7,45 @@ import {
   SmartSnackBar,
   RecordsListView,
 } from "../../partLevel/index";
+import { dayjs } from "../../../imports/utils.import";
 // Import services
 import RecordService from "../../../services/record.service";
 import CategoryService from "../../../services/category.service";
 // Import custom types and utils
 import RecordInRecordsListViewModel from "../../../types/model/view/recordInRecordsListView.model";
+import Periods from "../../../utils/periods.utils";
 
 const _recordService = new RecordService();
 const _categoryService = new CategoryService();
 
+/**
+ * Compares records by date in descending order
+ * @param {RecordDto} prev - first record to compare
+ * @param {RecordDto} next - second record to compare
+ * @returns difference between the two records as a number
+ */
+function recordCompareByDateDescending(prev, next) {
+  return dayjs(next.createdDate).valueOf() - dayjs(prev.createdDate).valueOf();
+}
+
 export function RecordsSection() {
   const [snackBars, setSnackBars] = useState([]);
+  // list of records view
   const [records, setRecords] = useState([]);
+  const [period, setPeriod] = useState(Periods.getPeriodNameByDefault());
 
   //#region RECORDS LIST VIEW LOGIC
+  //------------------Filters----------------------------------------------
+
+  /**
+   * Handle the change of the period of display records in the list of the records view
+   * @param {string} value - new period value
+   */
+  const handlePeriodChange = (value) => {
+    setPeriod(value);
+  };
+
+  //------------------Body------------------------------------------------
 
   useEffect(() => {
     /**
@@ -40,7 +65,13 @@ export function RecordsSection() {
      * @returns records as an array of the RecordDto instance
      */
     const getRecordsFromServer = async () => {
-      const data = await _recordService.getRecordsBySearchParametersFromApi();
+      const [dateFrom, dateTo] =
+        Periods.convertPeriodNameToSearchParameters(period);
+      const data = await _recordService.getRecordsBySearchParametersFromApi({
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+      });
+      data.sort(recordCompareByDateDescending);
       return data;
     };
 
@@ -62,7 +93,27 @@ export function RecordsSection() {
     };
 
     getRecordViewModels();
-  }, []);
+  }, [period]);
+
+  /**
+   * Handle delete record click event.
+   * @param {RecordInRecordsListViewModel} record - record to delete
+   */
+  const handleDeleteRecordClick = async (record) => {
+    /**
+     * Remove the record from the records state.
+     * @param {RecordInRecordsListViewModel} item - record to delete
+     */
+    const removeRecordFromRecordsState = (item) => {
+      let index = records.findIndex((i) => i.id === item.id);
+      const newRecords = records.slice();
+      newRecords.splice(index, 1);
+      setRecords(newRecords);
+    };
+
+    const result = await _recordService.deleteRecord(record.id);
+    removeRecordFromRecordsState(record);
+  };
 
   //#endregion RECORDS LIST VIEW LOGIC
 
@@ -147,7 +198,13 @@ export function RecordsSection() {
               varius duis at consectetur lorem. Velit sed ullamcorper morbi
               tincidunt. Lorem donec massa sapien faucibus et molestie ac.
             </Typography>
-            <RecordsListView records={records} />
+            <RecordsListView
+              records={records}
+              onDeleteClick={handleDeleteRecordClick}
+              periods={Periods.getPeriodsAsArrayOfString()}
+              period={period}
+              onPeriodChange={handlePeriodChange}
+            />
           </Paper>
         </Grid>
       </Grid>

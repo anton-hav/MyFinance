@@ -56,6 +56,7 @@ import MuiAlert from "@mui/material/Alert";
 import { Popover } from "@mui/material";
 import { Slide } from "@mui/material";
 import { Grow } from "@mui/material";
+import { Collapse } from "@mui/material";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -112,4 +113,5 @@ export {
   Popover,
   Slide,
   Grow,
+  Collapse,
 };

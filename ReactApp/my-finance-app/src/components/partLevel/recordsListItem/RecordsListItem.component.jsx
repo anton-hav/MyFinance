@@ -9,7 +9,11 @@ import {
   IconButton,
   Slide,
 } from "../../../imports/ui.imports";
-import { ExpandMoreIcon, ExpandLessIcon } from "../../../imports/icons.imports";
+import {
+  ExpandMoreIcon,
+  ExpandLessIcon,
+  DeleteIcon,
+} from "../../../imports/icons.imports";
 import { dayjs } from "../../../imports/utils.import";
 // Import custom types and utils
 import { formatter } from "../../../utils/formatter";
@@ -20,10 +24,20 @@ import "./recordsListItem.component.css";
 const income = CategoryTypes.getIncomeType();
 const expense = CategoryTypes.getExpensesType();
 
+/**
+ * Formats the date.
+ * @param {string} date - date of the record creation
+ * @returns string
+ */
 function dateFormatter(date) {
   return dayjs(date).format("dddd, YYYY MMMM DD HH:mm:ss").toString();
 }
 
+/**
+ * Formats the record amount depending on the category type
+ * @param {RecordInRecordsListViewModel} record - record to display
+ * @returns string
+ */
 function priceFormatter(record) {
   return record.category.type === 0
     ? `+ ${formatter.format(record.price)}`
@@ -31,7 +45,7 @@ function priceFormatter(record) {
 }
 
 export function RecordsListItem(props) {
-  const { record } = props;
+  const { record, onDeleteClick } = props;
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
   const containerRef = useRef(null);
 
@@ -46,7 +60,7 @@ export function RecordsListItem(props) {
     <>
       <Paper className="records-list-item">
         <Grid container spacing={1} ref={containerRef}>
-          <Grid item lg={3} md={5}>
+          <Grid item lg={3} md={5} className="date">
             <Typography>{dateFormatter(record.createdDate)}</Typography>
           </Grid>
           <Grid item lg={2} md={2} className="price">
@@ -61,29 +75,35 @@ export function RecordsListItem(props) {
           </Grid>
           <Grid item lg={7} md={5} className="category">
             <Typography>{record.category.name}</Typography>
-            {record.comment !== "" ? (
-              <IconButton
-                size="small"
-                aria-label="expand"
-                onClick={handleShowComment}
-              >
-                {isCommentExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            <Box>
+              {record.comment !== "" ? (
+                <IconButton
+                  size="small"
+                  aria-label="expand"
+                  onClick={handleShowComment}
+                >
+                  {isCommentExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </IconButton>
+              ) : null}
+              <IconButton onClick={() => onDeleteClick(record)}>
+                <DeleteIcon />
               </IconButton>
-            ) : null}
+            </Box>
           </Grid>
+
           {isCommentExpanded ? (
-            <Slide
-              direction="left"
-              in={isCommentExpanded}
-              container={containerRef.current}
-            >
-              <Grid item xs={12}>
-                <Divider />
-                <Typography className="comment" variand="body2">
+            <Grid item xs={12}>
+              <Divider />
+              <Slide
+                direction="left"
+                in={isCommentExpanded}
+                container={containerRef.current}
+              >
+                <Typography className="comment" variant="body2">
                   {record.comment}
                 </Typography>
-              </Grid>
-            </Slide>
+              </Slide>
+            </Grid>
           ) : null}
         </Grid>
       </Paper>

@@ -13,14 +13,28 @@ export default class RecordsRequestModel extends UrlSearchParameters {
    * @property {string} categoryId - an unique identifier of the category.
    */
   categoryId = null;
+  /**
+   * @property {string} dateFrom -
+   */
+  dateFrom = null;
+  /**
+   * @property {string} dateTo -
+   */
+  dateTo = null;
 
-  constructor(createdDate, categoryId) {
+  constructor(createdDate, categoryId, dateFrom, dateTo) {
     super();
     if (createdDate !== undefined) {
       this.createdDate = createdDate;
     }
     if (categoryId !== undefined) {
       this.categoryId = categoryId;
+    }
+    if (dateFrom !== undefined) {
+      this.dateFrom = dateFrom;
+    }
+    if (dateTo !== undefined) {
+      this.dateTo = dateTo;
     }
   }
 
@@ -36,7 +50,12 @@ export default class RecordsRequestModel extends UrlSearchParameters {
    */
   static fromObject(object) {
     if (object !== undefined) {
-      return new RecordsRequestModel(object.createdDate, object.categoryId);
+      return new RecordsRequestModel(
+        object.createdDate,
+        object.categoryId,
+        object.dateFrom,
+        object.dateTo
+      );
     }
     return new RecordsRequestModel();
   }
