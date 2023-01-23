@@ -14,7 +14,9 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import EditIcon from "@mui/icons-material/Edit";
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -30,4 +32,6 @@ export {
   FilterListIcon,
   EditIcon,
   PointOfSaleIcon,
+  ExpandLessIcon,
+  ExpandMoreIcon,
 };

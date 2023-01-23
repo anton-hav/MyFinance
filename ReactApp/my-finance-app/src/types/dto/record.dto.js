@@ -9,8 +9,8 @@ export default class RecordDto {
     if (id !== undefined) this.id = id;
     if (price !== undefined) this.price = price;
     if (comment !== undefined) this.comment = comment;
-    if (createdDate !== undefined) this.type = createdDate;
-    if (categoryId !== undefined) this.type = categoryId;
+    if (createdDate !== undefined) this.createdDate = createdDate;
+    if (categoryId !== undefined) this.categoryId = categoryId;
   }
 
   /**
@@ -22,14 +22,9 @@ export default class RecordDto {
     return new RecordDto(
       response.id,
       response.price,
+      response.comment,
       response.createdDate,
       response.categoryId
     );
   }
 }
-
-//   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//   "price": 0,
-//   "comment": "string",
-//   "createdDate": "2023-01-21T14:15:00.557Z",
-//   "categoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"

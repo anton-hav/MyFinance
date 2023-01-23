@@ -53,6 +53,10 @@ import { ToggleButtonGroup } from "@mui/material";
 import { Stack } from "@mui/material";
 import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { Popover } from "@mui/material";
+import { Slide } from "@mui/material";
+import { Grow } from "@mui/material";
+import { Collapse } from "@mui/material";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -106,4 +110,8 @@ export {
   Stack,
   Snackbar,
   MuiAlert,
+  Popover,
+  Slide,
+  Grow,
+  Collapse,
 };

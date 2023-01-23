@@ -5,6 +5,7 @@ export default module.exporty = {
   _categoryTypes: [
     { typeName: "Income", value: 0 },
     { typeName: "Expenses", value: 1 },
+    { typeName: "All", value: 2 },
   ],
 
   getIncomeType() {
@@ -15,10 +16,18 @@ export default module.exporty = {
     return this._categoryTypes.find((categoryType) => categoryType.value === 1);
   },
 
+  getTypeForAll() {
+    return this._categoryTypes.find((categoryType) => categoryType.value === 2);
+  },
+
   getTypeByValue(value) {
     return this._categoryTypes.find(
       (categoryType) => categoryType.value === value
     );
+  },
+
+  isTypeForAll(type) {
+    return type.value === this.getTypeForAll().value;
   },
 
   /**

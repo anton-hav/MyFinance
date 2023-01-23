@@ -603,9 +603,24 @@
                 Date of creation
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.DateFrom">
+            <summary>
+                Start of the interval of the record creation period
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.DateTo">
+            <summary>
+                End of the interval of the record creation period
+            </summary>
+        </member>
         <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.CategoryId">
             <summary>
                 A category unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel">

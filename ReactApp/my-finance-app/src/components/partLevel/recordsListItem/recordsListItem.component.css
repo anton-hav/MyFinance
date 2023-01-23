@@ -1,0 +1,33 @@
+.records-list-item {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+    
+}
+
+.records-list-item .date {
+    display: flex;    
+    align-items: center;
+}
+
+.records-list-item .category {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content:space-between;
+    border-left: 1px solid #ccc;
+}
+
+.records-list-item .price {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    border-left: 1px solid #ccc;
+    padding-right: 5px;
+}
+
+.records-list-item .comment {
+    margin: 10px;
+}

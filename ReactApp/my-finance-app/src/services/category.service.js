@@ -15,6 +15,19 @@ export default class CategoryService {
   //#region READ
 
   /**
+   * Get category by id from the storage through the API
+   * @param {string} categoryId - a category unique identifier
+   */
+  async getCategoryByIdFromApi(categoryId) {
+    let response = await this._apiService.getById(
+      this._categoriesEndpoint,
+      categoryId
+    );
+    let category = CategoryDto.fromResponse(response);
+    return category;
+  }
+
+  /**
    * Get categories by category type from the API.
    * @param {CategoryTypes} categoryType - an unique identifier of the creator.
    * @returns categories matching the requested category type.

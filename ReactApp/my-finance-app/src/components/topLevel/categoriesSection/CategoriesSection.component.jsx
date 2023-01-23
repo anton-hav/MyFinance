@@ -6,7 +6,6 @@ import { CategoriesTable } from "../../partLevel/index";
 // Import services
 import CategoryService from "../../../services/category.service";
 // Import types and utils
-import useToken from "../../../utils/hooks/useToken.hook";
 import CategoryTypes from "../../../utils/categoryTypes";
 import ConflictError from "../../../types/errors/conflict.error";
 
@@ -60,6 +59,10 @@ export function CategoriesSection() {
     }
   }, [expendituresCategories]);
 
+  /**
+   * Clean up categories specified the category type from the state.
+   * @param {CategoryType} categoryType - category type
+   */
   const cleanUpCategoriesState = (categoryType) => {
     if (categoryType === CategoryTypes.getIncomeType().value) {
       setIncomeCategories([]);

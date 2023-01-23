@@ -1,4 +1,6 @@
-﻿namespace MyFinance.WebApi.Models.Records.Requests;
+﻿using MyFinance.Core;
+
+namespace MyFinance.WebApi.Models.Records.Requests;
 
 /// <summary>
 ///     Request model to get records.
@@ -11,7 +13,22 @@ public class GetRecordsRequestModel
     public DateTime? CreatedDate { get; set; }
 
     /// <summary>
+    ///     Start of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateFrom { get; set; }
+
+    /// <summary>
+    ///     End of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateTo { get; set; }
+
+    /// <summary>
     ///     A category unique identifier
     /// </summary>
     public Guid? CategoryId { get; set; }
+
+    /// <summary>
+    ///     Category type of the record category.
+    /// </summary>
+    public CategoryType? CategoryType { get; set; }
 }
