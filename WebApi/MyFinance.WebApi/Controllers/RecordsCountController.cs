@@ -51,7 +51,7 @@ namespace MyFinance.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetGoodsCount([FromQuery] GetRecordsCountRequestModel model)
+        public async Task<IActionResult> GetRecordsCount([FromQuery] GetRecordsCountRequestModel model)
         {
             try
             {
