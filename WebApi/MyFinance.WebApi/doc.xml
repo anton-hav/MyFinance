@@ -255,7 +255,7 @@
             <param name="userManager">user manager from IOC</param>
             <param name="mapper">mapper from IOC</param>
         </member>
-        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.GetGoodsCount(MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel)">
+        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.GetRecordsCount(MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel)">
             <summary>
                 Get records count specified search model from the storage.
             </summary>

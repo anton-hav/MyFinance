@@ -8,7 +8,14 @@ import { CategoriesTable } from "./categoriesTable/CategoriesTable.component";
 import { AddNewRecordForm } from "./addNewRecordForm/AddNewRecordForm.component";
 import { SmartSnackBar } from "./smartSnackBar/SmartSnackBar.component";
 import { RecordsListView } from "./recordsListView/RecordsListView.component";
+import { ConfirmDeleteCategoryDialog } from "./confirmDeleteCategoryDialog/ConfirmDeleteCategoryDialog.component";
 
 // EXPORTS ----------------------------------------------------------------
 
-export { CategoriesTable, AddNewRecordForm, SmartSnackBar, RecordsListView };
+export {
+  CategoriesTable,
+  AddNewRecordForm,
+  SmartSnackBar,
+  RecordsListView,
+  ConfirmDeleteCategoryDialog,
+};

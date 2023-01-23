@@ -26,7 +26,7 @@ export function CategoriesSection() {
     existingExpendituresCategoryNames,
     setExistingExpendituresCategoryNames,
   ] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [categoriesToConfirm, setCategoriesToConfirm] = useState([]);
 
   /**
    * Get the records count specified by category id from the storage via API
@@ -180,19 +180,44 @@ export function CategoriesSection() {
   };
 
   /**
+   * Delete categories
+   * @param {array} categories - array of categories to delete as an array of CategoryInCategorySectionViewModel
+   */
+  const deleteCategories = async (categories) => {
+    await Promise.all(
+      categories.map(async (category) => {
+        const result = await _categoryService.removeCategory(category.id);
+        return result;
+      })
+    );
+    cleanUpCategoriesState(categories.pop().type);
+    setExistingExpendituresCategoryNames([]);
+  };
+
+  /**
    * Handle delete category click event.
    * @param {*} event - React event
    * @param {*} values - selected categories for deletion.
    */
   const handleDeleteCategory = async (event, values) => {
-    await Promise.all(
-      values.map(async (category) => {
-        const result = await _categoryService.removeCategory(category.id);
-        return result;
-      })
-    );
-    cleanUpCategoriesState(values.pop().type);
-    setExistingExpendituresCategoryNames([]);
+    const hasRecords = values.find((value) => value.count > 0) ? true : false;
+    if (hasRecords) {
+      setCategoriesToConfirm(values);
+    } else {
+      await deleteCategories(values);
+    }
+  };
+
+  /**
+   * Handle close confirm category deletion dialog event.
+   * @param {boolean} answer - user's answer
+   * @param {array} values - array of categories to delete as an array of CategoryInCategorySectionViewModel
+   */
+  const handleConfirmDeletionDialogClose = async (answer, values) => {
+    if (answer) {
+      await deleteCategories(values);
+    }
+    setCategoriesToConfirm([]);
   };
 
   return (
@@ -258,7 +283,10 @@ export function CategoriesSection() {
           </Paper>
         </Grid>
       </Grid>
-      {openDialog ? <ConfirmDeleteCategoryDialog /> : null}
+      <ConfirmDeleteCategoryDialog
+        values={categoriesToConfirm}
+        onClose={handleConfirmDeletionDialogClose}
+      />
     </>
   );
 }
