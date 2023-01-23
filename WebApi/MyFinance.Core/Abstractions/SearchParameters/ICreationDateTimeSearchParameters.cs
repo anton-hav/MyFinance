@@ -9,4 +9,14 @@ public interface ICreationDateTimeSearchParameters
     /// Filter parameters that represents the datetime of the creation.
     /// </summary>
     DateTime? Created { get; set; }
+
+    /// <summary>
+    ///     Start of the interval of the record creation period
+    /// </summary>
+    DateTime? DateFrom { get; set; }
+
+    /// <summary>
+    ///     End of the interval of the record creation period
+    /// </summary>
+    DateTime? DateTo { get; set; }
 }

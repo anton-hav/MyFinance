@@ -14,4 +14,14 @@ public class GetRecordsRequestModel
     ///     A category unique identifier
     /// </summary>
     public Guid? CategoryId { get; set; }
+
+    /// <summary>
+    ///     Start of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateFrom { get; set; }
+
+    /// <summary>
+    ///     End of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateTo { get; set; }
 }

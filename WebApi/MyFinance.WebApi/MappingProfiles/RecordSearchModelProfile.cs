@@ -26,7 +26,9 @@ public class RecordSearchModelProfile : Profile
                 opt
                     => opt.MapFrom(request => new CreationDateTimeSearchParameters()
                     {
-                        Created = request.CreatedDate
+                        Created = request.CreatedDate,
+                        DateFrom = request.DateFrom,
+                        DateTo = request.DateTo,
                     }));
     }
 }

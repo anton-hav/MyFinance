@@ -9,4 +9,10 @@ public class CreationDateTimeSearchParameters : ICreationDateTimeSearchParameter
 {
     /// <inheritdoc />
     public DateTime? Created { get; set; }
+
+    /// <inheritdoc />
+    public DateTime? DateFrom { get; set; }
+
+    /// <inheritdoc />
+    public DateTime? DateTo { get; set; }
 }

@@ -90,7 +90,6 @@ public class RecordService : IRecordService
         // In this case, all generic repository methods and additional entity-specific methods are available.
         var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);
         return result;
-        
     }
 
     /// <inheritdoc />
@@ -178,7 +177,7 @@ public class RecordService : IRecordService
         var entity = await _unitOfWork.Records.GetByIdAsync(id);
 
         if (entity == null) throw new ArgumentException("The records for removing doesn't exist", nameof(id));
-        
+
         _unitOfWork.Records.Remove(entity);
         return await _unitOfWork.Commit();
     }
@@ -225,7 +224,17 @@ public class RecordService : IRecordService
         ICreationDateTimeSearchParameters creation)
     {
         if (creation.Created != null && !creation.Created.Equals(default))
+        {
             query = query.Where(entity => entity.CreatedDate.Equals(creation.Created));
+        }
+        else
+        {
+            if (creation.DateFrom != null && !creation.DateFrom.Equals(default))
+                query = query.Where(entity => entity.CreatedDate > creation.DateFrom);
+
+            if (creation.DateTo != null && !creation.DateTo.Equals(default))
+                query = query.Where(entity => entity.CreatedDate <= creation.DateTo);
+        }
 
         return query;
     }
