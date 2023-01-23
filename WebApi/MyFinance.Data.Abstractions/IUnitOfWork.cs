@@ -9,5 +9,7 @@ public interface IUnitOfWork
     IRepository<Role> Roles { get; }
     IRepository<RefreshToken> RefreshToken { get; }
     IRepository<Category> Categories { get; }
+    IRepository<Record> Records { get; }
+    IRecordRepository AdditionRecords { get; }
     Task<int> Commit();
 }

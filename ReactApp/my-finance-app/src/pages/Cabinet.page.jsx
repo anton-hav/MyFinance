@@ -1,12 +1,19 @@
 import { useState } from "react";
 // Import third party libraries
-import { CategoryIcon, SummarizeIcon } from "../imports/icons.imports";
+import {
+  CategoryIcon,
+  SummarizeIcon,
+  PointOfSaleIcon,
+} from "../imports/icons.imports";
 import { Box } from "../imports/ui.imports";
 
 // Import custom components
-import CabinetDrawer from "../components/topLevel/cabinetDrawer/CabinetDrawer.component";
-import SummarySection from "../components/topLevel/summarySection/SummarySection.component";
-import CategoriesSection from "../components/topLevel/categoriesSection/CategoriesSection.component";
+import {
+  CabinetDrawer,
+  CategoriesSection,
+  SummarySection,
+  RecordsSection,
+} from "../components/topLevel/index";
 
 import "./cabinet.page.css";
 
@@ -16,6 +23,11 @@ const sections = [
       title: "Summary",
       icon: <SummarizeIcon />,
       component: <SummarySection />,
+    },
+    {
+      title: "Records",
+      icon: <PointOfSaleIcon />,
+      component: <RecordsSection />,
     },
   ],
   [
@@ -28,7 +40,7 @@ const sections = [
 ];
 
 export default function CabinetPage() {
-  const [selectedSection, setSelectedSection] = useState();
+  const [selectedSection, setSelectedSection] = useState("Summary");
 
   const handleDrawerItemSelect = (itemTitle) => {
     setSelectedSection(itemTitle);

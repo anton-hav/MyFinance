@@ -1,0 +1,40 @@
+.add-record {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.add-record .form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: center;
+}
+
+.add-record .form .line-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.add-record .form .line-wrapper .type-toggler {
+    display:flex;
+    flex-grow: 0;
+    margin-bottom: 20px;
+}
+
+.add-record .form .line-wrapper .category-selector {
+    display: flex;
+    padding-left: 25px;
+    flex-grow: 1;
+    justify-content: center;
+
+}
+
+.add-record .form .text-field {
+    margin-bottom: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+}

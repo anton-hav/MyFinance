@@ -16,7 +16,7 @@ export function Login(props) {
     <Box className="login">
       <Paper>
         <Box className="paper">
-          <Typography variant="h5">Hello</Typography>
+          <Typography variant="h1">Hello</Typography>
           <Typography variant="body2">
             Sign in or{" "}
             <Link

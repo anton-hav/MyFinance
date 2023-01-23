@@ -63,10 +63,10 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    ///     Get categories from storage.
+    ///     Get categories from the storage.
     /// </summary>
     /// <param name="model">category request model</param>
-    /// <returns>child categories for the requested category id</returns>
+    /// <returns>categories that match the specified model parameters.</returns>
     /// <response code="200">Returns all categories that match the specified parameters.</response>
     /// <response code="500">Unexpected error on the server side.</response>
     [HttpGet]
@@ -84,7 +84,7 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    ///     Add a new category to storage.
+    ///     Add a new category to the storage.
     /// </summary>
     /// <param name="model">a category</param>
     /// <returns>A newly created category</returns>
@@ -120,7 +120,7 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    ///     Patch a category with specified Id in storage.
+    ///     Patch a category with specified Id in the storage.
     /// </summary>
     /// <param name="id">a category unique identifier as a <see cref="Guid" /></param>
     /// <param name="model">a category used for patching</param>
@@ -185,7 +185,7 @@ public class CategoriesController : ControllerBase
 
         var userId = _userManager.GetUserId();
 
-        var isExistById = await _categoryService.IsUserOwnerForCategoryByCategoryIdAndUserId(id, userId);
+        var isExistById = await _categoryService.IsUserOwnerForCategoryAsync(id, userId);
 
         if (!isExistById)
             throw new ArgumentException("Fail to find a record with the specified Id in the storage",

@@ -11,7 +11,7 @@ namespace MyFinance.WebApi.Filters.ExceptionFilters;
 /// </summary>
 /// <remarks>
 ///     Use it as an action attribute. It should be set after <see cref="BadRequestExceptionFilter" />
-///     and closer to the action if it is used in conjunction with <see cref="BadRequestExceptionFilter" />.
+///     and closer to the action if it is used together with <see cref="BadRequestExceptionFilter" />.
 /// </remarks>
 public class NotFoundExceptionFilter : Attribute, IExceptionFilter
 {

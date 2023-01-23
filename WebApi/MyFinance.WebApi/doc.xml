@@ -109,16 +109,16 @@
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.GetCategories(MyFinance.WebApi.Models.Categories.Requests.GetCategoriesRequestModel)">
             <summary>
-                Get categories from storage.
+                Get categories from the storage.
             </summary>
             <param name="model">category request model</param>
-            <returns>child categories for the requested category id</returns>
+            <returns>categories that match the specified model parameters.</returns>
             <response code="200">Returns all categories that match the specified parameters.</response>
             <response code="500">Unexpected error on the server side.</response>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.AddCategory(MyFinance.WebApi.Models.Categories.Requests.AddCategoryRequestModel)">
             <summary>
-                Add a new category to storage.
+                Add a new category to the storage.
             </summary>
             <param name="model">a category</param>
             <returns>A newly created category</returns>
@@ -129,7 +129,7 @@
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.PatchCategory(System.Guid,MyFinance.WebApi.Models.Categories.Requests.UpdateCategoryRequestModel)">
             <summary>
-                Patch a category with specified Id in storage.
+                Patch a category with specified Id in the storage.
             </summary>
             <param name="id">a category unique identifier as a <see cref="T:System.Guid" /></param>
             <param name="model">a category used for patching</param>
@@ -175,6 +175,94 @@
             <param name="userId">the unique identifier of the creator</param>
             <param name="categoryType">category type as a <see cref="T:MyFinance.Core.CategoryType" /></param>
             <returns>A boolean</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Controllers.RecordsController">
+            <summary>
+                Controller that provides API endpoints for the Records resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.IRecordService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager,MyFinance.Core.Abstractions.Services.ICategoryService)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="mapper">mapper from IOC</param>
+            <param name="recordService">record service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+            <param name="categoryService">category service from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.GetRecordById(System.Guid)">
+            <summary>
+                Get a record from the storage with specified id.
+            </summary>
+            <param name="id">a record unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>A record with specified Id</returns>
+            <response code="200">Returns a record corresponding to the specified identifier.</response>
+            <response code="404">Failed to find record in the database that match the specified id.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.GetRecords(MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel)">
+            <summary>
+                Get records from the storage.
+            </summary>
+            <param name="model">records request model</param>
+            <returns>records that match the specified model parameters.</returns>
+            <response code="200">Returns all records that match the specified parameters.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.AddRecord(MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel)">
+            <summary>
+                Add a new record to the storage.
+            </summary>
+            <param name="model">a record</param>
+            <returns>A newly created record</returns>
+            <response code="201">Returns the newly created record</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.PatchRecord(System.Guid,MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel)">
+            <summary>
+                Patch a cash flow record with specified Id in the storage.
+            </summary>
+            <param name="id">a record unique identifier as a <see cref="T:System.Guid" /></param>
+            <param name="model">a record used for patching</param>
+            <returns>A record with specified Id.</returns>
+            <response code="200">Returns the updated record</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsController.DeleteCategory(System.Guid)">
+            <summary>
+                Delete a record with specified Id from the storage.
+            </summary>
+            <param name="id">a record unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>no content response</returns>
+            <response code="204">Successful deletion</response>
+            <response code="400">Request contains null object or invalid object type.</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="T:MyFinance.WebApi.Controllers.RecordsCountController">
+            <summary>
+            Controller that provides API endpoints for the RecordsCount resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.#ctor(MyFinance.Core.Abstractions.Services.IRecordService,AutoMapper.IMapper,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="recordService">record service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+            <param name="mapper">mapper from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.GetRecordsCount(MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel)">
+            <summary>
+                Get records count specified search model from the storage.
+            </summary>
+            <param name="model"></param>
+            <returns>number of records matching search model.</returns>
+            <response code="200">Returns a number of records matching search model.</response>
+            <response code="500">Unexpected error on the server side.</response>
         </member>
         <member name="T:MyFinance.WebApi.Controllers.TokenController">
             <summary>
@@ -306,7 +394,7 @@
             </summary>
             <remarks>
                 Use it as an action attribute. It should be set after <see cref="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter" />
-                and closer to the action if it is used in conjunction with <see cref="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter" />.
+                and closer to the action if it is used together with <see cref="T:MyFinance.WebApi.Filters.ExceptionFilters.BadRequestExceptionFilter" />.
             </remarks>
         </member>
         <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.NotFoundExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
@@ -330,12 +418,42 @@
         </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.CategoryProfile">
             <summary>
-            Mapper profile for Category
+            Mapper profile for the Category
             </summary>
         </member>
         <member name="M:MyFinance.WebApi.MappingProfiles.CategoryProfile.#ctor">
             <summary>
             Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RecordProfile">
+            <summary>
+            Mapper profile for the Record
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RecordProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RecordsCountSearchModelProfile">
+            <summary>
+                Mapper profile for RecordsCountSearchModel
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RecordsCountSearchModelProfile.#ctor">
+            <summary>
+                Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RecordSearchModelProfile">
+            <summary>
+                Mapper profile for RecordSearchModel
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RecordSearchModelProfile.#ctor">
+            <summary>
+                Mapper profile constructor
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RefreshTokenProfile">
@@ -480,6 +598,136 @@
         <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.RefreshToken">
             <summary>
                 Refresh token value
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel">
+            <summary>
+            Request model to get records count.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.CategoryId">
+            <summary>
+            Search parameters that represents the category of records.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel">
+            <summary>
+                Request model to create the record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.Price">
+            <summary>
+                Amount of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.Comment">
+            <summary>
+                Comment of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.CreatedDate">
+            <summary>
+                Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.CategoryId">
+            <summary>
+                A category unique identifier
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel">
+            <summary>
+                Request model to get records.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.CreatedDate">
+            <summary>
+                Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.DateFrom">
+            <summary>
+                Start of the interval of the record creation period
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.DateTo">
+            <summary>
+                End of the interval of the record creation period
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.CategoryId">
+            <summary>
+                A category unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel">
+            <summary>
+                Request model to create or update the record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.Id">
+            <summary>
+                An unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.Price">
+            <summary>
+                Amount of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.Comment">
+            <summary>
+                Comment of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.CreatedDate">
+            <summary>
+                Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.CategoryId">
+            <summary>
+                A category unique identifier
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel">
+            <summary>
+                Response model for the record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.Id">
+            <summary>
+                An unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.Price">
+            <summary>
+                Amount of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.Comment">
+            <summary>
+                Comment of record
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.CreatedDate">
+            <summary>
+                Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.CategoryId">
+            <summary>
+                A category unique identifier
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Token.Requests.LoginUserRequestModel">

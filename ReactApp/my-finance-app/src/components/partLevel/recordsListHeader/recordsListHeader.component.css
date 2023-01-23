@@ -1,0 +1,10 @@
+.records-list-header {
+    display: flex;
+    flex-direction: row;    
+}
+
+.records-list-header .select-filter {
+    width: 100%;
+    margin-left: 10px;
+    padding-right: 10px;
+}

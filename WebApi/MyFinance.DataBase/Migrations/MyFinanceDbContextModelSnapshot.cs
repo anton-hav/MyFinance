@@ -48,6 +48,31 @@ namespace MyFinance.DataBase.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("MyFinance.DataBase.Entities.Record", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Records");
+                });
+
             modelBuilder.Entity("MyFinance.DataBase.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -124,6 +149,17 @@ namespace MyFinance.DataBase.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyFinance.DataBase.Entities.Record", b =>
+                {
+                    b.HasOne("MyFinance.DataBase.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.RefreshToken", b =>

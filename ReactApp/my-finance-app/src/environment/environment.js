@@ -9,4 +9,6 @@ export const environment = {
     validateToken: "Token/Validate",
   },
   categoriesEndpoint: "Categories",
+  recordsEndpoint: "Records",
+  recordsCountEndpoint: "RecordsCount",
 };
