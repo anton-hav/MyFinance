@@ -74,8 +74,22 @@ public class RecordService : IRecordService
     }
 
     /// <inheritdoc />
+    public async Task<int> GetRecordsCountBySearchParametersAsync(IRecordsCountSearchModel model)
+    {
+        var entities = _unitOfWork.Records.Get();
+
+        entities = GetQueryWithCategoryFilter(entities, model.Category);
+        entities = GetQueryWithUserFilter(entities, model.User);
+
+        var result = await entities.AsNoTracking().CountAsync();
+
+        return result;
+    }
+
+    /// <inheritdoc />
     public async Task<bool> IsRecordExistByIdAsync(Guid id)
     {
+        // -------------------------EXAMPLE----------------------------------------------------
         // Pure generic repository approach
         /*
         var entity = await _unitOfWork.Records

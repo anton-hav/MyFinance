@@ -242,6 +242,28 @@
             <response code="404">Fail to find a record with the specified Id in the storage.</response>
             <response code="500">Unexpected error on the server side.</response>
         </member>
+        <member name="T:MyFinance.WebApi.Controllers.RecordsCountController">
+            <summary>
+            Controller that provides API endpoints for the RecordsCount resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.#ctor(MyFinance.Core.Abstractions.Services.IRecordService,AutoMapper.IMapper,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="recordService">record service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+            <param name="mapper">mapper from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.GetRecordsCount(MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel)">
+            <summary>
+                Get records count specified search model from the storage.
+            </summary>
+            <param name="model"></param>
+            <returns>number of records matching search model.</returns>
+            <response code="200">Returns a number of records matching search model.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
         <member name="T:MyFinance.WebApi.Controllers.TokenController">
             <summary>
                 Controller that provides API for authorization methods.
@@ -414,9 +436,19 @@
             Mapper profile constructor
             </summary>
         </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RecordsCountSearchModelProfile">
+            <summary>
+                Mapper profile for RecordsCountSearchModel
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RecordsCountSearchModelProfile.#ctor">
+            <summary>
+                Mapper profile constructor
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RecordSearchModelProfile">
             <summary>
-                Mapper profile for RecordSearchModelProfile
+                Mapper profile for RecordSearchModel
             </summary>
         </member>
         <member name="M:MyFinance.WebApi.MappingProfiles.RecordSearchModelProfile.#ctor">
@@ -566,6 +598,21 @@
         <member name="P:MyFinance.WebApi.Models.General.Responses.TokenResponse.RefreshToken">
             <summary>
                 Refresh token value
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel">
+            <summary>
+            Request model to get records count.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.CategoryId">
+            <summary>
+            Search parameters that represents the category of records.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel">

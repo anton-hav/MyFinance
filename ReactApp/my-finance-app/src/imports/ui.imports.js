@@ -57,6 +57,15 @@ import { Popover } from "@mui/material";
 import { Slide } from "@mui/material";
 import { Grow } from "@mui/material";
 import { Collapse } from "@mui/material";
+import { Dialog } from "@mui/material";
+import { DialogActions } from "@mui/material";
+import { DialogContent } from "@mui/material";
+import { DialogContentText } from "@mui/material";
+import { DialogTitle } from "@mui/material";
+
+// From Draggable https://github.com/react-grid-layout/react-draggable
+
+import Draggable from "react-draggable";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -114,4 +123,10 @@ export {
   Slide,
   Grow,
   Collapse,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Draggable,
 };

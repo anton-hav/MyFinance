@@ -1,5 +1,6 @@
 /**
  * The view model for RecordsListViewItem component.
+ * It represents a record with the associated category object.
  */
 export default class RecordInRecordsListViewModel {
   /**
@@ -15,7 +16,7 @@ export default class RecordInRecordsListViewModel {
    */
   comment = "";
   /**
-   * @param {createdDate} createdDate - the date when the transaction was created
+   * @param {string} createdDate - the date when the transaction was created
    */
   createdDate = null;
   /**

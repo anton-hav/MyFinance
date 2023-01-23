@@ -26,11 +26,18 @@ public interface IRecordService
     Task<RecordDto> GetRecordByIdAndUserIdAsync(Guid id, Guid userId);
 
     /// <summary>
-    ///     Get categories from storage by search parameters.
+    ///     Get records from the storage by search parameters.
     /// </summary>
     /// <param name="model">search model for records as a <see cref="IRecordSearchModel" /></param>
     /// <returns>records that matches search parameters</returns>
     Task<IEnumerable<RecordDto>> GetRecordsBySearchParametersAsync(IRecordSearchModel model);
+
+    /// <summary>
+    ///     Get records count from the storage by search parameters.
+    /// </summary>
+    /// <param name="model">search model for records as a <see cref="IRecordsCountSearchModel" /></param>
+    /// <returns>number of records matching the search model.</returns>
+    Task<int> GetRecordsCountBySearchParametersAsync(IRecordsCountSearchModel model);
 
     /// <summary>
     ///     Checks if the record exists in the storage by Id.
