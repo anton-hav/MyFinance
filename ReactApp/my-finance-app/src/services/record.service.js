@@ -4,10 +4,12 @@ import ApiService from "./api.service";
 import RecordDto from "../types/dto/record.dto";
 import { environment } from "../environment/environment";
 import RecordsRequestModel from "../types/model/requests/recordsRequest.model";
+import RecordsCountRequestModel from "../types/model/requests/recordsCountRequest.model";
 
 export default class RecordService {
   constructor() {
     this._recordsEndpoint = environment.recordsEndpoint;
+    this._recordsCountEndpoint = environment.recordsCountEndpoint;
     this._apiService = new ApiService();
   }
 
@@ -26,6 +28,21 @@ export default class RecordService {
     );
     let records = response.map((record) => RecordDto.fromResponse(record));
     return records;
+  }
+
+  /**
+   * Get records count by search parameters from the API
+   * @param {*} searchParameters
+   * @returns
+   */
+  async getRecordsCountBySearchParametersFromApi(searchParameters) {
+    let recordsCountRequestModel =
+      RecordsCountRequestModel.fromObject(searchParameters);
+    let response = await this._apiService.get(
+      this._recordsCountEndpoint,
+      recordsCountRequestModel
+    );
+    return response;
   }
 
   //#endregion READ

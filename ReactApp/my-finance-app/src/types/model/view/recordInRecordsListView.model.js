@@ -1,5 +1,6 @@
 /**
  * The view model for RecordsListViewItem component.
+ * It represents a record with the associated category object.
  */
 export default class RecordInRecordsListViewModel {
   /**
