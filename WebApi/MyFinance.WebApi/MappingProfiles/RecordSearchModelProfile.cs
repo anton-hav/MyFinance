@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyFinance.Business.SearchModelImplementations;
 using MyFinance.Business.SearchParametersImplementations;
+using MyFinance.Core;
 using MyFinance.WebApi.Models.Records.Requests;
 
 namespace MyFinance.WebApi.MappingProfiles;
@@ -20,7 +21,8 @@ public class RecordSearchModelProfile : Profile
                 opt
                     => opt.MapFrom(request => new CategorySearchParameters
                     {
-                        CategoryId = request.CategoryId
+                        CategoryId = request.CategoryId,
+                        CategoryType = request.CategoryType,
                     }))
             .ForMember(searchParams => searchParams.CreationDateTime,
                 opt

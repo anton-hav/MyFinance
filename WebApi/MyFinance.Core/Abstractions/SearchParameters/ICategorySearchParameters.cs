@@ -9,4 +9,9 @@ public interface ICategorySearchParameters
     ///     Filter parameters that represents the category unique identifier.
     /// </summary>
     Guid? CategoryId { get; set; }
+
+    /// <summary>
+    ///     Filter parameters that represents the category type.
+    /// </summary>
+    public CategoryType? CategoryType { get; set; }
 }

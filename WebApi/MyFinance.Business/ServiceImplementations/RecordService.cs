@@ -195,7 +195,16 @@ public class RecordService : IRecordService
     private IQueryable<Record> GetQueryWithCategoryFilter(IQueryable<Record> query, ICategorySearchParameters category)
     {
         if (category.CategoryId != null && !category.CategoryId.Equals(default))
+        {
             query = query.Where(entity => entity.CategoryId.Equals(category.CategoryId));
+        }
+        else
+        {
+            if (category.CategoryType != null && Enum.IsDefined(typeof(CategoryType), category.CategoryType))
+            {
+                query = query.Where(entity => entity.Category.Type.Equals(category.CategoryType));
+            }
+        }
 
         return query;
     }

@@ -1,4 +1,5 @@
-﻿using MyFinance.Core.Abstractions.SearchParameters;
+﻿using MyFinance.Core;
+using MyFinance.Core.Abstractions.SearchParameters;
 
 namespace MyFinance.Business.SearchParametersImplementations;
 
@@ -9,4 +10,7 @@ public class CategorySearchParameters : ICategorySearchParameters
 {
     /// <inheritdoc />
     public Guid? CategoryId { get; set; }
+
+    /// <inheritdoc />
+    public CategoryType? CategoryType { get; set; }
 }
