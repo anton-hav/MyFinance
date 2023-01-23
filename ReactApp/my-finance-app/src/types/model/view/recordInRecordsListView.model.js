@@ -15,7 +15,7 @@ export default class RecordInRecordsListViewModel {
    */
   comment = "";
   /**
-   * @param {createdDate} createdDate - the date when the transaction was created
+   * @param {string} createdDate - the date when the transaction was created
    */
   createdDate = null;
   /**
