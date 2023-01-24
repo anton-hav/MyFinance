@@ -59,13 +59,13 @@ namespace MyFinance.WebApi.Controllers
         /// <response code="500">Unexpected error on the server side.</response>
         [HttpGet("{id}")]
         [TypeFilter(typeof(NotFoundExceptionFilter))]
-        [ProducesResponseType(typeof(RecordResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PlannedTransactionResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Nullable), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPlannedTransactionById(Guid id)
         {
             var userId = _userManager.GetUserId();
             var dto = await _plannedTransactionService.GetPlannedTransactionByIdAndUserIdAsync(id, userId);
-            var record = _mapper.Map<RecordResponseModel>(dto);
+            var record = _mapper.Map<PlannedTransactionResponseModel>(dto);
             return Ok(record);
         }
 
