@@ -118,6 +118,8 @@ namespace MyFinance.WebApi.Controllers
 
             var dto = _mapper.Map<PlannedTransactionDto>(model);
             dto.Id = Guid.NewGuid();
+            dto.JobId = Guid.NewGuid().ToString("D");
+
             var result = await _plannedTransactionService.CreateAsync(dto);
 
             var response = _mapper.Map<PlannedTransactionResponseModel>(dto);

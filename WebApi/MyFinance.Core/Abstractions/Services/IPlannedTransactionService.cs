@@ -23,7 +23,7 @@ public interface IPlannedTransactionService
     /// <param name="id">an unique identifier as a <see cref="Guid" /></param>
     /// <param name="userId">the unique identifier of the creator as a <see cref="Guid" /></param>
     /// <returns>a record that matches parameters as a <see cref="RecordDto" /></returns>
-    Task<RecordDto> GetPlannedTransactionByIdAndUserIdAsync(Guid id, Guid userId);
+    Task<PlannedTransactionDto> GetPlannedTransactionByIdAndUserIdAsync(Guid id, Guid userId);
 
     /// <summary>
     ///     Get planned transactions from the storage by search parameters.

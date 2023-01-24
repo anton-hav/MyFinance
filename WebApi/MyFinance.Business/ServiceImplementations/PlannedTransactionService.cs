@@ -40,7 +40,7 @@ public class PlannedTransactionService : IPlannedTransactionService
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RecordDto> GetPlannedTransactionByIdAndUserIdAsync(Guid id, Guid userId)
+    public async Task<PlannedTransactionDto> GetPlannedTransactionByIdAndUserIdAsync(Guid id, Guid userId)
     {
         var entity = await _unitOfWork.PlannedTransactions
             .Get()
@@ -52,7 +52,7 @@ public class PlannedTransactionService : IPlannedTransactionService
             throw new ArgumentException("Failed to find record in the database that match the specified id. ",
                 nameof(id));
 
-        var dto = _mapper.Map<RecordDto>(entity);
+        var dto = _mapper.Map<PlannedTransactionDto>(entity);
         return dto;
     }
 
