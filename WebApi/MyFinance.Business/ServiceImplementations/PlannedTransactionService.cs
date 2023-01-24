@@ -83,6 +83,19 @@ public class PlannedTransactionService : IPlannedTransactionService
         return entity != null;
     }
 
+    /// <inheritdoc />
+    public async Task<bool> IsPlannedTransactionExistByParametersAsync(Guid categoryId, double price, string crone)
+    {
+        var entity = await _unitOfWork.PlannedTransactions
+            .Get()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(entity => entity.CategoryId.Equals(categoryId)
+                                           && entity.Price.Equals(price)
+                                           && entity.Crone.Equals(crone));
+
+        return entity != null;
+    }
+
     #endregion READ
 
     #region CREATE

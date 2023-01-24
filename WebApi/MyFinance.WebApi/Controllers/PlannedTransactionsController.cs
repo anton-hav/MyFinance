@@ -7,6 +7,7 @@ using MyFinance.Business.ServiceImplementations;
 using MyFinance.Core.Abstractions.IdentityManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
+using MyFinance.Core.Exceptions;
 using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.Filters.ExceptionFilters;
 using MyFinance.WebApi.Models.General.Responses;
@@ -87,7 +88,7 @@ namespace MyFinance.WebApi.Controllers
             searchParams.User = new UserSearchParameters { UserId = userId };
             var categories =
                 await _plannedTransactionService.GetPlannedTransactionsBySearchParametersAsync(searchParams);
-            var response = _mapper.Map<IEnumerable<RecordResponseModel>>(categories);
+            var response = _mapper.Map<IEnumerable<PlannedTransactionResponseModel>>(categories);
 
             return Ok(response);
         }
@@ -101,6 +102,7 @@ namespace MyFinance.WebApi.Controllers
         /// <response code="400">Request contains null object or invalid object type</response>
         /// <response code="500">Unexpected error on the server side.</response>
         [HttpPost]
+        [TypeFilter(typeof(ConflictOnCreationExceptionFilter))]
         [TypeFilter(typeof(BadRequestExceptionFilter))]
         [ProducesResponseType(typeof(PlannedTransactionResponseModel), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
@@ -115,6 +117,14 @@ namespace MyFinance.WebApi.Controllers
             if (!isUserCategoryOwner)
                 throw new ArgumentException(
                     "The current user has no rights to create planned transaction for the specified category.", nameof(model));
+
+            var isExist =
+                await _plannedTransactionService.IsPlannedTransactionExistByParametersAsync(model.CategoryId, model.Price,
+                    model.Crone);
+
+            if (isExist)
+                throw new ConflictWithExistingRecordException("The same entry already exists in the storage.",
+                    nameof(model));
 
             var dto = _mapper.Map<PlannedTransactionDto>(model);
             dto.Id = Guid.NewGuid();

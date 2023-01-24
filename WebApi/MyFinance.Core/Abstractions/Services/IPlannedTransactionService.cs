@@ -39,7 +39,16 @@ public interface IPlannedTransactionService
     /// <param name="userId">an unique identifier of the current user as a <see cref="Guid"/></param>
     /// <returns>A boolean</returns>
     Task<bool> IsUserOwnerForPlannedTransactionAsync(Guid id, Guid userId);
-    
+
+    /// <summary>
+    ///     Checks if the planned transaction with the same parameters exists in the storage.
+    /// </summary>
+    /// <param name="categoryId">an unique identifier of the category as a <see cref="Guid" /></param>
+    /// <param name="price">amount of the planned transaction</param>
+    /// <param name="crone">crone expression as a <see cref="string"/></param>
+    /// <returns>A boolean</returns>
+    Task<bool> IsPlannedTransactionExistByParametersAsync(Guid categoryId, double price, string crone);
+
     #endregion READ
 
 
