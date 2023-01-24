@@ -7,9 +7,7 @@ namespace MyFinance.DataBase.Entities;
 /// </summary>
 public class Category : IBaseEntity
 {
-    /// <summary>
-    ///     An unique identifier
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; set; }
 
     /// <summary>
