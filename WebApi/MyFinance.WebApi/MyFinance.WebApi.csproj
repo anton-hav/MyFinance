@@ -38,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\PlannedTransactions\Responses\" />
+    <Folder Include="Models\PlannedTransactions\Requests\" />
     <Folder Include="Models\RecordsCount\Request\" />
     <Folder Include="Models\Token\Responses\" />
   </ItemGroup>

@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Category> Categories { get; }
     public IRepository<Record> Records { get; }
     public IRecordRepository AdditionRecords { get; }
+    public IRepository<PlannedTransaction> PlannedTransactions { get; }
 
     public UnitOfWork(MyFinanceDbContext dbContext, 
         IRepository<User> users, 
@@ -21,7 +22,8 @@ public class UnitOfWork : IUnitOfWork
         IRepository<RefreshToken> refreshToken, 
         IRepository<Category> categories, 
         IRepository<Record> records, 
-        IRecordRepository additionRecords)
+        IRecordRepository additionRecords, 
+        IRepository<PlannedTransaction> plannedTransactions)
     {
         _dbContext = dbContext;
         Users = users;
@@ -30,6 +32,7 @@ public class UnitOfWork : IUnitOfWork
         Categories = categories;
         Records = records;
         AdditionRecords = additionRecords;
+        PlannedTransactions = plannedTransactions;
     }
     
     public async Task<int> Commit()

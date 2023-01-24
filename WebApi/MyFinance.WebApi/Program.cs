@@ -145,6 +145,7 @@ public class Program
         builder.Services.AddScoped<IJwtUtil, JwtUtilSha256>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IRecordService, RecordService>();
+        builder.Services.AddScoped<IPlannedTransactionService, PlannedTransactionService>();
 
         // Add identity managers
         builder.Services.AddScoped<IUserManager, UserManager>();
@@ -155,6 +156,7 @@ public class Program
         builder.Services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
         builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
         builder.Services.AddScoped<IRepository<Record>, Repository<Record>>();
+        builder.Services.AddScoped<IRepository<PlannedTransaction>, Repository<PlannedTransaction>>();
         // It is an example of the addition repository.
         // You can find more information in the description of the repository implementation.
         builder.Services.AddScoped<IRecordRepository, RecordRepository>();

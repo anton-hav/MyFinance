@@ -89,19 +89,25 @@ public class RecordService : IRecordService
     /// <inheritdoc />
     public async Task<bool> IsRecordExistByIdAsync(Guid id)
     {
-        // -------------------------EXAMPLE----------------------------------------------------
-        // Pure generic repository approach
-        /*
-        var entity = await _unitOfWork.Records
-            .Get()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(entity => entity.Id.Equals(id));
-
-        return entity != null;
-        */
-
-        // The extended generic repository approach
-        // In this case, all generic repository methods and additional entity-specific methods are available.
+        // -------------------------EXAMPLE---------------------------------------------------------------------
+        // | 1. Pure generic repository approach                                                               |
+        // |---------------------------------------------------------------------------------------------------|
+        // |                                                                                                   |
+        // | var entity = await _unitOfWork.Records                                                            |
+        // |     .Get()                                                                                        |    
+        // |     .AsNoTracking()                                                                               |
+        // |     .FirstOrDefaultAsync(entity => entity.Id.Equals(id));                                         |
+        // |                                                                                                   |
+        // | return entity != null;                                                                            |
+        // |---------------------------------------------------------------------------------------------------|
+        // | 2. The extended generic repository approach                                                       |
+        // | In this case, all generic repository methods and additional entity-specific methods are available.|
+        // | --------------------------------------------------------------------------------------------------|
+        // |                                                                                                   |
+        // | var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);                        |
+        // | return result;                                                                                    |
+        // -----------------------------------------------------------------------------------------------------
+        
         var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);
         return result;
     }
@@ -205,7 +211,7 @@ public class RecordService : IRecordService
     /// </summary>
     /// <param name="query">query</param>
     /// <param name="category">category search parameters as a <see cref="ICategorySearchParameters" /></param>
-    /// <returns>a query that includes user filter.</returns>
+    /// <returns>a query that includes category filter.</returns>
     private IQueryable<Record> GetQueryWithCategoryFilter(IQueryable<Record> query, ICategorySearchParameters category)
     {
         if (category.CategoryId != null && !category.CategoryId.Equals(default))
