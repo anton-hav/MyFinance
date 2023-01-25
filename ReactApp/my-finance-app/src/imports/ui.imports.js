@@ -62,6 +62,7 @@ import { DialogActions } from "@mui/material";
 import { DialogContent } from "@mui/material";
 import { DialogContentText } from "@mui/material";
 import { DialogTitle } from "@mui/material";
+import { InputBase } from "@mui/material";
 
 // From Draggable https://github.com/react-grid-layout/react-draggable
 
@@ -129,4 +130,5 @@ export {
   DialogContentText,
   DialogTitle,
   Draggable,
+  InputBase,
 };

@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -34,4 +35,5 @@ export {
   PointOfSaleIcon,
   ExpandLessIcon,
   ExpandMoreIcon,
+  ScheduleIcon,
 };

@@ -8,6 +8,7 @@ import { SummarySection } from "./summarySection/SummarySection.component";
 import { RecordsSection } from "./recordsSection/RecordsSection.component";
 import { Login } from "./login/Login.component";
 import { Register } from "./register/Register.component";
+import { ScheduleSection } from "./scheduleSection/ScheduleSection.component";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -17,4 +18,5 @@ export {
   RecordsSection,
   Login,
   Register,
+  ScheduleSection,
 };
