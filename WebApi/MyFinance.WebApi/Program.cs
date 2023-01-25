@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyFinance.Business.ServiceImplementations;
 using MyFinance.Core.Abstractions.IdentityManagers;
+using MyFinance.Core.Abstractions.SchedulerManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Data.Abstractions;
 using MyFinance.Data.Abstractions.Repositories;
@@ -19,6 +20,7 @@ using MyFinance.DataBase.Entities;
 using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.IdentityManagers;
 using MyFinance.WebApi.Policies;
+using MyFinance.WebApi.SchedulerManagers;
 using MyFinance.WebApi.Utils;
 using Serilog;
 using Serilog.Events;
@@ -149,6 +151,9 @@ public class Program
 
         // Add identity managers
         builder.Services.AddScoped<IUserManager, UserManager>();
+
+        // Add schedule managers
+        builder.Services.AddScoped<ISchedulerManager, SchedulerManager>();
 
         // Add repositories
         builder.Services.AddScoped<IRepository<User>, Repository<User>>();

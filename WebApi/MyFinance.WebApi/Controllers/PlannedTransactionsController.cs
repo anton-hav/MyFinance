@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFinance.Business.SearchModelImplementations;
 using MyFinance.Business.SearchParametersImplementations;
 using MyFinance.Business.ServiceImplementations;
 using MyFinance.Core.Abstractions.IdentityManagers;
+using MyFinance.Core.Abstractions.SchedulerManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.Core.Exceptions;
@@ -31,6 +33,7 @@ namespace MyFinance.WebApi.Controllers
         private readonly IPlannedTransactionService _plannedTransactionService;
         private readonly IUserManager _userManager;
         private readonly ICategoryService _categoryService;
+        private readonly ISchedulerManager _schedulerManager;
 
         /// <summary>
         ///     Constructor
@@ -39,15 +42,18 @@ namespace MyFinance.WebApi.Controllers
         /// <param name="plannedTransactionService">planned transaction service from IOC</param>
         /// <param name="userManager">user manager from IOC</param>
         /// <param name="categoryService">category service from IOC</param>
+        /// <param name="schedulerManager">schedule job manager from IOC</param>
         public PlannedTransactionsController(IMapper mapper, 
             IPlannedTransactionService plannedTransactionService, 
             IUserManager userManager, 
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            ISchedulerManager schedulerManager)
         {
             _mapper = mapper;
             _plannedTransactionService = plannedTransactionService;
             _userManager = userManager;
             _categoryService = categoryService;
+            _schedulerManager = schedulerManager;
         }
 
         /// <summary>
@@ -126,11 +132,15 @@ namespace MyFinance.WebApi.Controllers
                 throw new ConflictWithExistingRecordException("The same entry already exists in the storage.",
                     nameof(model));
 
+            // todo: add validate Cron string
+
             var dto = _mapper.Map<PlannedTransactionDto>(model);
             dto.Id = Guid.NewGuid();
             dto.JobId = Guid.NewGuid().ToString("D");
 
             var result = await _plannedTransactionService.CreateAsync(dto);
+
+            _schedulerManager.CreateJobByPlannedTransactionAsync(dto);
 
             var response = _mapper.Map<PlannedTransactionResponseModel>(dto);
 

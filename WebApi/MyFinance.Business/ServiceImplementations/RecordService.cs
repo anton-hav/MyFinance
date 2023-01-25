@@ -17,12 +17,15 @@ public class RecordService : IRecordService
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPlannedTransactionService _plannedTransactionService;
 
     public RecordService(IMapper mapper,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IPlannedTransactionService plannedTransactionService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _plannedTransactionService = plannedTransactionService;
     }
 
     #region READ
@@ -107,7 +110,7 @@ public class RecordService : IRecordService
         // | var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);                        |
         // | return result;                                                                                    |
         // -----------------------------------------------------------------------------------------------------
-        
+
         var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);
         return result;
     }
@@ -140,6 +143,19 @@ public class RecordService : IRecordService
         await _unitOfWork.Records.AddAsync(entity);
         var result = await _unitOfWork.Commit();
         return result;
+    }
+
+    /// <inheritdoc />
+    public async Task CreateRecordByPlannedTransactionIdAsync(Guid plannedTransactionId)
+    {
+        var plannedTransaction = await _plannedTransactionService.GetByIdAsync(plannedTransactionId);
+
+        var dto = _mapper.Map<RecordDto>(plannedTransaction);
+        dto.Id = Guid.NewGuid();
+        dto.CreatedDate = DateTime.UtcNow;
+        dto.Comment = "Created based on the schedule";
+
+        var result = await CreateAsync(dto);
     }
 
     #endregion CREATE
@@ -221,9 +237,7 @@ public class RecordService : IRecordService
         else
         {
             if (category.CategoryType != null && Enum.IsDefined(typeof(CategoryType), category.CategoryType))
-            {
                 query = query.Where(entity => entity.Category.Type.Equals(category.CategoryType));
-            }
         }
 
         return query;

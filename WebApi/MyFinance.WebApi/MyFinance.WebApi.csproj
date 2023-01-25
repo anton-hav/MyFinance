@@ -42,6 +42,7 @@
     <Folder Include="Models\PlannedTransactions\Requests\" />
     <Folder Include="Models\RecordsCount\Request\" />
     <Folder Include="Models\Token\Responses\" />
+    <Folder Include="SchedulerManagers\" />
   </ItemGroup>
 
 </Project>
