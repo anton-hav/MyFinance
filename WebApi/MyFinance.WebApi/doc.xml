@@ -89,13 +89,14 @@
                 Controller that provides API endpoints for the Categories resource.
             </summary>
         </member>
-        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager,MyFinance.Core.Abstractions.SchedulerManagers.ISchedulerManager)">
             <summary>
                 Constructor
             </summary>
             <param name="mapper">mapper from IOC</param>
             <param name="categoryService">category service from IOC</param>
             <param name="userManager">user manager from IOC</param>
+            <param name="schedulerManager">schedule job manager from IOC</param>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.GetCategoryById(System.Guid)">
             <summary>
@@ -941,15 +942,22 @@
                 Provides methods to interact with the scheduler.
             </summary>
         </member>
-        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.IRecordService,Hangfire.IRecurringJobManager)">
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.IRecordService,Hangfire.IRecurringJobManager,MyFinance.Core.Abstractions.Services.IPlannedTransactionService)">
             <summary>
                 Constructor
             </summary>
             <param name="mapper"></param>
             <param name="recordService"></param>
             <param name="jobManager">schedule job manager from the schedule provider</param>
+            <param name="plannedTransactionService">planned transaction service from IOC</param>
         </member>
-        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.CreateJobByPlannedTransactionAsync(MyFinance.Core.DataTransferObjects.PlannedTransactionDto)">
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.CreateJobByPlannedTransaction(MyFinance.Core.DataTransferObjects.PlannedTransactionDto)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.RemoveJobByPlannedTransactionIdAsync(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.RemoveAllJobsByCategoryIdAsync(System.Guid)">
             <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Utils.IJwtUtil">

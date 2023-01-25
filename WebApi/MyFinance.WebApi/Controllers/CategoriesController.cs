@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFinance.Core;
 using MyFinance.Core.Abstractions.IdentityManagers;
+using MyFinance.Core.Abstractions.SchedulerManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.Core.Exceptions;
@@ -25,6 +26,7 @@ public class CategoriesController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ICategoryService _categoryService;
     private readonly IUserManager _userManager;
+    private readonly ISchedulerManager _schedulerManager;
 
     /// <summary>
     ///     Constructor
@@ -32,13 +34,16 @@ public class CategoriesController : ControllerBase
     /// <param name="mapper">mapper from IOC</param>
     /// <param name="categoryService">category service from IOC</param>
     /// <param name="userManager">user manager from IOC</param>
+    /// <param name="schedulerManager">schedule job manager from IOC</param>
     public CategoriesController(IMapper mapper,
         ICategoryService categoryService,
-        IUserManager userManager)
+        IUserManager userManager, 
+        ISchedulerManager schedulerManager)
     {
         _mapper = mapper;
         _categoryService = categoryService;
         _userManager = userManager;
+        _schedulerManager = schedulerManager;
     }
 
     /// <summary>
@@ -190,6 +195,8 @@ public class CategoriesController : ControllerBase
         if (!isExistById)
             throw new ArgumentException("Fail to find a record with the specified Id in the storage",
                 nameof(id));
+
+        await _schedulerManager.RemoveAllJobsByCategoryIdAsync(id);
 
         var result = await _categoryService.DeleteAsync(id);
 

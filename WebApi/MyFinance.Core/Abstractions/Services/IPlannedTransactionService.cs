@@ -22,8 +22,15 @@ public interface IPlannedTransactionService
     /// </summary>
     /// <param name="id">an unique identifier as a <see cref="Guid" /></param>
     /// <param name="userId">the unique identifier of the creator as a <see cref="Guid" /></param>
-    /// <returns>a record that matches parameters as a <see cref="RecordDto" /></returns>
+    /// <returns>a planned transaction that matches parameters as a <see cref="PlannedTransactionDto" /></returns>
     Task<PlannedTransactionDto> GetPlannedTransactionByIdAndUserIdAsync(Guid id, Guid userId);
+
+    /// <summary>
+    ///     Get planned transactions specified by category id from the storage.
+    /// </summary>
+    /// <param name="categoryId">the unique identifier of the category as a <see cref="Guid" /></param>
+    /// <returns>planned operations matching the parameters</returns>
+    Task<IEnumerable<PlannedTransactionDto>> GetPlannedTransactionsByCategoryIdAsync(Guid categoryId);
 
     /// <summary>
     ///     Get planned transactions from the storage by search parameters.

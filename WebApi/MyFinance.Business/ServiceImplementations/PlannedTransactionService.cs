@@ -35,6 +35,7 @@ public class PlannedTransactionService : IPlannedTransactionService
             throw new ArgumentException("Failed to find record in the database that match the specified id. ",
                 nameof(id));
         var dto = _mapper.Map<PlannedTransactionDto>(entity);
+        
         return dto;
     }
 
@@ -54,6 +55,19 @@ public class PlannedTransactionService : IPlannedTransactionService
 
         var dto = _mapper.Map<PlannedTransactionDto>(entity);
         return dto;
+    }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<PlannedTransactionDto>> GetPlannedTransactionsByCategoryIdAsync(Guid categoryId)
+    {
+        var entities = await _unitOfWork.PlannedTransactions
+            .Get()
+            .Where(entity => entity.CategoryId.Equals(categoryId))
+            .AsNoTracking()
+            .ToListAsync();
+
+        var result = _mapper.Map<List<PlannedTransactionDto>>(entities);
+        return result;
     }
 
     /// <inheritdoc />
@@ -107,7 +121,7 @@ public class PlannedTransactionService : IPlannedTransactionService
         var entity = _mapper.Map<PlannedTransaction>(dto);
 
         if (entity == null)
-            throw new ArgumentException("Mapping CategoryDto to Category was not possible.", nameof(dto));
+            throw new ArgumentException("Mapping PlannedTransactionDto to PlannedTransaction was not possible.", nameof(dto));
 
         await _unitOfWork.PlannedTransactions.AddAsync(entity);
         var result = await _unitOfWork.Commit();

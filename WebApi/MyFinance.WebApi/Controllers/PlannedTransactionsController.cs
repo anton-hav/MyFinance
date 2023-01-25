@@ -140,7 +140,7 @@ namespace MyFinance.WebApi.Controllers
 
             var result = await _plannedTransactionService.CreateAsync(dto);
 
-            _schedulerManager.CreateJobByPlannedTransactionAsync(dto);
+            _schedulerManager.CreateJobByPlannedTransaction(dto);
 
             var response = _mapper.Map<PlannedTransactionResponseModel>(dto);
 
@@ -176,6 +176,8 @@ namespace MyFinance.WebApi.Controllers
                 throw new ArgumentException(
                     "Fail to find a record in the storage or the current user has no rights to delete the record specified by Id.",
                     nameof(id));
+
+            await _schedulerManager.RemoveJobByPlannedTransactionIdAsync(id);
 
             var result = await _plannedTransactionService.DeleteAsync(id);
 
