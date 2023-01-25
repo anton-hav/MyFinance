@@ -12,6 +12,7 @@ import {
   MenuItem,
 } from "../../../imports/ui.imports";
 import { useFormik, yup } from "../../../imports/formBuilder.import";
+import { cronParser } from "../../../imports/utils.import";
 // Import custom part-level components
 import { SelectCategory } from "../selectCategory/SelectCategory.component";
 import { RecordTypeButtonToggler } from "../recordTypeButtonToggler/RecordTypeButtonToggler.component";
@@ -35,7 +36,7 @@ const cronInputSchemes = [
 ];
 
 function CronInput(props) {
-  const { scheme } = props;
+  const { scheme, error, helperText } = props;
   let component;
   if (scheme === cronInputSchemes[0].name) {
     component = <CronDailyInput {...props} />;
@@ -44,7 +45,19 @@ function CronInput(props) {
   } else if (scheme === cronInputSchemes[2].name) {
     component = <CronMonthlyInput />;
   }
-  return component;
+  return (
+    <>
+      {component}
+      {error ? (
+        <Typography
+          variant="body2"
+          sx={{ color: "#d32f2f", fontSize: "0.75rem" }}
+        >
+          {helperText}
+        </Typography>
+      ) : null}
+    </>
+  );
 }
 
 const _categoryService = new CategoryService();
@@ -148,6 +161,19 @@ export function AddNewPlannedTransactionForm(props) {
       .max(
         254,
         "Cron expression is too long. It must be less than 255 characters."
+      )
+      .test(
+        "is-cron-valid",
+        "Several parameters are incorrect. Enter valid values for time slots",
+        (val) => {
+          let isCronValid = true;
+          try {
+            cronParser.parseExpression(val);
+          } catch (e) {
+            isCronValid = false;
+          }
+          return isCronValid;
+        }
       )
       .test(
         "existing",

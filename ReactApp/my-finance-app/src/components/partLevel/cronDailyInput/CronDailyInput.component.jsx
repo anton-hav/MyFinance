@@ -15,9 +15,6 @@ export function CronDailyInput(props) {
     onChange(name, `0 0 */${count} * *`);
   };
 
-  console.log(error);
-  console.log(helperText);
-
   return (
     <>
       <Box className="cron-daily-input">
@@ -29,14 +26,6 @@ export function CronDailyInput(props) {
           days
         </Typography>
       </Box>
-      {error ? (
-        <Typography
-          variant="body2"
-          sx={{ color: "#d32f2f", fontSize: "0.75rem" }}
-        >
-          {helperText}
-        </Typography>
-      ) : null}
     </>
   );
 }
