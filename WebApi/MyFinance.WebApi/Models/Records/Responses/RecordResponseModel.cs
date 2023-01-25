@@ -1,7 +1,7 @@
 ﻿namespace MyFinance.WebApi.Models.Records.Responses;
 
 /// <summary>
-///     Response model for the record
+///     Response model for the record.
 /// </summary>
 public class RecordResponseModel
 {

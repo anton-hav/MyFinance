@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Abstractions\SchedulerManagers\" />
     <Folder Include="Abstractions\SearchModels\" />
     <Folder Include="Abstractions\SearchParameters\" />
     <Folder Include="Exceptions\" />

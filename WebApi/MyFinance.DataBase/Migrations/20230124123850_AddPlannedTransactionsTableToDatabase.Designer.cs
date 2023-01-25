@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyFinance.DataBase;
 
@@ -11,9 +12,11 @@ using MyFinance.DataBase;
 namespace MyFinance.DataBase.Migrations
 {
     [DbContext(typeof(MyFinanceDbContext))]
-    partial class MyFinanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230124123850_AddPlannedTransactionsTableToDatabase")]
+    partial class AddPlannedTransactionsTableToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,17 +183,6 @@ namespace MyFinance.DataBase.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MyFinance.DataBase.Entities.PlannedTransaction", b =>
-                {
-                    b.HasOne("MyFinance.DataBase.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.Record", b =>

@@ -89,13 +89,14 @@
                 Controller that provides API endpoints for the Categories resource.
             </summary>
         </member>
-        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+        <member name="M:MyFinance.WebApi.Controllers.CategoriesController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager,MyFinance.Core.Abstractions.SchedulerManagers.ISchedulerManager)">
             <summary>
                 Constructor
             </summary>
             <param name="mapper">mapper from IOC</param>
             <param name="categoryService">category service from IOC</param>
             <param name="userManager">user manager from IOC</param>
+            <param name="schedulerManager">schedule job manager from IOC</param>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.CategoriesController.GetCategoryById(System.Guid)">
             <summary>
@@ -175,6 +176,61 @@
             <param name="userId">the unique identifier of the creator</param>
             <param name="categoryType">category type as a <see cref="T:MyFinance.Core.CategoryType" /></param>
             <returns>A boolean</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.Controllers.PlannedTransactionsController">
+            <summary>
+                Controller that provides API endpoints for the Categories resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.PlannedTransactionsController.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.IPlannedTransactionService,MyFinance.Core.Abstractions.IdentityManagers.IUserManager,MyFinance.Core.Abstractions.Services.ICategoryService,MyFinance.Core.Abstractions.SchedulerManagers.ISchedulerManager)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="mapper">mapper from IOC</param>
+            <param name="plannedTransactionService">planned transaction service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+            <param name="categoryService">category service from IOC</param>
+            <param name="schedulerManager">schedule job manager from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.PlannedTransactionsController.GetPlannedTransactionById(System.Guid)">
+            <summary>
+                Get a planned transaction from the storage with specified id.
+            </summary>
+            <param name="id">a planned transaction unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>A planned transaction with specified Id</returns>
+            <response code="200">Returns a record corresponding to the specified identifier.</response>
+            <response code="404">Failed to find record in the database that match the specified id.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.PlannedTransactionsController.GetPlannedTransactions(MyFinance.WebApi.Models.PlannedTransactions.Requests.GetPlannedTransactionRequestModel)">
+            <summary>
+                Get planned transactions from the storage.
+            </summary>
+            <param name="model">planned transactions request model</param>
+            <returns>planned transactions that match the specified model parameters.</returns>
+            <response code="200">Returns all records that match the specified parameters.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.PlannedTransactionsController.AddPlannedTransaction(MyFinance.WebApi.Models.PlannedTransactions.Requests.AddPlannedTransactionRequestModel)">
+            <summary>
+                Add a new planned transaction to the storage.
+            </summary>
+            <param name="model">a planned transaction</param>
+            <returns>A newly created planned transaction</returns>
+            <response code="201">Returns the newly created planned transaction</response>
+            <response code="400">Request contains null object or invalid object type</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.PlannedTransactionsController.DeletePlannedTransaction(System.Guid)">
+            <summary>
+                Delete a planned transaction with specified Id from the storage.
+            </summary>
+            <param name="id">a planned transaction unique identifier as a <see cref="T:System.Guid" /></param>
+            <returns>no content response</returns>
+            <response code="204">Successful deletion</response>
+            <response code="400">Request contains null object or invalid object type.</response>
+            <response code="404">Fail to find a record with the specified Id in the storage.</response>
+            <response code="500">Unexpected error on the server side.</response>
         </member>
         <member name="T:MyFinance.WebApi.Controllers.RecordsController">
             <summary>
@@ -426,6 +482,26 @@
             Mapper profile constructor
             </summary>
         </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.PlannedTransactionProfile">
+            <summary>
+            Mapper profile for the PlannedTransaction
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.PlannedTransactionProfile.#ctor">
+            <summary>
+            Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.PlannedTransactionsSearchModelProfile">
+            <summary>
+                Mapper profile for PlannedTransactionsSearchModel
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.PlannedTransactionsSearchModelProfile.#ctor">
+            <summary>
+                Mapper profile constructor
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RecordProfile">
             <summary>
             Mapper profile for the Record
@@ -600,6 +676,66 @@
                 Refresh token value
             </summary>
         </member>
+        <member name="T:MyFinance.WebApi.Models.PlannedTransactions.Requests.AddPlannedTransactionRequestModel">
+            <summary>
+                Request model to create the planned transaction
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Requests.AddPlannedTransactionRequestModel.CategoryId">
+            <summary>
+                An unique identifier of the category for which the transaction is planned
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Requests.AddPlannedTransactionRequestModel.Price">
+            <summary>
+                Amount of the planned transaction
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Requests.AddPlannedTransactionRequestModel.Crone">
+            <summary>
+                Cron expression as a string
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.PlannedTransactions.Requests.GetPlannedTransactionRequestModel">
+            <summary>
+                Request model to get planned transactions.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Requests.GetPlannedTransactionRequestModel.CategoryId">
+            <summary>
+                A category unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Requests.GetPlannedTransactionRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.PlannedTransactions.Responses.PlannedTransactionResponseModel">
+            <summary>
+                Response model for the planned transaction.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Responses.PlannedTransactionResponseModel.Id">
+            <summary>
+                An unique identifier
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Responses.PlannedTransactionResponseModel.CategoryId">
+            <summary>
+                An unique identifier of the category for which the transaction is planned
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Responses.PlannedTransactionResponseModel.Price">
+            <summary>
+                Amount of the planned transaction
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.PlannedTransactions.Responses.PlannedTransactionResponseModel.Crone">
+            <summary>
+                Cron expression as a string
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel">
             <summary>
             Request model to get records count.
@@ -702,7 +838,7 @@
         </member>
         <member name="T:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel">
             <summary>
-                Response model for the record
+                Response model for the record.
             </summary>
         </member>
         <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.Id">
@@ -800,6 +936,29 @@
                 Returns the path for log file recording.
             </summary>
             <returns>A string whose value contains a path to the log file</returns>
+        </member>
+        <member name="T:MyFinance.WebApi.SchedulerManagers.SchedulerManager">
+            <summary>
+                Provides methods to interact with the scheduler.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.#ctor(AutoMapper.IMapper,MyFinance.Core.Abstractions.Services.IRecordService,Hangfire.IRecurringJobManager,MyFinance.Core.Abstractions.Services.IPlannedTransactionService)">
+            <summary>
+                Constructor
+            </summary>
+            <param name="mapper"></param>
+            <param name="recordService"></param>
+            <param name="jobManager">schedule job manager from the schedule provider</param>
+            <param name="plannedTransactionService">planned transaction service from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.CreateJobByPlannedTransaction(MyFinance.Core.DataTransferObjects.PlannedTransactionDto)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.RemoveJobByPlannedTransactionIdAsync(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.RemoveAllJobsByCategoryIdAsync(System.Guid)">
+            <inheritdoc />
         </member>
         <member name="T:MyFinance.WebApi.Utils.IJwtUtil">
             <summary>

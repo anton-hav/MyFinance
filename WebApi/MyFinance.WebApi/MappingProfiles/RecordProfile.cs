@@ -23,5 +23,7 @@ public class RecordProfile : Profile
         CreateMap<UpdateRecordRequestModel, RecordDto>();
 
         CreateMap<RecordDto, RecordResponseModel>();
+
+        CreateMap<PlannedTransactionDto, RecordDto>();
     }
 }

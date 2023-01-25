@@ -1,5 +1,7 @@
 using System.Reflection;
 using System.Text;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyFinance.Business.ServiceImplementations;
 using MyFinance.Core.Abstractions.IdentityManagers;
+using MyFinance.Core.Abstractions.SchedulerManagers;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Data.Abstractions;
 using MyFinance.Data.Abstractions.Repositories;
@@ -17,6 +20,7 @@ using MyFinance.DataBase.Entities;
 using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.IdentityManagers;
 using MyFinance.WebApi.Policies;
+using MyFinance.WebApi.SchedulerManagers;
 using MyFinance.WebApi.Utils;
 using Serilog;
 using Serilog.Events;
@@ -55,6 +59,24 @@ public class Program
 
         // Add controllers
         builder.Services.AddControllers();
+
+        // Add Hangfire scheduler
+        builder.Services.AddHangfire(configuration => configuration
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(connectionString,
+                new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true,
+                }));
+
+        // Add the processing server as IHostedService
+        builder.Services.AddHangfireServer();
 
         // Add AutoMapper
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -125,9 +147,13 @@ public class Program
         builder.Services.AddScoped<IJwtUtil, JwtUtilSha256>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IRecordService, RecordService>();
+        builder.Services.AddScoped<IPlannedTransactionService, PlannedTransactionService>();
 
         // Add identity managers
         builder.Services.AddScoped<IUserManager, UserManager>();
+
+        // Add schedule managers
+        builder.Services.AddScoped<ISchedulerManager, SchedulerManager>();
 
         // Add repositories
         builder.Services.AddScoped<IRepository<User>, Repository<User>>();
@@ -135,6 +161,7 @@ public class Program
         builder.Services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
         builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
         builder.Services.AddScoped<IRepository<Record>, Repository<Record>>();
+        builder.Services.AddScoped<IRepository<PlannedTransaction>, Repository<PlannedTransaction>>();
         // It is an example of the addition repository.
         // You can find more information in the description of the repository implementation.
         builder.Services.AddScoped<IRecordRepository, RecordRepository>();
@@ -150,6 +177,9 @@ public class Program
         app.UseRouting();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        app.UseHangfireDashboard();
+        app.MapHangfireDashboard();
 
         app.UseSwagger();
         app.UseSwaggerUI();
