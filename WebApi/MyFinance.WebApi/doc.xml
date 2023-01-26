@@ -960,6 +960,18 @@
         <member name="M:MyFinance.WebApi.SchedulerManagers.SchedulerManager.RemoveAllJobsByCategoryIdAsync(System.Guid)">
             <inheritdoc />
         </member>
+        <member name="T:MyFinance.WebApi.Utils.CronValidator">
+            <summary>
+                Helper that provides methods for interacts with cron expressions.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Utils.CronValidator.IsCronValid(System.String)">
+            <summary>
+                Checks if the string contains a cron expression.
+            </summary>
+            <param name="cron">cron expression as a string</param>
+            <returns>A boolean</returns>
+        </member>
         <member name="T:MyFinance.WebApi.Utils.IJwtUtil">
             <summary>
             Signature of the service provides utils for JWT

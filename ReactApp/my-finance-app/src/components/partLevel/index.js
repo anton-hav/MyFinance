@@ -9,6 +9,7 @@ import { AddNewRecordForm } from "./addNewRecordForm/AddNewRecordForm.component"
 import { SmartSnackBar } from "./smartSnackBar/SmartSnackBar.component";
 import { RecordsListView } from "./recordsListView/RecordsListView.component";
 import { ConfirmDeleteCategoryDialog } from "./confirmDeleteCategoryDialog/ConfirmDeleteCategoryDialog.component";
+import { AddNewPlannedTransactionForm } from "./addNewPlannedTransactionForm/AddNewPlannedTransactionForm.component";
 
 // EXPORTS ----------------------------------------------------------------
 
@@ -18,4 +19,5 @@ export {
   SmartSnackBar,
   RecordsListView,
   ConfirmDeleteCategoryDialog,
+  AddNewPlannedTransactionForm,
 };

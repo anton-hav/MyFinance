@@ -11,4 +11,5 @@ export const environment = {
   categoriesEndpoint: "Categories",
   recordsEndpoint: "Records",
   recordsCountEndpoint: "RecordsCount",
+  plannedTransactionsEndpoint: "PlannedTransactions",
 };

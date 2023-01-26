@@ -1,0 +1,8 @@
+.cron-weekly-input {
+    display: flex;
+    width: 60%;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-around;
+    margin-bottom: 15px;
+}

@@ -17,7 +17,7 @@ export default class RecordService {
 
   /**
    * Get records by search parameters from the API
-   * @param {RecordDto} searchParameters - object that wraps search parameters
+   * @param {object} searchParameters - object that wraps search parameters
    * @returns transaction records matching the search parameters
    */
   async getRecordsBySearchParametersFromApi(searchParameters) {
@@ -51,10 +51,10 @@ export default class RecordService {
 
   /**
    * Create new transaction record in the database via API.
-   * @param {number} price - category name
+   * @param {number} price - price
    * @param {string} comment - comment for the record
    * @param {*} createdDate - date time of transaction
-   * @param {string} categoryId - category name
+   * @param {string} categoryId - category id
    * @return a newly record.
    */
   async createNewRecord(price, comment, createdDate, categoryId) {
@@ -78,7 +78,7 @@ export default class RecordService {
 
   /**
    * Remove a transaction record from the database via API.
-   * @param {string} categoryId - an unique identifier of the record.
+   * @param {string} id - an unique identifier of the record.
    * @returns a boolean(true if record successfully removed)
    */
   async deleteRecord(id) {
