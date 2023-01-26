@@ -3,7 +3,10 @@ import { useState } from "react";
 // Import third party libraries
 import { Typography, Grid, Paper, Masonry } from "../../../imports/ui.imports";
 // Import custom part-level components
-import { AddNewPlannedTransactionForm } from "../../partLevel/index";
+import {
+  AddNewPlannedTransactionForm,
+  SmartSnackBar,
+} from "../../partLevel/index";
 // Import services
 import PlannedTransactionService from "../../../services/plannedTransaction.service";
 import CategoryService from "../../../services/category.service";
@@ -101,6 +104,21 @@ export function ScheduleSection() {
 
   //#endregion ADD NEW PLANNED TRANSACTION FORM
 
+  //#region SNACKBAR LOGIC
+
+  /**
+   * Handle close ckick event from the snack bar item.
+   * @param {string} snackId - an unique identifier of the snack bar item.
+   */
+  const handleSnackBarClose = (snackId) => {
+    const index = snackBars.findIndex((snack) => snack.id === snackId);
+    let newSnackBars = [...snackBars];
+    newSnackBars.splice(index, 1);
+    setSnackBars(newSnackBars);
+  };
+
+  //#endregion SNACKBAR LOGIC
+
   return (
     <>
       <Grid container spacing={1}>
@@ -129,7 +147,7 @@ export function ScheduleSection() {
         </Grid>
       </Grid>
 
-      {/* <SmartSnackBar source={snackBars} onClose={handleSnackBarClose} /> */}
+      <SmartSnackBar source={snackBars} onClose={handleSnackBarClose} />
     </>
   );
 }
