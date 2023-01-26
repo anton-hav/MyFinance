@@ -226,7 +226,10 @@ export function AddNewPlannedTransactionForm(props) {
 
   return (
     <Box className="add-planned-transaction">
-      <Typography paragraph>Create new planned transaction rule.</Typography>
+      <Typography paragraph>
+        Create new planned transaction rule. This form allows you to create
+        rules for automatic record generation.
+      </Typography>
 
       <form onSubmit={formik.handleSubmit} className="form">
         <Box className="line-wrapper">

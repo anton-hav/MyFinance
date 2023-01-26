@@ -11,5 +11,8 @@ import dayjs from "dayjs";
 // From cron-parser https://github.com/harrisiirak/cron-parser#readme
 import cronParser from "cron-parser";
 
+// From cronsTrue https://github.com/bradymholt/cronstrue
+import cronstrue from "cronstrue";
+
 // EXPORTS ----------------------------------------------------------------
-export { queryString, dayjs, cronParser };
+export { queryString, dayjs, cronParser, cronstrue };

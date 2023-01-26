@@ -65,7 +65,10 @@ export default class PlannedTransactionService {
    * @returns a boolean(true if planned transaction successfully removed)
    */
   async deletePlannedTransaction(id) {
-    let response = await this._apiService.delete(this._recordsEndpoint, id);
+    let response = await this._apiService.delete(
+      this._plannedTransactionsEndpoint,
+      id
+    );
     return response;
   }
 

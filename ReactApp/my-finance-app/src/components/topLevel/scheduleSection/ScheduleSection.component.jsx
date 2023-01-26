@@ -1,11 +1,11 @@
-import { snackbarClasses } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Import third party libraries
 import { Typography, Grid, Paper, Masonry } from "../../../imports/ui.imports";
 // Import custom part-level components
 import {
   AddNewPlannedTransactionForm,
   SmartSnackBar,
+  PlannedTransactionListView,
 } from "../../partLevel/index";
 // Import services
 import PlannedTransactionService from "../../../services/plannedTransaction.service";
@@ -19,6 +19,9 @@ import ConflictError from "../../../types/errors/conflict.error";
 
 const _plannedService = new PlannedTransactionService();
 const _categoryService = new CategoryService();
+
+const income = CategoryTypes.getIncomeType();
+const expenses = CategoryTypes.getExpensesType();
 
 /**
  * Get the category specified by category id from the storage via API
@@ -37,6 +40,111 @@ export function ScheduleSection() {
   const [plannedTransactions, setPlannedTransactions] = useState([]);
   const [existingPlannedTransactions, setExistingPlannedTransactions] =
     useState([]);
+  const [selectedPlannedTransactionType, setSelectedPlannedTransactionType] =
+    useState(CategoryTypes.getTypeForAll());
+  const [categories, setCategories] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState("");
+
+  //#region PLANNED TRANSACTIONS LIST VIEW LOGIC
+
+  //------------------Filters----------------------------------------------
+  /**
+   * Handle the change of the selected record/category type in the list of the records view
+   * @param {*} value
+   */
+  const handlePlannedTransactionTypeChange = (value) => {
+    setCategoryFilter("");
+    setSelectedPlannedTransactionType(value);
+  };
+
+  const handleCategoryFilterChange = (value) => {
+    setCategoryFilter(value);
+  };
+
+  // If planned transaction type in selectedPlannedTransactionType is changed
+  useEffect(() => {
+    const getCategoriesFromApi = async () => {
+      let result;
+      if (selectedPlannedTransactionType.value === income.value) {
+        result = await _categoryService.getIncomeCategoriesFromApi();
+      } else if (selectedPlannedTransactionType.value === expenses.value) {
+        result = await _categoryService.getExpensesCategoriesFromApi();
+      } else {
+        const incomeCategories =
+          await _categoryService.getIncomeCategoriesFromApi();
+        const expenseCategories =
+          await _categoryService.getExpensesCategoriesFromApi();
+        result = [...incomeCategories, ...expenseCategories];
+      }
+
+      setCategories(result);
+    };
+
+    // Get categories that match the categoryType
+    getCategoriesFromApi();
+  }, [selectedPlannedTransactionType]);
+
+  //------------------Body------------------------------------------------
+
+  useEffect(() => {
+    /**
+     * Get planned transactions from the storage via API
+     * @returns planned transactions as an array of the PlannedTransactionDto instance
+     */
+    const getPlannedTransactionsFromServer = async () => {
+      const data =
+        await _plannedService.getPlannedTransactionsBySearchParametersFromApi({
+          categoryType: selectedPlannedTransactionType,
+          categoryId: categoryFilter !== "" ? categoryFilter : null,
+        });
+      //data.sort(recordCompareByDateDescending);
+      return data;
+    };
+
+    /**
+     * Get planned transaction view models.
+     * This downloads data from the server and puts it into the planned transactions state.
+     */
+    const getPlannedTransactionViewModels = async () => {
+      const dtos = await getPlannedTransactionsFromServer();
+      const models = await Promise.all(
+        dtos.map(async (dto) => {
+          const category = await getCategoryById(dto.categoryId);
+          let model =
+            PlannedTransactionInListViewModel.fromPlannedTransactionDto(dto);
+          model.category = category;
+          return model;
+        })
+      );
+      setPlannedTransactions(models);
+    };
+
+    getPlannedTransactionViewModels();
+  }, [selectedPlannedTransactionType, categoryFilter]);
+
+  /**
+   * Handle delete planned transaction click event.
+   * @param {PlannedTransactionInListViewModel} plannedTransaction - planned transaction to delete
+   */
+  const handleDeletePlannedTransactionClick = async (plannedTransaction) => {
+    /**
+     * Remove the planned transaction from the planned transactions state.
+     * @param {PlannedTransactionInListViewModel} item - planned transaction to delete
+     */
+    const removePlannedTransactionFromState = (item) => {
+      let index = plannedTransactions.findIndex((i) => i.id === item.id);
+      const newPlannedTransactions = plannedTransactions.slice();
+      newPlannedTransactions.splice(index, 1);
+      setPlannedTransactions(newPlannedTransactions);
+    };
+
+    const result = await _plannedService.deletePlannedTransaction(
+      plannedTransaction.id
+    );
+    removePlannedTransactionFromState(plannedTransaction);
+  };
+
+  //#endregion PLANNED TRANSACTIONS LIST VIEW LOGIC
 
   //#region ADD NEW PLANNED TRANSACTION FORM
 
@@ -141,8 +249,23 @@ export function ScheduleSection() {
         <Grid item xs={8}>
           <Paper sx={{ padding: 1 }}>
             <Typography variant="h2">Planned transactions</Typography>
-            <Typography paragraph>Lorem ipsum dolor sit amet...</Typography>
-            {/* <PlannedTransactionListView/> */}
+            <Typography paragraph>
+              In this widget, you can find information about all the scheduled
+              transactions.You can also filter some records with category
+              filters and category type filters.
+            </Typography>
+            <PlannedTransactionListView
+              plannedTransactions={plannedTransactions}
+              onDeleteClick={handleDeletePlannedTransactionClick}
+              plannedTransactionTypes={CategoryTypes.getTypes()}
+              plannedTransactionType={selectedPlannedTransactionType}
+              onPlannedTransactionTypeChange={
+                handlePlannedTransactionTypeChange
+              }
+              categories={categories}
+              categoryFilter={categoryFilter}
+              onCategoryChange={handleCategoryFilterChange}
+            />
           </Paper>
         </Grid>
       </Grid>
