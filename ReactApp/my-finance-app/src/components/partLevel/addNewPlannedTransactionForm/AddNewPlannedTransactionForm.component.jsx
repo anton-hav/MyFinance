@@ -41,9 +41,9 @@ function CronInput(props) {
   if (scheme === cronInputSchemes[0].name) {
     component = <CronDailyInput {...props} />;
   } else if (scheme === cronInputSchemes[1].name) {
-    component = <CronWeeklyInput />;
+    component = <CronWeeklyInput {...props} />;
   } else if (scheme === cronInputSchemes[2].name) {
-    component = <CronMonthlyInput />;
+    component = <CronMonthlyInput {...props} />;
   }
   return (
     <>
@@ -220,6 +220,7 @@ export function AddNewPlannedTransactionForm(props) {
       <form onSubmit={formik.handleSubmit} className="form">
         <Box className="line-wrapper">
           <TextField
+            fullWidth
             className="text-field"
             InputProps={{
               startAdornment: (
