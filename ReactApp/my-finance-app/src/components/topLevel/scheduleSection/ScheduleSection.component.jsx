@@ -1,11 +1,11 @@
-import { snackbarClasses } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Import third party libraries
 import { Typography, Grid, Paper, Masonry } from "../../../imports/ui.imports";
 // Import custom part-level components
 import {
   AddNewPlannedTransactionForm,
   SmartSnackBar,
+  PlannedTransactionListView,
 } from "../../partLevel/index";
 // Import services
 import PlannedTransactionService from "../../../services/plannedTransaction.service";
@@ -37,6 +37,80 @@ export function ScheduleSection() {
   const [plannedTransactions, setPlannedTransactions] = useState([]);
   const [existingPlannedTransactions, setExistingPlannedTransactions] =
     useState([]);
+  const [selectedPlannedTransactionType, setSelectedPlannedTransactionType] =
+    useState(CategoryTypes.getTypeForAll());
+
+  //#region PLANNED TRANSACTIONS LIST VIEW LOGIC
+
+  //------------------Filters----------------------------------------------
+  /**
+   * Handle the change of the selected record/category type in the list of the records view
+   * @param {*} value
+   */
+  const handlePlannedTransactionTypeChange = (value) => {
+    setSelectedPlannedTransactionType(value);
+  };
+
+  //------------------Body------------------------------------------------
+
+  useEffect(() => {
+    /**
+     * Get planned transactions from the storage via API
+     * @returns planned transactions as an array of the PlannedTransactionDto instance
+     */
+    const getPlannedTransactionsFromServer = async () => {
+      const data =
+        await _plannedService.getPlannedTransactionsBySearchParametersFromApi({
+          categoryType: selectedPlannedTransactionType,
+        });
+      //data.sort(recordCompareByDateDescending);
+      return data;
+    };
+
+    /**
+     * Get planned transaction view models.
+     * This downloads data from the server and puts it into the planned transactions state.
+     */
+    const getPlannedTransactionViewModels = async () => {
+      const dtos = await getPlannedTransactionsFromServer();
+      const models = await Promise.all(
+        dtos.map(async (dto) => {
+          const category = await getCategoryById(dto.categoryId);
+          let model =
+            PlannedTransactionInListViewModel.fromPlannedTransactionDto(dto);
+          model.category = category;
+          return model;
+        })
+      );
+      setPlannedTransactions(models);
+    };
+
+    getPlannedTransactionViewModels();
+  }, [selectedPlannedTransactionType]);
+
+  /**
+   * Handle delete planned transaction click event.
+   * @param {PlannedTransactionInListViewModel} plannedTransaction - planned transaction to delete
+   */
+  const handleDeletePlannedTransactionClick = async (plannedTransaction) => {
+    /**
+     * Remove the planned transaction from the planned transactions state.
+     * @param {PlannedTransactionInListViewModel} item - planned transaction to delete
+     */
+    const removePlannedTransactionFromState = (item) => {
+      let index = plannedTransactions.findIndex((i) => i.id === item.id);
+      const newPlannedTransactions = plannedTransactions.slice();
+      newPlannedTransactions.splice(index, 1);
+      setPlannedTransactions(newPlannedTransactions);
+    };
+
+    const result = await _plannedService.deletePlannedTransaction(
+      plannedTransaction.id
+    );
+    removePlannedTransactionFromState(plannedTransaction);
+  };
+
+  //#endregion PLANNED TRANSACTIONS LIST VIEW LOGIC
 
   //#region ADD NEW PLANNED TRANSACTION FORM
 
@@ -142,7 +216,15 @@ export function ScheduleSection() {
           <Paper sx={{ padding: 1 }}>
             <Typography variant="h2">Planned transactions</Typography>
             <Typography paragraph>Lorem ipsum dolor sit amet...</Typography>
-            {/* <PlannedTransactionListView/> */}
+            <PlannedTransactionListView
+              plannedTransactions={plannedTransactions}
+              onDeleteClick={handleDeletePlannedTransactionClick}
+              plannedTransactionTypes={CategoryTypes.getTypes()}
+              plannedTransactionType={selectedPlannedTransactionType}
+              onPlannedTransactionTypeChange={
+                handlePlannedTransactionTypeChange
+              }
+            />
           </Paper>
         </Grid>
       </Grid>

@@ -1,0 +1,10 @@
+.planned-transactions-list-header {
+    display: flex;
+    flex-direction: row;    
+}
+
+.planned-transactions-list-header .select-filter {
+    width: 100%;
+    margin-left: 10px;
+    padding-right: 10px;
+}

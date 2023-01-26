@@ -1,10 +1,5 @@
 // Import third-party libraries
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-} from "../../../imports/ui.imports";
+import { Box } from "../../../imports/ui.imports";
 // Import custom part-level components
 import { SelectPeriodForRecords } from "../selectPeriodForRecords/SelectPeriodForRecords.component";
 import { SelectRecordType } from "../selectRecordType/SelectRecordType.component";
