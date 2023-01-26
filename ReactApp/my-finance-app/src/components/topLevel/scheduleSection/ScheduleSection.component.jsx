@@ -20,6 +20,9 @@ import ConflictError from "../../../types/errors/conflict.error";
 const _plannedService = new PlannedTransactionService();
 const _categoryService = new CategoryService();
 
+const income = CategoryTypes.getIncomeType();
+const expenses = CategoryTypes.getExpensesType();
+
 /**
  * Get the category specified by category id from the storage via API
  * @param {string} categoryId - category id
@@ -39,6 +42,8 @@ export function ScheduleSection() {
     useState([]);
   const [selectedPlannedTransactionType, setSelectedPlannedTransactionType] =
     useState(CategoryTypes.getTypeForAll());
+  const [categories, setCategories] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   //#region PLANNED TRANSACTIONS LIST VIEW LOGIC
 
@@ -48,8 +53,36 @@ export function ScheduleSection() {
    * @param {*} value
    */
   const handlePlannedTransactionTypeChange = (value) => {
+    setCategoryFilter("");
     setSelectedPlannedTransactionType(value);
   };
+
+  const handleCategoryFilterChange = (value) => {
+    setCategoryFilter(value);
+  };
+
+  // If planned transaction type in selectedPlannedTransactionType is changed
+  useEffect(() => {
+    const getCategoriesFromApi = async () => {
+      let result;
+      if (selectedPlannedTransactionType.value === income.value) {
+        result = await _categoryService.getIncomeCategoriesFromApi();
+      } else if (selectedPlannedTransactionType.value === expenses.value) {
+        result = await _categoryService.getExpensesCategoriesFromApi();
+      } else {
+        const incomeCategories =
+          await _categoryService.getIncomeCategoriesFromApi();
+        const expenseCategories =
+          await _categoryService.getExpensesCategoriesFromApi();
+        result = [...incomeCategories, ...expenseCategories];
+      }
+
+      setCategories(result);
+    };
+
+    // Get categories that match the categoryType
+    getCategoriesFromApi();
+  }, [selectedPlannedTransactionType]);
 
   //------------------Body------------------------------------------------
 
@@ -62,6 +95,7 @@ export function ScheduleSection() {
       const data =
         await _plannedService.getPlannedTransactionsBySearchParametersFromApi({
           categoryType: selectedPlannedTransactionType,
+          categoryId: categoryFilter !== "" ? categoryFilter : null,
         });
       //data.sort(recordCompareByDateDescending);
       return data;
@@ -86,7 +120,7 @@ export function ScheduleSection() {
     };
 
     getPlannedTransactionViewModels();
-  }, [selectedPlannedTransactionType]);
+  }, [selectedPlannedTransactionType, categoryFilter]);
 
   /**
    * Handle delete planned transaction click event.
@@ -215,7 +249,11 @@ export function ScheduleSection() {
         <Grid item xs={8}>
           <Paper sx={{ padding: 1 }}>
             <Typography variant="h2">Planned transactions</Typography>
-            <Typography paragraph>Lorem ipsum dolor sit amet...</Typography>
+            <Typography paragraph>
+              In this widget, you can find information about all the scheduled
+              transactions.You can also filter some records with category
+              filters and category type filters.
+            </Typography>
             <PlannedTransactionListView
               plannedTransactions={plannedTransactions}
               onDeleteClick={handleDeletePlannedTransactionClick}
@@ -224,6 +262,9 @@ export function ScheduleSection() {
               onPlannedTransactionTypeChange={
                 handlePlannedTransactionTypeChange
               }
+              categories={categories}
+              categoryFilter={categoryFilter}
+              onCategoryChange={handleCategoryFilterChange}
             />
           </Paper>
         </Grid>

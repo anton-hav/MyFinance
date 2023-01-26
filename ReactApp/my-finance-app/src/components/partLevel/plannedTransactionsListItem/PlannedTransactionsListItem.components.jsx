@@ -40,74 +40,15 @@ export function PlannedTransactionsListItem(props) {
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
   const containerRef = useRef(null);
 
-  /**
-   * Handle click events on the expand icon.
-   */
-  const handleShowComment = () => {
-    setIsCommentExpanded(!isCommentExpanded);
-  };
-
-  //   return (
-  //     <>
-  //       <Paper className="planned-transactions-list-item">
-  //         <Grid container spacing={1} ref={containerRef}>
-  //           <Grid item lg={2} md={2} className="price">
-  //             <Typography
-  //               color={
-  //                 plannedTransaction.category.type === income.value
-  //                   ? "#2e7d32"
-  //                   : "error"
-  //               }
-  //               component="div"
-  //             >
-  //               {priceFormatter(plannedTransaction)}
-  //             </Typography>
-  //           </Grid>
-  //           <Grid item lg={7} md={5} className="category">
-  //             <Typography>{plannedTransaction.category.name}</Typography>
-  //             <Box>
-  //               {plannedTransaction.comment !== "" ? (
-  //                 <IconButton
-  //                   size="small"
-  //                   aria-label="expand"
-  //                   onClick={handleShowComment}
-  //                 >
-  //                   {isCommentExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-  //                 </IconButton>
-  //               ) : null}
-  //               <IconButton onClick={() => onDeleteClick(plannedTransaction)}>
-  //                 <DeleteIcon />
-  //               </IconButton>
-  //             </Box>
-  //           </Grid>
-
-  //           {isCommentExpanded ? (
-  //             <Grid item xs={12}>
-  //               <Divider />
-  //               <Slide
-  //                 direction="left"
-  //                 in={isCommentExpanded}
-  //                 container={containerRef.current}
-  //               >
-  //                 <Typography>
-  //                   {cronstrue.toString(plannedTransaction.cron)}
-  //                 </Typography>
-  //               </Slide>
-  //             </Grid>
-  //           ) : null}
-  //         </Grid>
-  //       </Paper>
-  //     </>
-  //   );
   return (
     <>
       <Paper className="planned-transactions-list-item">
         <Grid container spacing={1} ref={containerRef}>
-          <Grid item lg={3} md={3} className="category">
+          <Grid item lg={3} md={3} className="category-name">
             <Typography>{plannedTransaction.category.name}</Typography>
           </Grid>
 
-          <Grid item lg={6} md={6} className="category">
+          <Grid item lg={6} md={6} className="cron">
             <Typography>
               {cronstrue.toString(plannedTransaction.cron, {
                 verbose: true,

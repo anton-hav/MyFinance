@@ -7,12 +7,12 @@
     
 }
 
-.planned-transactions-list-item .date {
+.planned-transactions-list-item .category-name {
     display: flex;    
     align-items: center;
 }
 
-.planned-transactions-list-item .category {
+.planned-transactions-list-item .cron {
     display: flex;
     width: 100%;
     align-items: center;

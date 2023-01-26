@@ -13,6 +13,9 @@ export function PlannedTransactionListView(props) {
     plannedTransactionTypes,
     plannedTransactionType,
     onPlannedTransactionTypeChange,
+    categories,
+    categoryFilter,
+    onCategoryChange,
   } = props;
 
   return (
@@ -21,6 +24,9 @@ export function PlannedTransactionListView(props) {
         plannedTransactionTypes={plannedTransactionTypes}
         plannedTransactionType={plannedTransactionType}
         onPlannedTransactionTypeChange={onPlannedTransactionTypeChange}
+        categories={categories}
+        categoryFilter={categoryFilter}
+        onCategoryChange={onCategoryChange}
       />
       {plannedTransactions !== undefined && plannedTransactions.length > 0 ? (
         plannedTransactions.map((transaction) => (
