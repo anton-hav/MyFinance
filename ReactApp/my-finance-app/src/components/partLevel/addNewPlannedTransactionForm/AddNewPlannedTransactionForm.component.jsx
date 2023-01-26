@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from "../../../imports/ui.imports";
 import { useFormik, yup } from "../../../imports/formBuilder.import";
 import { cronParser } from "../../../imports/utils.import";
@@ -30,6 +31,7 @@ const income = CategoryTypes.getIncomeType();
 const expenses = CategoryTypes.getExpensesType();
 
 const cronInputSchemes = [
+  { name: "None" },
   { name: "Daily" },
   { name: "Weekly" },
   { name: "Monthly" },
@@ -39,10 +41,12 @@ function CronInput(props) {
   const { scheme, error, helperText } = props;
   let component;
   if (scheme === cronInputSchemes[0].name) {
-    component = <CronDailyInput {...props} />;
+    component = null;
   } else if (scheme === cronInputSchemes[1].name) {
-    component = <CronWeeklyInput {...props} />;
+    component = <CronDailyInput {...props} />;
   } else if (scheme === cronInputSchemes[2].name) {
+    component = <CronWeeklyInput {...props} />;
+  } else if (scheme === cronInputSchemes[3].name) {
     component = <CronMonthlyInput {...props} />;
   }
   return (
@@ -53,7 +57,7 @@ function CronInput(props) {
           variant="body2"
           sx={{ color: "#d32f2f", fontSize: "0.75rem" }}
         >
-          {helperText}
+          {component ? helperText : null}
         </Typography>
       ) : null}
     </>
@@ -167,6 +171,7 @@ export function AddNewPlannedTransactionForm(props) {
         "Several parameters are incorrect. Enter valid values for time slots",
         (val) => {
           let isCronValid = true;
+          if (val === "0 0 * * *") isCronValid = false;
           try {
             cronParser.parseExpression(val);
           } catch (e) {
@@ -208,10 +213,16 @@ export function AddNewPlannedTransactionForm(props) {
     onSubmit: (value, { resetForm }) => {
       // Put value to the parent component via the props.onSubmit
       onSubmit(value);
+      setCronSchema(cronInputSchemes[0].name);
       resetForm();
     },
     enableReinitialize: true,
   });
+
+  const schemaError =
+    formik.touched.cron &&
+    Boolean(formik.errors.cron) &&
+    cronSchema === cronInputSchemes[0].name;
 
   return (
     <Box className="add-planned-transaction">
@@ -246,6 +257,7 @@ export function AddNewPlannedTransactionForm(props) {
             <Select
               labelId="select-cron-schemes-label"
               id="select-cron"
+              error={schemaError}
               value={cronSchema}
               lable="Scheme of rules"
               variant="standard"
@@ -257,6 +269,11 @@ export function AddNewPlannedTransactionForm(props) {
                 </MenuItem>
               ))}
             </Select>
+            {schemaError ? (
+              <FormHelperText error={schemaError}>
+                Choose a scheme
+              </FormHelperText>
+            ) : null}
           </FormControl>
         </Box>
 

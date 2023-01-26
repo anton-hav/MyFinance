@@ -1,15 +1,13 @@
 import { useState } from "react";
 // Import third party libraries
-import { Box, Typography } from "../../../imports/ui.imports";
+import { Box } from "../../../imports/ui.imports";
 // Import custom part-level components
-import { NumberInputBar } from "../numberInputBar/NumberInputBar.component";
 import { DaysOfWeekChooser } from "../daysOfWeekChooser/DaysOfWeekChooser.component";
 // Import styles
 import "./cronWeeklyInput.component.css";
 
 export function CronWeeklyInput(props) {
   const { name, onChange } = props;
-  const [count, setCount] = useState(1);
   const [days, setDays] = useState([]);
 
   const generateCron = (args) => {
