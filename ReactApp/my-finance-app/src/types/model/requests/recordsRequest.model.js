@@ -77,7 +77,7 @@ export default class RecordsRequestModel extends UrlSearchParameters {
         object.categoryId,
         object.dateFrom,
         object.dateTo,
-        CategoryTypes.isTypeForAll(object.categoryType)
+        !object.categoryType || CategoryTypes.isTypeForAll(object.categoryType)
           ? null
           : object.categoryType.value,
         object.recordStatus

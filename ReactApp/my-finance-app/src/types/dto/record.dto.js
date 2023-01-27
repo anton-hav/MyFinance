@@ -30,7 +30,26 @@ export default class RecordDto {
       response.comment,
       response.createdDate,
       response.categoryId,
-      response.recordStatus
+      response.status
     );
+  }
+
+  /**
+   * Mapping from RecordInListForApprovalViewModel to RecordDto.
+   * @param {RecordInListForApprovalViewModel} object - object.
+   * @returns a new RecordDto object
+   */
+  static fromRecordInListForApprovalViewModel(object) {
+    if (object !== undefined) {
+      return new RecordDto(
+        object.id,
+        object.price,
+        object.comment,
+        object.createdDate,
+        object.category.id,
+        object.recordStatus
+      );
+    }
+    return new RecordDto();
   }
 }

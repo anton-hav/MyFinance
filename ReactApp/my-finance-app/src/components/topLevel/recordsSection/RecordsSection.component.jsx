@@ -6,6 +6,7 @@ import {
   AddNewRecordForm,
   SmartSnackBar,
   RecordsListView,
+  TransactionListForApproval,
 } from "../../partLevel/index";
 import { dayjs } from "../../../imports/utils.import";
 // Import services
@@ -13,6 +14,8 @@ import RecordService from "../../../services/record.service";
 import CategoryService from "../../../services/category.service";
 // Import custom types and utils
 import RecordInRecordsListViewModel from "../../../types/model/view/recordInRecordsListView.model";
+import RecordInListForApprovalViewModel from "../../../types/model/view/recordInListForApprovalView.model";
+import RecordDto from "../../../types/dto/record.dto";
 import Periods from "../../../utils/periods.utils";
 import CategoryTypes from "../../../utils/categoryTypes";
 import RecordStatus from "../../../utils/recordStatus.utils";
@@ -52,6 +55,33 @@ export function RecordsSection() {
   const [selectedRecordType, setSelectedRecordType] = useState(
     CategoryTypes.getTypeForAll()
   );
+  const [transactionsForApproval, setTransactionsForApproval] = useState([]);
+
+  /**
+   * checks if the model meets the filters requirements
+   * @param {RecordInRecordsListViewModel} model - new record model
+   */
+  const isNewRecordModelValidByFilters = (model) => {
+    let result = true;
+    if (
+      !CategoryTypes.isTypeForAll(selectedRecordType) &&
+      model.category.type !== selectedRecordType.value
+    ) {
+      result = false;
+    }
+
+    const [dateFrom, dateTo] =
+      Periods.convertPeriodNameToSearchParameters(period);
+
+    if (
+      dayjs(model.createdDate).isBefore(dateFrom) ||
+      dayjs(model.createdDate).isAfter(dateTo)
+    ) {
+      result = false;
+    }
+
+    return result;
+  };
 
   //#region RECORDS LIST VIEW LOGIC
   //------------------Filters----------------------------------------------
@@ -141,32 +171,6 @@ export function RecordsSection() {
    */
   const handleAddNewRecordFormSubmit = async (values) => {
     /**
-     * checks if the model meets the filters requirements
-     * @param {RecordInRecordsListViewModel} model - new record model
-     */
-    const isNewRecordModelValidByFilters = (model) => {
-      let result = true;
-      if (
-        !CategoryTypes.isTypeForAll(selectedRecordType) &&
-        model.category.type !== selectedRecordType.value
-      ) {
-        result = false;
-      }
-
-      const [dateFrom, dateTo] =
-        Periods.convertPeriodNameToSearchParameters(period);
-
-      if (
-        dayjs(model.createdDate).isBefore(dateFrom) ||
-        dayjs(model.createdDate).isAfter(dateTo)
-      ) {
-        result = false;
-      }
-
-      return result;
-    };
-
-    /**
      * Get record view model
      * @param {RecordDto} record - new record
      * @returns record view model as a RecordInRecordsListViewModel
@@ -229,6 +233,129 @@ export function RecordsSection() {
 
   //#endregion SNACKBAR LOGIC
 
+  //#region TRANSACTIONS FOR APPROVAL WIDGET LOGIC
+
+  useEffect(() => {
+    /**
+     * Get records for approval from the storage via API
+     * @returns records as an array of the RecordDto instance
+     */
+    const getRecordsFromServer = async () => {
+      const data = await _recordService.getRecordsBySearchParametersFromApi({
+        recordStatus: RecordStatus.getPlannedStatus().value,
+      });
+      data.sort(recordCompareByDateDescending);
+      return data;
+    };
+
+    /**
+     * Get record view models.
+     * This downloads data from the server and puts it into the records state.
+     */
+    const getRecordViewModels = async () => {
+      const dtos = await getRecordsFromServer();
+      const models = await Promise.all(
+        dtos.map(async (dto) => {
+          const category = await getCategoryById(dto.categoryId);
+          let model = RecordInListForApprovalViewModel.fromRecordDto(dto);
+          model.category = category;
+          return model;
+        })
+      );
+      setTransactionsForApproval(models);
+    };
+
+    getRecordViewModels();
+  }, []);
+
+  /**
+   * Remove the record from the records state.
+   * @param {RecordInListForApprovalViewModel} item - record to delete
+   */
+  const removeTransactionForApprovalFromState = (item) => {
+    let index = transactionsForApproval.findIndex((i) => i.id === item.id);
+    const newTransactions = transactionsForApproval.slice();
+    newTransactions.splice(index, 1);
+    setTransactionsForApproval(newTransactions);
+  };
+
+  /**
+   * Handle transaction approve click event.
+   * @param {RecordInListForApprovalViewModel} value - transaction to approve
+   */
+  const handleApproveClick = async (value) => {
+    /**
+     * Get record view model
+     * @param {RecordDto} record - new record
+     * @returns record view model as a RecordInRecordsListViewModel
+     */
+    const getRecordViewModels = async (record) => {
+      const category = await getCategoryById(record.categoryId);
+      let model = RecordInRecordsListViewModel.fromRecordDto(record);
+      model.category = category;
+      return model;
+    };
+
+    /**
+     * Add new record view model to the records state
+     * @param {RecordInRecordsListViewModel} model - newly record view model
+     */
+    const addNewRecordModelToRecords = (model) => {
+      let newRecords = [...records, model];
+      newRecords.sort(recordCompareByDateDescending);
+      setRecords(newRecords);
+    };
+
+    const dto = RecordDto.fromRecordInListForApprovalViewModel(value);
+    dto.recordStatus = RecordStatus.getApprovedStatus().value;
+    const result = await _recordService.updateRecord(dto);
+
+    if (result) {
+      const recordModel = await getRecordViewModels(dto);
+      const isValid = isNewRecordModelValidByFilters(recordModel);
+      removeTransactionForApprovalFromState(value);
+
+      if (isValid) {
+        addNewRecordModelToRecords(recordModel);
+      }
+    }
+
+    setSnackBars([
+      ...snackBars,
+      {
+        id: crypto.randomUUID(),
+        severity: "success",
+        message: "New transaction successfully created!",
+      },
+    ]);
+  };
+
+  /**
+   * Handle reject sheduled transaction click event.
+   * @param {RecordInListForApprovalViewModel} value - transaction to reject
+   */
+  const handleRejectClick = async (value) => {
+    /**
+     * Remove the record from the records state.
+     * @param {RecordInListForApprovalViewModel} item - record to delete
+     */
+    const removeTransactionForApprovalFromState = (item) => {
+      let index = transactionsForApproval.findIndex((i) => i.id === item.id);
+      const newTransactions = transactionsForApproval.slice();
+      newTransactions.splice(index, 1);
+      setTransactionsForApproval(newTransactions);
+    };
+
+    const dto = RecordDto.fromRecordInListForApprovalViewModel(value);
+    dto.recordStatus = RecordStatus.getRejectedStatus().value;
+    const result = await _recordService.updateRecord(dto);
+    if (result) {
+      removeTransactionForApprovalFromState(value);
+    }
+  };
+
+  //#endregion TRANSACTIONS FOR APPROVAL WIDGET LOGIC
+
   return (
     <>
       <Grid container spacing={1}>
@@ -244,8 +371,12 @@ export function RecordsSection() {
               <AddNewRecordForm onSubmit={handleAddNewRecordFormSubmit} />
             </Paper>
             <Paper sx={{ padding: 1 }}>
-              <Typography variant="h2">Some record widget</Typography>
-              <div>Important information here</div>
+              <Typography variant="h2">Scheduled transactions</Typography>
+              <TransactionListForApproval
+                transactionsForApproval={transactionsForApproval}
+                onApproveClick={handleApproveClick}
+                onRejectClick={handleRejectClick}
+              />
             </Paper>
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Another record widget</Typography>

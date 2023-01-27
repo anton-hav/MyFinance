@@ -5,6 +5,7 @@ import RecordDto from "../types/dto/record.dto";
 import { environment } from "../environment/environment";
 import RecordsRequestModel from "../types/model/requests/recordsRequest.model";
 import RecordsCountRequestModel from "../types/model/requests/recordsCountRequest.model";
+import UpdateRecordsRequestModel from "../types/model/requests/updateRecordRequest.model";
 
 export default class RecordService {
   constructor() {
@@ -71,6 +72,22 @@ export default class RecordService {
   //#endregion CREATE
 
   //#region UPDATE
+
+  /**
+   * Update the category trough the API
+   * @param {RecordDto} record - record to update
+   * @returns a boolean (true if record successfully updated)
+   */
+  async updateRecord(record) {
+    const model = UpdateRecordsRequestModel.fromRecordDto(record);
+    let response = await this._apiService.patch(
+      this._recordsEndpoint,
+      model,
+      model.id
+    );
+    let result = RecordDto.fromResponse(response);
+    return result instanceof RecordDto;
+  }
 
   //#endregion UPDATE
 
