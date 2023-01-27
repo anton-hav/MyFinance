@@ -1,7 +1,9 @@
-﻿namespace MyFinance.WebApi.Models.Records.Responses;
+﻿using MyFinance.Core;
+
+namespace MyFinance.WebApi.Models.Records.Responses;
 
 /// <summary>
-///     Response model for the record
+///     Response model for the record.
 /// </summary>
 public class RecordResponseModel
 {
@@ -24,6 +26,11 @@ public class RecordResponseModel
     ///     Date of creation
     /// </summary>
     public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Status of the record
+    /// </summary>
+    public RecordStatus Status { get; set; }
 
     /// <summary>
     ///     A category unique identifier

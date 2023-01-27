@@ -47,10 +47,10 @@ public interface IRecordService
     Task<bool> IsRecordExistByIdAsync(Guid id);
 
     /// <summary>
-    /// Checks if user is creator for specified record.
+    ///     Checks if user is creator for specified record.
     /// </summary>
-    /// <param name="id">a record unique identifier as a <see cref="Guid"/></param>
-    /// <param name="userId">an unique identifier of the current user as a <see cref="Guid"/></param>
+    /// <param name="id">a record unique identifier as a <see cref="Guid" /></param>
+    /// <param name="userId">an unique identifier of the current user as a <see cref="Guid" /></param>
     /// <returns>A boolean</returns>
     Task<bool> IsUserOwnerForRecordAsync(Guid id, Guid userId);
 
@@ -64,6 +64,20 @@ public interface IRecordService
     /// <param name="dto">a record for creation as a <see cref="RecordDto" /></param>
     /// <returns>the number of successfully created records in the storage</returns>
     Task<int> CreateAsync(RecordDto dto);
+
+    /// <summary>
+    ///     Create a transaction record in the storage.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         This method is used by the scheduler server to create scheduled records.
+    ///         Error handling is performed on the side of the scheduler server.
+    ///         If your scheduler provider does not provide such a feature - use manual error handling
+    ///     </para>
+    /// </remarks>
+    /// <param name="plannedTransactionId">an unique identifier of the plannedTransaction</param>
+    /// <returns>A Task</returns>
+    Task CreateRecordByPlannedTransactionIdAsync(Guid plannedTransactionId);
 
     #endregion CREATE
 

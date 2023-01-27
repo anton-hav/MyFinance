@@ -48,6 +48,37 @@ namespace MyFinance.DataBase.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("MyFinance.DataBase.Entities.PlannedTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Crone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("JobId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId")
+                        .IsUnique();
+
+                    b.HasIndex("CategoryId", "Price", "Crone")
+                        .IsUnique();
+
+                    b.ToTable("PlannedTransactions");
+                });
+
             modelBuilder.Entity("MyFinance.DataBase.Entities.Record", b =>
                 {
                     b.Property<Guid>("Id")
@@ -65,6 +96,9 @@ namespace MyFinance.DataBase.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -149,6 +183,17 @@ namespace MyFinance.DataBase.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyFinance.DataBase.Entities.PlannedTransaction", b =>
+                {
+                    b.HasOne("MyFinance.DataBase.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("MyFinance.DataBase.Entities.Record", b =>

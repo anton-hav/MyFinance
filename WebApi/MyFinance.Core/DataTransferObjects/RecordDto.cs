@@ -26,6 +26,11 @@ public class RecordDto
     public DateTime CreatedDate { get; set; }
 
     /// <summary>
+    /// Status of the record
+    /// </summary>
+    public RecordStatus Status { get; set; }
+
+    /// <summary>
     /// A category unique identifier
     /// </summary>
     public Guid CategoryId { get; set; }

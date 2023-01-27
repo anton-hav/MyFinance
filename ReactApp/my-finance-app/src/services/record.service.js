@@ -5,6 +5,7 @@ import RecordDto from "../types/dto/record.dto";
 import { environment } from "../environment/environment";
 import RecordsRequestModel from "../types/model/requests/recordsRequest.model";
 import RecordsCountRequestModel from "../types/model/requests/recordsCountRequest.model";
+import UpdateRecordsRequestModel from "../types/model/requests/updateRecordRequest.model";
 
 export default class RecordService {
   constructor() {
@@ -17,7 +18,7 @@ export default class RecordService {
 
   /**
    * Get records by search parameters from the API
-   * @param {RecordDto} searchParameters - object that wraps search parameters
+   * @param {object} searchParameters - object that wraps search parameters
    * @returns transaction records matching the search parameters
    */
   async getRecordsBySearchParametersFromApi(searchParameters) {
@@ -51,10 +52,10 @@ export default class RecordService {
 
   /**
    * Create new transaction record in the database via API.
-   * @param {number} price - category name
+   * @param {number} price - price
    * @param {string} comment - comment for the record
    * @param {*} createdDate - date time of transaction
-   * @param {string} categoryId - category name
+   * @param {string} categoryId - category id
    * @return a newly record.
    */
   async createNewRecord(price, comment, createdDate, categoryId) {
@@ -72,13 +73,29 @@ export default class RecordService {
 
   //#region UPDATE
 
+  /**
+   * Update the category trough the API
+   * @param {RecordDto} record - record to update
+   * @returns a boolean (true if record successfully updated)
+   */
+  async updateRecord(record) {
+    const model = UpdateRecordsRequestModel.fromRecordDto(record);
+    let response = await this._apiService.patch(
+      this._recordsEndpoint,
+      model,
+      model.id
+    );
+    let result = RecordDto.fromResponse(response);
+    return result instanceof RecordDto;
+  }
+
   //#endregion UPDATE
 
   //#region DELETE
 
   /**
    * Remove a transaction record from the database via API.
-   * @param {string} categoryId - an unique identifier of the record.
+   * @param {string} id - an unique identifier of the record.
    * @returns a boolean(true if record successfully removed)
    */
   async deleteRecord(id) {

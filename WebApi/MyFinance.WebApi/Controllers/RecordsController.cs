@@ -7,7 +7,6 @@ using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.WebApi.Authorization;
 using MyFinance.WebApi.Filters.ExceptionFilters;
-using MyFinance.WebApi.Models.Categories.Responses;
 using MyFinance.WebApi.Models.General.Responses;
 using MyFinance.WebApi.Models.Records.Requests;
 using MyFinance.WebApi.Models.Records.Responses;

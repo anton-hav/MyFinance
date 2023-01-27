@@ -1,0 +1,18 @@
+.cron-monthly-input {
+    display: flex;
+}
+
+.cron-monthly-input .wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.cron-monthly-input .wrapper .line {
+    display: flex;
+    width: 100%;
+    
+}
+
+.cron-monthly-input .wrapper .line .button {
+    min-width: 42px;
+}

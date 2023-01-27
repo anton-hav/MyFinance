@@ -11,5 +11,6 @@ public interface IUnitOfWork
     IRepository<Category> Categories { get; }
     IRepository<Record> Records { get; }
     IRecordRepository AdditionRecords { get; }
+    IRepository<PlannedTransaction> PlannedTransactions { get; }
     Task<int> Commit();
 }

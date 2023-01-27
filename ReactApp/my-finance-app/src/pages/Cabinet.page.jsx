@@ -4,6 +4,7 @@ import {
   CategoryIcon,
   SummarizeIcon,
   PointOfSaleIcon,
+  ScheduleIcon,
 } from "../imports/icons.imports";
 import { Box } from "../imports/ui.imports";
 
@@ -13,6 +14,7 @@ import {
   CategoriesSection,
   SummarySection,
   RecordsSection,
+  ScheduleSection,
 } from "../components/topLevel/index";
 
 import "./cabinet.page.css";
@@ -31,6 +33,11 @@ const sections = [
     },
   ],
   [
+    {
+      title: "Schedule",
+      icon: <ScheduleIcon />,
+      component: <ScheduleSection />,
+    },
     {
       title: "Categories",
       icon: <CategoryIcon />,

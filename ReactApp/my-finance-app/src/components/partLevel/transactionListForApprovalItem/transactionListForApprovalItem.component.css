@@ -1,0 +1,37 @@
+.transactions-list-item {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+    
+}
+
+.transactions-list-item .wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.transactions-list-item .wrapper .first-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.transactions-list-item .wrapper .second-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.transactions-list-item .wrapper .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.transactions-list-item .wrapper .category {
+    display: flex;
+    font-size: large;
+}

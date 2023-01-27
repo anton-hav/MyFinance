@@ -1,0 +1,40 @@
+.add-planned-transaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.add-planned-transaction .form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: center;
+}
+
+.add-planned-transaction .form .line-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.add-planned-transaction .form .line-wrapper .type-toggler {
+    display:flex;
+    flex-grow: 0;
+    margin-bottom: 20px;
+}
+
+.add-planned-transaction .form .line-wrapper .category-selector {
+    display: flex;
+    padding-left: 25px;
+    flex-grow: 1;
+    justify-content: center;
+
+}
+
+.add-planned-transaction .form .text-field {
+    margin-bottom: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+}

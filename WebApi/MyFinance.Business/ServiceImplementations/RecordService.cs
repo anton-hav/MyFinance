@@ -17,12 +17,15 @@ public class RecordService : IRecordService
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPlannedTransactionService _plannedTransactionService;
 
     public RecordService(IMapper mapper,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IPlannedTransactionService plannedTransactionService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _plannedTransactionService = plannedTransactionService;
     }
 
     #region READ
@@ -64,6 +67,7 @@ public class RecordService : IRecordService
 
         entities = GetQueryWithCategoryFilter(entities, model.Category);
         entities = GetQueryWithUserFilter(entities, model.User);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithCreationDateTimeFilter(entities, model.CreationDateTime);
 
         var result = (await entities.AsNoTracking().ToListAsync())
@@ -89,19 +93,25 @@ public class RecordService : IRecordService
     /// <inheritdoc />
     public async Task<bool> IsRecordExistByIdAsync(Guid id)
     {
-        // -------------------------EXAMPLE----------------------------------------------------
-        // Pure generic repository approach
-        /*
-        var entity = await _unitOfWork.Records
-            .Get()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(entity => entity.Id.Equals(id));
+        // -------------------------EXAMPLE---------------------------------------------------------------------
+        // | 1. Pure generic repository approach                                                               |
+        // |---------------------------------------------------------------------------------------------------|
+        // |                                                                                                   |
+        // | var entity = await _unitOfWork.Records                                                            |
+        // |     .Get()                                                                                        |    
+        // |     .AsNoTracking()                                                                               |
+        // |     .FirstOrDefaultAsync(entity => entity.Id.Equals(id));                                         |
+        // |                                                                                                   |
+        // | return entity != null;                                                                            |
+        // |---------------------------------------------------------------------------------------------------|
+        // | 2. The extended generic repository approach                                                       |
+        // | In this case, all generic repository methods and additional entity-specific methods are available.|
+        // | --------------------------------------------------------------------------------------------------|
+        // |                                                                                                   |
+        // | var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);                        |
+        // | return result;                                                                                    |
+        // -----------------------------------------------------------------------------------------------------
 
-        return entity != null;
-        */
-
-        // The extended generic repository approach
-        // In this case, all generic repository methods and additional entity-specific methods are available.
         var result = await _unitOfWork.AdditionRecords.IsRecordExistByIdAsync(id);
         return result;
     }
@@ -134,6 +144,20 @@ public class RecordService : IRecordService
         await _unitOfWork.Records.AddAsync(entity);
         var result = await _unitOfWork.Commit();
         return result;
+    }
+
+    /// <inheritdoc />
+    public async Task CreateRecordByPlannedTransactionIdAsync(Guid plannedTransactionId)
+    {
+        var plannedTransaction = await _plannedTransactionService.GetByIdAsync(plannedTransactionId);
+
+        var dto = _mapper.Map<RecordDto>(plannedTransaction);
+        dto.Id = Guid.NewGuid();
+        dto.CreatedDate = DateTime.UtcNow;
+        dto.Comment = "Created based on the schedule";
+        dto.Status = RecordStatus.Planned;
+
+        var result = await CreateAsync(dto);
     }
 
     #endregion CREATE
@@ -176,6 +200,14 @@ public class RecordService : IRecordService
                 PropertyValue = dto.Comment
             });
 
+        if (!dto.Status.Equals(sourceDto.Status)
+            && Enum.IsDefined(typeof(RecordStatus), dto.Status))
+            patchList.Add(new PatchModel
+            {
+                PropertyName = nameof(dto.Status),
+                PropertyValue = dto.Status
+            });
+
         await _unitOfWork.Records.PatchAsync(id, patchList);
         return await _unitOfWork.Commit();
     }
@@ -205,7 +237,7 @@ public class RecordService : IRecordService
     /// </summary>
     /// <param name="query">query</param>
     /// <param name="category">category search parameters as a <see cref="ICategorySearchParameters" /></param>
-    /// <returns>a query that includes user filter.</returns>
+    /// <returns>a query that includes category filter.</returns>
     private IQueryable<Record> GetQueryWithCategoryFilter(IQueryable<Record> query, ICategorySearchParameters category)
     {
         if (category.CategoryId != null && !category.CategoryId.Equals(default))
@@ -215,9 +247,7 @@ public class RecordService : IRecordService
         else
         {
             if (category.CategoryType != null && Enum.IsDefined(typeof(CategoryType), category.CategoryType))
-            {
                 query = query.Where(entity => entity.Category.Type.Equals(category.CategoryType));
-            }
         }
 
         return query;
@@ -258,6 +288,20 @@ public class RecordService : IRecordService
             if (creation.DateTo != null && !creation.DateTo.Equals(default))
                 query = query.Where(entity => entity.CreatedDate <= creation.DateTo);
         }
+
+        return query;
+    }
+
+    /// <summary>
+    ///     Get query with record filters specified search parameters.
+    /// </summary>
+    /// <param name="query">query</param>
+    /// <param name="filter">record search parameters as a <see cref="IRecordSearchParameters" /></param>
+    /// <returns>a query that includes the record filter.</returns>
+    private IQueryable<Record> GetQueryWithRecordFilter(IQueryable<Record> query, IRecordSearchParameters filter)
+    {
+        if (filter.RecordStatus != null && Enum.IsDefined(typeof(RecordStatus), filter.RecordStatus))
+            query = query.Where(entity => entity.Status.Equals(filter.RecordStatus));
 
         return query;
     }

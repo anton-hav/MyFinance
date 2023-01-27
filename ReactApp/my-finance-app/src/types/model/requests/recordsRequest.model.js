@@ -26,8 +26,19 @@ export default class RecordsRequestModel extends UrlSearchParameters {
    * @property {string} categoryType - category type of the record category.
    */
   categoryType = null;
+  /**
+   * @property {*} recordStatus - the status of the record
+   */
+  recordStatus = null;
 
-  constructor(createdDate, categoryId, dateFrom, dateTo, categoryType) {
+  constructor(
+    createdDate,
+    categoryId,
+    dateFrom,
+    dateTo,
+    categoryType,
+    recordStatus
+  ) {
     super();
     if (createdDate !== undefined) {
       this.createdDate = createdDate;
@@ -43,6 +54,9 @@ export default class RecordsRequestModel extends UrlSearchParameters {
     }
     if (categoryType !== undefined) {
       this.categoryType = categoryType;
+    }
+    if (recordStatus !== undefined) {
+      this.recordStatus = recordStatus;
     }
   }
 
@@ -63,9 +77,10 @@ export default class RecordsRequestModel extends UrlSearchParameters {
         object.categoryId,
         object.dateFrom,
         object.dateTo,
-        CategoryTypes.isTypeForAll(object.categoryType)
+        !object.categoryType || CategoryTypes.isTypeForAll(object.categoryType)
           ? null
-          : object.categoryType.value
+          : object.categoryType.value,
+        object.recordStatus
       );
     }
     return new RecordsRequestModel();
