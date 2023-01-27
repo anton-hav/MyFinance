@@ -16,4 +16,7 @@ public class RecordSearchModel : IRecordSearchModel
 
     /// <inheritdoc />
     public IUserSearchParameters User { get; set; }
+
+    /// <inheritdoc />
+    public IRecordSearchParameters Record { get; set; }
 }

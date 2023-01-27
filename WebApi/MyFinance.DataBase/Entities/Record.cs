@@ -1,4 +1,6 @@
-﻿namespace MyFinance.DataBase.Entities;
+﻿using MyFinance.Core;
+
+namespace MyFinance.DataBase.Entities;
 
 /// <summary>
 /// Cash flow record
@@ -24,6 +26,11 @@ public class Record : IBaseEntity
     /// Date of creation
     /// </summary>
     public DateTime CreatedDate { get; set;}
+
+    /// <summary>
+    /// Status of the record
+    /// </summary>
+    public RecordStatus Status { get; set; }
 
     /// <summary>
     /// A category unique identifier

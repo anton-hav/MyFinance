@@ -14,14 +14,21 @@ export default class RecordsCountRequestModel extends UrlSearchParameters {
    * @property {string} categoryType - category type of the records category.
    */
   categoryType = null;
+  /**
+   * @property {*} recordStatus - the status of the record
+   */
+  recordStatus = null;
 
-  constructor(categoryId, categoryType) {
+  constructor(categoryId, categoryType, recordStatus) {
     super();
     if (categoryId !== undefined) {
       this.categoryId = categoryId;
     }
     if (categoryType !== undefined) {
       this.categoryType = categoryType;
+    }
+    if (recordStatus !== undefined) {
+      this.recordStatus = recordStatus;
     }
   }
 
@@ -43,7 +50,8 @@ export default class RecordsCountRequestModel extends UrlSearchParameters {
           ? CategoryTypes.isTypeForAll(object.categoryType)
             ? null
             : object.categoryType.value
-          : null
+          : null,
+        object.recordStatus
       );
     }
     return new RecordsCountRequestModel();

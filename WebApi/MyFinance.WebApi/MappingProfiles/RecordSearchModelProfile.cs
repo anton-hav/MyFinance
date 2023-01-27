@@ -31,6 +31,12 @@ public class RecordSearchModelProfile : Profile
                         Created = request.CreatedDate,
                         DateFrom = request.DateFrom,
                         DateTo = request.DateTo,
+                    }))
+            .ForMember(searchParams => searchParams.Record,
+                opt
+                    => opt.MapFrom(request => new RecordSearchParameters()
+                    {
+                        RecordStatus = request.RecordStatus
                     }));
     }
 }

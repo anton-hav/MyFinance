@@ -67,6 +67,7 @@ public class RecordService : IRecordService
 
         entities = GetQueryWithCategoryFilter(entities, model.Category);
         entities = GetQueryWithUserFilter(entities, model.User);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithCreationDateTimeFilter(entities, model.CreationDateTime);
 
         var result = (await entities.AsNoTracking().ToListAsync())
@@ -154,6 +155,7 @@ public class RecordService : IRecordService
         dto.Id = Guid.NewGuid();
         dto.CreatedDate = DateTime.UtcNow;
         dto.Comment = "Created based on the schedule";
+        dto.Status = RecordStatus.Planned;
 
         var result = await CreateAsync(dto);
     }
@@ -196,6 +198,14 @@ public class RecordService : IRecordService
             {
                 PropertyName = nameof(dto.Comment),
                 PropertyValue = dto.Comment
+            });
+
+        if (!dto.Status.Equals(sourceDto.Status)
+            && Enum.IsDefined(typeof(RecordStatus), dto.Status))
+            patchList.Add(new PatchModel
+            {
+                PropertyName = nameof(dto.Status),
+                PropertyValue = dto.Status
             });
 
         await _unitOfWork.Records.PatchAsync(id, patchList);
@@ -278,6 +288,20 @@ public class RecordService : IRecordService
             if (creation.DateTo != null && !creation.DateTo.Equals(default))
                 query = query.Where(entity => entity.CreatedDate <= creation.DateTo);
         }
+
+        return query;
+    }
+
+    /// <summary>
+    ///     Get query with record filters specified search parameters.
+    /// </summary>
+    /// <param name="query">query</param>
+    /// <param name="filter">record search parameters as a <see cref="IRecordSearchParameters" /></param>
+    /// <returns>a query that includes the record filter.</returns>
+    private IQueryable<Record> GetQueryWithRecordFilter(IQueryable<Record> query, IRecordSearchParameters filter)
+    {
+        if (filter.RecordStatus != null && Enum.IsDefined(typeof(RecordStatus), filter.RecordStatus))
+            query = query.Where(entity => entity.Status.Equals(filter.RecordStatus));
 
         return query;
     }
