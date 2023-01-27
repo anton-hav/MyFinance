@@ -771,6 +771,11 @@
                 Date of creation
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.Status">
+            <summary>
+                Status of the record
+            </summary>
+        </member>
         <member name="P:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel.CategoryId">
             <summary>
                 A category unique identifier
@@ -806,6 +811,11 @@
                 Category type of the record category.
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.GetRecordsRequestModel.RecordStatus">
+            <summary>
+                Status of the record
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel">
             <summary>
                 Request model to create or update the record
@@ -829,6 +839,11 @@
         <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.CreatedDate">
             <summary>
                 Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.Status">
+            <summary>
+            Status of the record
             </summary>
         </member>
         <member name="P:MyFinance.WebApi.Models.Records.Requests.UpdateRecordRequestModel.CategoryId">
@@ -859,6 +874,11 @@
         <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.CreatedDate">
             <summary>
                 Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.Status">
+            <summary>
+            Status of the record
             </summary>
         </member>
         <member name="P:MyFinance.WebApi.Models.Records.Responses.RecordResponseModel.CategoryId">

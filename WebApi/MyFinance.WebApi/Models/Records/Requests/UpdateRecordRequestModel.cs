@@ -1,4 +1,6 @@
-﻿namespace MyFinance.WebApi.Models.Records.Requests;
+﻿using MyFinance.Core;
+
+namespace MyFinance.WebApi.Models.Records.Requests;
 
 /// <summary>
 ///     Request model to create or update the record
@@ -24,6 +26,11 @@ public class UpdateRecordRequestModel
     ///     Date of creation
     /// </summary>
     public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Status of the record
+    /// </summary>
+    public RecordStatus Status { get; set; }
 
     /// <summary>
     ///     A category unique identifier
