@@ -15,6 +15,7 @@ import CategoryService from "../../../services/category.service";
 import RecordInRecordsListViewModel from "../../../types/model/view/recordInRecordsListView.model";
 import Periods from "../../../utils/periods.utils";
 import CategoryTypes from "../../../utils/categoryTypes";
+import RecordStatus from "../../../utils/recordStatus.utils";
 
 //#region COMMON FUNCTIONS
 
@@ -85,6 +86,7 @@ export function RecordsSection() {
         dateFrom: dateFrom,
         dateTo: dateTo,
         categoryType: selectedRecordType,
+        recordStatus: RecordStatus.getApprovedStatus().value,
       });
       data.sort(recordCompareByDateDescending);
       return data;
