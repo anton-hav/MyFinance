@@ -17,7 +17,8 @@ const _categoryService = new CategoryService();
 
 /**
  * Get the records count specified by category id from the storage via API
- * @param {string} categoryId
+ * @param {string} categoryId - category unique identifier
+ * @returns count of records specified by category id
  */
 const getRecordsCountByCategoryId = async (categoryId) => {
   const count = await _recordService.getRecordsCountBySearchParametersFromApi({
@@ -27,7 +28,7 @@ const getRecordsCountByCategoryId = async (categoryId) => {
 };
 
 /**
- * Get category in pie chart view models
+ * Get category with records count for the pie chart component
  * @param {array} dtos - array of CategoryDto
  * @returns category view models as an array of CategoryInPieChartViewModel
  */
@@ -44,15 +45,51 @@ const getCategoryWithRecordsCountViewModels = async (dtos) => {
   return models;
 };
 
+/**
+ * Get the amount of records specified by category id from the storage via API
+ * @param {string} categoryId - category unique identifier
+ * @returns amount of records specified by category id
+ */
+const getRecordsAmountByCategoryId = async (categoryId) => {
+  const count = await _recordService.getRecordsAmountBySearchParametersFromApi({
+    categoryId: categoryId,
+  });
+  return count;
+};
+
+/**
+ * Get category with the amount of records for the pie chart component
+ * @param {array} dtos - array of CategoryDto
+ * @returns category view models as an array of CategoryInPieChartViewModel
+ */
+const getCategoryWithRecordsAmountViewModels = async (dtos) => {
+  const models = await Promise.all(
+    dtos.map(async (dto) => {
+      const amount = await getRecordsAmountByCategoryId(dto.id);
+      let model = CategoryInPieChartViewModel.fromCategoryDto(dto);
+      model.value = amount;
+      return model;
+    })
+  );
+
+  return models;
+};
+
 //#endregion LOCAL UTILS
 
 export function SummarySection() {
   const [incomeCategories, setIncomeCategories] = useState([]);
   const [expensesCategories, setExpensesCategories] = useState([]);
-  // States for pie chart of the income categories
+  // States for pie chart of the income records counts
   const [incomePieChartModels, setIncomePieChartModels] = useState([]);
-  // States for pie chart of the expenses categories
+  // States for pie chart of the expenses records counts
   const [expensesPieChartModels, setExpensesPieChartModels] = useState([]);
+  // States for pie chart of the amount of the income records
+  const [pieChartIncomeAmountsModels, setPieChartIncomeAmountsModels] =
+    useState([]);
+  // States for pie chart of the amount of the expense records
+  const [pieChartExpenseAmountsModels, setPieChartExpenseAmountsModels] =
+    useState([]);
 
   //#region COMMON FUNCTIONS
 
@@ -86,7 +123,7 @@ export function SummarySection() {
 
   //#endregion COMMON FUNCTIONS
 
-  //#region PIE CHART FOR INCOME CATEGORIES
+  //#region PIE CHART FOR COUNT OF INCOME RECORDS
   useEffect(() => {
     /**
      * Get income categories view models through API
@@ -100,9 +137,9 @@ export function SummarySection() {
     getIncomeCategoriesFromApi(incomeCategories);
   }, [incomeCategories]);
 
-  //#endregion PIE CHART FOR INCOME CATEGORIES
+  //#endregion PIE CHART FOR COUNT OF INCOME RECORDS
 
-  //#region PIE CHART FOR EXPENSES CATEGORIES
+  //#region PIE CHART FOR COUNT OF EXPENSES RECORDS
 
   useEffect(() => {
     /**
@@ -116,7 +153,39 @@ export function SummarySection() {
 
     getExpensesCategoriesFromApi(expensesCategories);
   }, [expensesCategories]);
-  //#endregion PIE CHART FOR EXPENSES CATEGORIES
+  //#endregion PIE CHART FOR COUNT OF EXPENSES RECORDS
+
+  //#region PIE CHART FOR AMOUNT OF INCOME RECORDS
+  useEffect(() => {
+    /**
+     * Get income categories view models through API
+     * @param {array} dtos - array of the CategoryDto objects
+     */
+    const getModels = async (dtos) => {
+      const models = await getCategoryWithRecordsAmountViewModels(dtos);
+      setPieChartIncomeAmountsModels(models);
+    };
+
+    getModels(incomeCategories);
+  }, [incomeCategories]);
+
+  //#endregion PIE CHART FOR AMOUNT OF INCOME RECORDS
+
+  //#region PIE CHART FOR AMOUNT OF EXPENSES RECORDS
+
+  useEffect(() => {
+    /**
+     * Get expenses categories view models through API
+     * @param {array} dtos - array of the CategoryDto objects
+     */
+    const getModels = async (dtos) => {
+      const models = await getCategoryWithRecordsAmountViewModels(dtos);
+      setPieChartExpenseAmountsModels(models);
+    };
+
+    getModels(expensesCategories);
+  }, [expensesCategories]);
+  //#endregion PIE CHART FOR AMOUNT OF EXPENSES RECORDS
 
   return (
     <>
@@ -143,6 +212,24 @@ export function SummarySection() {
                 categories.
               </Typography>
               <PieChartCategory data={expensesPieChartModels} />
+            </Paper>
+
+            <Paper sx={{ padding: 1 }}>
+              <Typography variant="h2">Amount of income records</Typography>
+              <Typography variant="body1">
+                This chart shows the amount of records for each of the income
+                categories.
+              </Typography>
+              <PieChartCategory data={pieChartIncomeAmountsModels} />
+            </Paper>
+
+            <Paper sx={{ padding: 1 }}>
+              <Typography variant="h2">Amount of expense records</Typography>
+              <Typography variant="body1">
+                This chart shows the amount of records for each of the expense
+                categories.
+              </Typography>
+              <PieChartCategory data={pieChartExpenseAmountsModels} />
             </Paper>
           </Masonry>
         </Grid>
