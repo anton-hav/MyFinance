@@ -68,8 +68,10 @@ import { DialogTitle } from "@mui/material";
 import { InputBase } from "@mui/material";
 
 // From Draggable https://github.com/react-grid-layout/react-draggable
-
 import Draggable from "react-draggable";
+
+// From Ant Design charts https://charts.ant.design/en
+import { Pie } from "@ant-design/plots";
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -137,4 +139,5 @@ export {
   DialogTitle,
   Draggable,
   InputBase,
+  Pie,
 };

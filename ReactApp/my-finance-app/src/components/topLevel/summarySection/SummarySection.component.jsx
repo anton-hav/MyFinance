@@ -1,42 +1,152 @@
+import { useEffect, useState } from "react";
 // Import third party libraries
-import { Typography } from "../../../imports/ui.imports";
+import { Typography, Grid, Masonry, Paper } from "../../../imports/ui.imports";
+// Import custom part-level components
+import { PieChartCategory } from "../../partLevel/index";
+// Import services
+import RecordService from "../../../services/record.service";
+import CategoryService from "../../../services/category.service";
+// Import custom types and utils
+import CategoryInPieChartViewModel from "../../../types/model/view/categoryInPieChartView.model";
+import CategoryTypes from "../../../utils/categoryTypes";
+
+//#region LOCAL UTILS
+
+const _recordService = new RecordService();
+const _categoryService = new CategoryService();
+
+/**
+ * Get the records count specified by category id from the storage via API
+ * @param {string} categoryId
+ */
+const getRecordsCountByCategoryId = async (categoryId) => {
+  const count = await _recordService.getRecordsCountBySearchParametersFromApi({
+    categoryId: categoryId,
+  });
+  return count;
+};
+
+/**
+ * Get category in pie chart view models
+ * @param {array} dtos - array of CategoryDto
+ * @returns category view models as an array of CategoryInPieChartViewModel
+ */
+const getCategoryWithRecordsCountViewModels = async (dtos) => {
+  const models = await Promise.all(
+    dtos.map(async (dto) => {
+      const count = await getRecordsCountByCategoryId(dto.id);
+      let model = CategoryInPieChartViewModel.fromCategoryDto(dto);
+      model.value = count;
+      return model;
+    })
+  );
+
+  return models;
+};
+
+//#endregion LOCAL UTILS
 
 export function SummarySection() {
+  const [incomeCategories, setIncomeCategories] = useState([]);
+  const [expensesCategories, setExpensesCategories] = useState([]);
+  // States for pie chart of the income categories
+  const [incomePieChartModels, setIncomePieChartModels] = useState([]);
+  // States for pie chart of the expenses categories
+  const [expensesPieChartModels, setExpensesPieChartModels] = useState([]);
+
+  //#region COMMON FUNCTIONS
+
+  /**
+   * Use effect that uploads categories from the database
+   */
+  useEffect(() => {
+    /**
+     * Get income categories from the database
+     */
+    const getIncomeCategoriesFromStorage = async () => {
+      const data = await _categoryService.getIncomeCategoriesFromApi();
+      setIncomeCategories(data);
+    };
+
+    /**
+     * Get expense categories from the database
+     */
+    const getExpensesCategoriesFromStorage = async () => {
+      const data = await _categoryService.getExpensesCategoriesFromApi();
+      setExpensesCategories(data);
+    };
+
+    if (incomeCategories.length === 0) {
+      getIncomeCategoriesFromStorage();
+    }
+    if (expensesCategories.length === 0) {
+      getExpensesCategoriesFromStorage();
+    }
+  }, []);
+
+  //#endregion COMMON FUNCTIONS
+
+  //#region PIE CHART FOR INCOME CATEGORIES
+  useEffect(() => {
+    /**
+     * Get income categories view models through API
+     * @param {array} dtos - array of the CategoryDto objects
+     */
+    const getIncomeCategoriesFromApi = async (dtos) => {
+      const models = await getCategoryWithRecordsCountViewModels(dtos);
+      setIncomePieChartModels(models);
+    };
+
+    getIncomeCategoriesFromApi(incomeCategories);
+  }, [incomeCategories]);
+
+  //#endregion PIE CHART FOR INCOME CATEGORIES
+
+  //#region PIE CHART FOR EXPENSES CATEGORIES
+
+  useEffect(() => {
+    /**
+     * Get expenses categories view models through API
+     * @param {array} dtos - array of the CategoryDto objects
+     */
+    const getExpensesCategoriesFromApi = async (dtos) => {
+      const models = await getCategoryWithRecordsCountViewModels(dtos);
+      setExpensesPieChartModels(models);
+    };
+
+    getExpensesCategoriesFromApi(expensesCategories);
+  }, [expensesCategories]);
+  //#endregion PIE CHART FOR EXPENSES CATEGORIES
+
   return (
     <>
-      <Typography variant="h1">H1</Typography>
-      <Typography variant="h2">H2</Typography>
-      <Typography variant="h3">H3</Typography>
-      <Typography variant="h4">H4</Typography>
-      <Typography variant="h5">H5</Typography>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-        non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-        tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-        tellus. Convallis convallis tellus id interdum velit laoreet id donec
-        ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-        suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-        quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-        proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-        varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-        Lorem donec massa sapien faucibus et molestie ac.
-      </Typography>
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Paper sx={{ padding: 1, mb: 2 }}>
+            <Typography variant="h1">Records panel</Typography>
+          </Paper>
+
+          <Masonry columns={4} spacing={2}>
+            <Paper sx={{ padding: 1 }}>
+              <Typography variant="h2">Number of income records</Typography>
+              <Typography variant="body1">
+                This chart shows the number of records for each of the income
+                categories.
+              </Typography>
+              <PieChartCategory data={incomePieChartModels} />
+            </Paper>
+
+            <Paper sx={{ padding: 1 }}>
+              <Typography variant="h2">Number of expense records</Typography>
+              <Typography variant="body1">
+                This chart shows the number of records for each of the expense
+                categories.
+              </Typography>
+              <PieChartCategory data={expensesPieChartModels} />
+            </Paper>
+          </Masonry>
+        </Grid>
+      </Grid>
     </>
   );
 }

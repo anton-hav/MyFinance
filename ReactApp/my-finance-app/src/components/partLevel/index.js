@@ -12,6 +12,7 @@ import { ConfirmDeleteCategoryDialog } from "./confirmDeleteCategoryDialog/Confi
 import { AddNewPlannedTransactionForm } from "./addNewPlannedTransactionForm/AddNewPlannedTransactionForm.component";
 import { PlannedTransactionListView } from "./plannedTransactionListView/PlannedTransactionListView.component";
 import { TransactionListForApproval } from "./transactionListForApproval/TransactionListForApproval.component";
+import { PieChartCategory } from "./pieChartCategory/PieChartCategory.component";
 
 // EXPORTS ----------------------------------------------------------------
 
@@ -24,4 +25,5 @@ export {
   AddNewPlannedTransactionForm,
   PlannedTransactionListView,
   TransactionListForApproval,
+  PieChartCategory,
 };
