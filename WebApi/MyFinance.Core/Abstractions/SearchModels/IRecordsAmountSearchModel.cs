@@ -3,9 +3,9 @@
 namespace MyFinance.Core.Abstractions.SearchModels;
 
 /// <summary>
-///     Model for searching the records count in the storage.
+///     Model for searching the amount og records in the storage.
 /// </summary>
-public interface IRecordsCountSearchModel
+public interface IRecordsAmountSearchModel
 {
     /// <summary>
     ///     Category search parameters.

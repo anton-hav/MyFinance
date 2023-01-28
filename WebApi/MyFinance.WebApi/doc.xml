@@ -232,6 +232,28 @@
             <response code="404">Fail to find a record with the specified Id in the storage.</response>
             <response code="500">Unexpected error on the server side.</response>
         </member>
+        <member name="T:MyFinance.WebApi.Controllers.RecordsAmountController">
+            <summary>
+            Controller that provides API endpoints for the RecordsAmount resource.
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsAmountController.#ctor(MyFinance.Core.Abstractions.Services.IRecordService,AutoMapper.IMapper,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="recordService">record service from IOC</param>
+            <param name="userManager">user manager from IOC</param>
+            <param name="mapper">mapper from IOC</param>
+        </member>
+        <member name="M:MyFinance.WebApi.Controllers.RecordsAmountController.GetRecordsAmount(MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel)">
+            <summary>
+                Get amount of records specified search model from the storage.
+            </summary>
+            <param name="model">search model</param>
+            <returns>Amount of records matching search model.</returns>
+            <response code="200">Returns a amount of records matching search model.</response>
+            <response code="500">Unexpected error on the server side.</response>
+        </member>
         <member name="T:MyFinance.WebApi.Controllers.RecordsController">
             <summary>
                 Controller that provides API endpoints for the Records resource.
@@ -300,12 +322,12 @@
         </member>
         <member name="T:MyFinance.WebApi.Controllers.RecordsCountController">
             <summary>
-            Controller that provides API endpoints for the RecordsCount resource.
+                Controller that provides API endpoints for the RecordsCount resource.
             </summary>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.RecordsCountController.#ctor(MyFinance.Core.Abstractions.Services.IRecordService,AutoMapper.IMapper,MyFinance.Core.Abstractions.IdentityManagers.IUserManager)">
             <summary>
-            Constructor
+                Constructor
             </summary>
             <param name="recordService">record service from IOC</param>
             <param name="userManager">user manager from IOC</param>
@@ -510,6 +532,16 @@
         <member name="M:MyFinance.WebApi.MappingProfiles.RecordProfile.#ctor">
             <summary>
             Mapper profile constructor
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.MappingProfiles.RecordsAmountSearchModelProfile">
+            <summary>
+                Mapper profile for RecordsAmountSearchModel
+            </summary>
+        </member>
+        <member name="M:MyFinance.WebApi.MappingProfiles.RecordsAmountSearchModelProfile.#ctor">
+            <summary>
+                Mapper profile constructor
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.MappingProfiles.RecordsCountSearchModelProfile">
@@ -747,6 +779,21 @@
             </summary>
         </member>
         <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.CategoryType">
+            <summary>
+                Category type of the record category.
+            </summary>
+        </member>
+        <member name="T:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel">
+            <summary>
+            Request model to get amount of records
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.CategoryId">
+            <summary>
+            Search parameters that represents the category of records.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.CategoryType">
             <summary>
                 Category type of the record category.
             </summary>
