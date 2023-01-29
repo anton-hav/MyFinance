@@ -72,6 +72,7 @@ import Draggable from "react-draggable";
 
 // From Ant Design charts https://charts.ant.design/en
 import { Pie } from "@ant-design/plots";
+import { Bar } from '@ant-design/plots';
 
 // EXPORTS ----------------------------------------------------------------
 export {
@@ -140,4 +141,5 @@ export {
   Draggable,
   InputBase,
   Pie,
+  Bar,
 };

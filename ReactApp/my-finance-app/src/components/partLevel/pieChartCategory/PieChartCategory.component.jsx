@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from "react";
-
 // Import third party libraries
 import { Pie } from "../../../imports/ui.imports";
 
@@ -25,6 +23,12 @@ export function PieChartCategory(props) {
         type: "element-active",
       },
     ],
+    tooltip: {
+      formatter: (datum) => ({
+        name: `${datum.name}`,
+        value: `$ ${datum.value}`,
+      }),
+    },
   };
   return <>{data.length > 0 ? <Pie {...config} /> : null}</>;
 }

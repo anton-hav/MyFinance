@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 // Import third party libraries
 import { Typography, Grid, Masonry, Paper } from "../../../imports/ui.imports";
 // Import custom part-level components
-import { PieChartCategory } from "../../partLevel/index";
+import { PieChartCategory, BarChartCategory } from "../../partLevel/index";
 // Import services
 import RecordService from "../../../services/record.service";
 import CategoryService from "../../../services/category.service";
 // Import custom types and utils
 import CategoryInPieChartViewModel from "../../../types/model/view/categoryInPieChartView.model";
 import CategoryTypes from "../../../utils/categoryTypes";
+import { formatter } from "../../../utils/formatter";
+import RecordStatus from "../../../utils/recordStatus.utils";
 
 //#region LOCAL UTILS
 
@@ -23,6 +25,7 @@ const _categoryService = new CategoryService();
 const getRecordsCountByCategoryId = async (categoryId) => {
   const count = await _recordService.getRecordsCountBySearchParametersFromApi({
     categoryId: categoryId,
+    recordStatus: RecordStatus.getApprovedStatus().value,
   });
   return count;
 };
@@ -53,6 +56,7 @@ const getCategoryWithRecordsCountViewModels = async (dtos) => {
 const getRecordsAmountByCategoryId = async (categoryId) => {
   const count = await _recordService.getRecordsAmountBySearchParametersFromApi({
     categoryId: categoryId,
+    recordStatus: RecordStatus.getApprovedStatus().value,
   });
   return count;
 };
@@ -74,6 +78,17 @@ const getCategoryWithRecordsAmountViewModels = async (dtos) => {
 
   return models;
 };
+
+/**
+ * Format the number price to local currency
+ * @param {*} plannedTransaction
+ * @returns
+ */
+function priceFormatter(value) {
+  return value.category.type === 0
+    ? `+ ${formatter.format(value)}`
+    : `- ${formatter.format(value)}`;
+}
 
 //#endregion LOCAL UTILS
 
@@ -130,7 +145,8 @@ export function SummarySection() {
      * @param {array} dtos - array of the CategoryDto objects
      */
     const getIncomeCategoriesFromApi = async (dtos) => {
-      const models = await getCategoryWithRecordsCountViewModels(dtos);
+      const data = await getCategoryWithRecordsCountViewModels(dtos);
+      const models = data.filter((model) => model.value !== 0);
       setIncomePieChartModels(models);
     };
 
@@ -147,7 +163,8 @@ export function SummarySection() {
      * @param {array} dtos - array of the CategoryDto objects
      */
     const getExpensesCategoriesFromApi = async (dtos) => {
-      const models = await getCategoryWithRecordsCountViewModels(dtos);
+      const data = await getCategoryWithRecordsCountViewModels(dtos);
+      const models = data.filter((model) => model.value !== 0);
       setExpensesPieChartModels(models);
     };
 
@@ -162,7 +179,8 @@ export function SummarySection() {
      * @param {array} dtos - array of the CategoryDto objects
      */
     const getModels = async (dtos) => {
-      const models = await getCategoryWithRecordsAmountViewModels(dtos);
+      const data = await getCategoryWithRecordsAmountViewModels(dtos);
+      const models = data.filter((model) => model.value !== 0);
       setPieChartIncomeAmountsModels(models);
     };
 
@@ -179,7 +197,8 @@ export function SummarySection() {
      * @param {array} dtos - array of the CategoryDto objects
      */
     const getModels = async (dtos) => {
-      const models = await getCategoryWithRecordsAmountViewModels(dtos);
+      const data = await getCategoryWithRecordsAmountViewModels(dtos);
+      const models = data.filter((model) => model.value !== 0);
       setPieChartExpenseAmountsModels(models);
     };
 
@@ -200,25 +219,25 @@ export function SummarySection() {
               <Typography variant="h2">Number of income records</Typography>
               <Typography variant="body1">
                 This chart shows the number of records for each of the income
-                categories.
+                categories. Categories without entries are not shown.
               </Typography>
-              <PieChartCategory data={incomePieChartModels} />
+              <BarChartCategory data={incomePieChartModels} />
             </Paper>
 
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Number of expense records</Typography>
               <Typography variant="body1">
                 This chart shows the number of records for each of the expense
-                categories.
+                categories. Categories without entries are not shown.
               </Typography>
-              <PieChartCategory data={expensesPieChartModels} />
+              <BarChartCategory data={expensesPieChartModels} />
             </Paper>
 
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Amount of income records</Typography>
               <Typography variant="body1">
                 This chart shows the amount of records for each of the income
-                categories.
+                categories. Categories without entries are not shown.
               </Typography>
               <PieChartCategory data={pieChartIncomeAmountsModels} />
             </Paper>
@@ -227,7 +246,7 @@ export function SummarySection() {
               <Typography variant="h2">Amount of expense records</Typography>
               <Typography variant="body1">
                 This chart shows the amount of records for each of the expense
-                categories.
+                categories. Categories without entries are not shown.
               </Typography>
               <PieChartCategory data={pieChartExpenseAmountsModels} />
             </Paper>

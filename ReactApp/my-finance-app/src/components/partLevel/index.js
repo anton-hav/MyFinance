@@ -13,6 +13,7 @@ import { AddNewPlannedTransactionForm } from "./addNewPlannedTransactionForm/Add
 import { PlannedTransactionListView } from "./plannedTransactionListView/PlannedTransactionListView.component";
 import { TransactionListForApproval } from "./transactionListForApproval/TransactionListForApproval.component";
 import { PieChartCategory } from "./pieChartCategory/PieChartCategory.component";
+import { BarChartCategory } from "./barChartCategory/BarChartCategory.component";
 
 // EXPORTS ----------------------------------------------------------------
 
@@ -26,4 +27,5 @@ export {
   PlannedTransactionListView,
   TransactionListForApproval,
   PieChartCategory,
+  BarChartCategory,
 };
