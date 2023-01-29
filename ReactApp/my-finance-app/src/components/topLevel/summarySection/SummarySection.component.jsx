@@ -316,8 +316,9 @@ export function SummarySection() {
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Number of income records</Typography>
               <Typography variant="body1">
-                This chart shows the number of records for each of the income
-                categories. Categories without entries are not shown.
+                {incomePieChartModels.length > 0
+                  ? "This chart shows the number of records for each of the income categories. Categories without entries are not shown."
+                  : "There's no information here right now. Create the first record of the transaction."}
               </Typography>
               <BarChartCategory data={incomePieChartModels} />
             </Paper>
@@ -325,8 +326,9 @@ export function SummarySection() {
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Number of expense records</Typography>
               <Typography variant="body1">
-                This chart shows the number of records for each of the expense
-                categories. Categories without entries are not shown.
+                {expensesPieChartModels.length > 0
+                  ? "This chart shows the number of records for each of the expense categories. Categories without entries are not shown."
+                  : "There's no information here right now. Create the first record of the transaction."}
               </Typography>
               <BarChartCategory data={expensesPieChartModels} />
             </Paper>
@@ -334,8 +336,9 @@ export function SummarySection() {
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Amount of income records</Typography>
               <Typography variant="body1">
-                This chart shows the amount of records for each of the income
-                categories. Categories without entries are not shown.
+                {pieChartIncomeAmountsModels.length > 0
+                  ? "This chart shows the amount of records for each of the income categories. Categories without entries are not shown."
+                  : "There's no information here right now. Create the first record of the transaction."}
               </Typography>
               <PieChartCategory data={pieChartIncomeAmountsModels} />
             </Paper>
@@ -343,8 +346,9 @@ export function SummarySection() {
             <Paper sx={{ padding: 1 }}>
               <Typography variant="h2">Amount of expense records</Typography>
               <Typography variant="body1">
-                This chart shows the amount of records for each of the expense
-                categories. Categories without entries are not shown.
+                {pieChartExpenseAmountsModels.length > 0
+                  ? "This chart shows the amount of records for each of the expense categories. Categories without entries are not shown."
+                  : "There's no information here right now. Create the first record of the transaction."}
               </Typography>
               <PieChartCategory data={pieChartExpenseAmountsModels} />
             </Paper>

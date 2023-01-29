@@ -1,5 +1,5 @@
 // Import third party libraries
-import { Pie } from "../../../imports/ui.imports";
+import { Pie, Typ } from "../../../imports/ui.imports";
 
 export function PieChartCategory(props) {
   const { data } = props;
@@ -30,5 +30,6 @@ export function PieChartCategory(props) {
       }),
     },
   };
-  return <>{data.length > 0 ? <Pie {...config} /> : null}</>;
+  return <Pie {...config} />;
+  // return <>{data.length > 0 ? <Pie {...config} /> : null}</>;
 }
