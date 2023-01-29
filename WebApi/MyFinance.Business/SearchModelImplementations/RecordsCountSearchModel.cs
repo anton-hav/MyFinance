@@ -13,4 +13,7 @@ public class RecordsCountSearchModel : IRecordsCountSearchModel
 
     /// <inheritdoc />
     public IUserSearchParameters User { get; set; }
+
+    /// <inheritdoc />
+    public IRecordSearchParameters Record { get; set; }
 }

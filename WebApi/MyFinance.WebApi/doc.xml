@@ -783,6 +783,11 @@
                 Category type of the record category.
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsCount.Request.GetRecordsCountRequestModel.RecordStatus">
+            <summary>
+                Status of the record
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel">
             <summary>
             Request model to get amount of records
@@ -796,6 +801,11 @@
         <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.CategoryType">
             <summary>
                 Category type of the record category.
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.RecordStatus">
+            <summary>
+                Status of the record
             </summary>
         </member>
         <member name="T:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel">

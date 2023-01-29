@@ -83,6 +83,7 @@ public class RecordService : IRecordService
         var entities = _unitOfWork.Records.Get();
 
         entities = GetQueryWithCategoryFilter(entities, model.Category);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithUserFilter(entities, model.User);
 
         var result = await entities.AsNoTracking().CountAsync();
@@ -96,6 +97,7 @@ public class RecordService : IRecordService
         var entities = _unitOfWork.Records.Get();
 
         entities = GetQueryWithCategoryFilter(entities, model.Category);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithUserFilter(entities, model.User);
 
         var result = (await entities.AsNoTracking().ToListAsync())

@@ -16,4 +16,9 @@ public interface IRecordsAmountSearchModel
     ///     User search parameters
     /// </summary>
     IUserSearchParameters User { get; set; }
+
+    /// <summary>
+    ///     Record search parameters
+    /// </summary>
+    IRecordSearchParameters Record { get; set; }
 }

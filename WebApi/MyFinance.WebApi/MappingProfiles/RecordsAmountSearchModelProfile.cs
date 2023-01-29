@@ -23,6 +23,12 @@ public class RecordsAmountSearchModelProfile : Profile
                     {
                         CategoryId = request.CategoryId,
                         CategoryType = request.CategoryType
+                    }))
+            .ForMember(searchParams => searchParams.Record,
+                opt
+                    => opt.MapFrom(request => new RecordSearchParameters()
+                    {
+                        RecordStatus = request.RecordStatus
                     }));
     }
 }
