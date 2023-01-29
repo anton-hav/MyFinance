@@ -276,20 +276,20 @@ export function SummarySection() {
 
   useEffect(() => {
     const getModels = async () => {
-      // const firstDayOfMonth = dayjs().startOf("month");
-      // const lastDayOfMonth = dayjs().endOf("month");
-      const [firstDayOfMonth, lastDayOfMonth] =
+      // const dayFrom = dayjs().startOf("month");
+      // const dayTo = dayjs().endOf("month");
+      const [dayFrom, dayTo] =
         Periods.convertPeriodNameToSearchParameters(columnChartPeriod);
       const incomeModels =
         await getDailyRecordAmountViewModelsByDateIntervalAndType(
-          firstDayOfMonth,
-          lastDayOfMonth,
+          dayFrom,
+          dayTo,
           CategoryTypes.getIncomeType()
         );
       const expenseModels =
         await getDailyRecordAmountViewModelsByDateIntervalAndType(
-          firstDayOfMonth,
-          lastDayOfMonth,
+          dayFrom,
+          dayTo,
           CategoryTypes.getExpensesType()
         );
 
@@ -357,12 +357,12 @@ export function SummarySection() {
                 This graph shows the total inflow and outflow for each day for
                 the selected period.
               </Typography>
-              <SelectPeriodForRecords
+              <ColumnChartRecord
+                data={dailyTransactionAmounts}
                 periods={Periods.getPeriodsAsArrayOfString()}
                 period={columnChartPeriod}
                 onChange={(value) => setColumnChartPeriod(value)}
               />
-              <ColumnChartRecord data={dailyTransactionAmounts} />
             </Paper>
           </Masonry>
         </Grid>

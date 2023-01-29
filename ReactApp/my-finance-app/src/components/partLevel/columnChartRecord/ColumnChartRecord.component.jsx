@@ -1,8 +1,10 @@
 // Import third party libraries
 import { Column } from "../../../imports/ui.imports";
+// Import custom part level components
+import { SelectPeriodForRecords } from "../selectPeriodForRecords/SelectPeriodForRecords.component";
 
 export function ColumnChartRecord(props) {
-  const { data } = props;
+  const { data, periods, period, onChange } = props;
 
   const config = {
     data,
@@ -49,5 +51,15 @@ export function ColumnChartRecord(props) {
       end: 1,
     },
   };
-  return <Column {...config} />;
+
+  return (
+    <>
+      <SelectPeriodForRecords
+        periods={periods}
+        value={period}
+        onChange={onChange}
+      />
+      <Column {...config} />
+    </>
+  );
 }
