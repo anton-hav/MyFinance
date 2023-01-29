@@ -12,6 +12,10 @@ import { ConfirmDeleteCategoryDialog } from "./confirmDeleteCategoryDialog/Confi
 import { AddNewPlannedTransactionForm } from "./addNewPlannedTransactionForm/AddNewPlannedTransactionForm.component";
 import { PlannedTransactionListView } from "./plannedTransactionListView/PlannedTransactionListView.component";
 import { TransactionListForApproval } from "./transactionListForApproval/TransactionListForApproval.component";
+import { PieChartCategory } from "./pieChartCategory/PieChartCategory.component";
+import { BarChartCategory } from "./barChartCategory/BarChartCategory.component";
+import { ColumnChartRecord } from "./columnChartRecord/ColumnChartRecord.component";
+import { SelectPeriodForRecords } from "./selectPeriodForRecords/SelectPeriodForRecords.component";
 
 // EXPORTS ----------------------------------------------------------------
 
@@ -24,4 +28,8 @@ export {
   AddNewPlannedTransactionForm,
   PlannedTransactionListView,
   TransactionListForApproval,
+  PieChartCategory,
+  BarChartCategory,
+  ColumnChartRecord,
+  SelectPeriodForRecords,
 };

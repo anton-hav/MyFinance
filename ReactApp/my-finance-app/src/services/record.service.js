@@ -6,11 +6,13 @@ import { environment } from "../environment/environment";
 import RecordsRequestModel from "../types/model/requests/recordsRequest.model";
 import RecordsCountRequestModel from "../types/model/requests/recordsCountRequest.model";
 import UpdateRecordsRequestModel from "../types/model/requests/updateRecordRequest.model";
+import RecordsAmountRequestModel from "../types/model/requests/recordsAmountRequest.model";
 
 export default class RecordService {
   constructor() {
     this._recordsEndpoint = environment.recordsEndpoint;
     this._recordsCountEndpoint = environment.recordsCountEndpoint;
+    this._recordsAmountEndpoint = environment.recordsAmountEndpoint;
     this._apiService = new ApiService();
   }
 
@@ -34,7 +36,7 @@ export default class RecordService {
   /**
    * Get records count by search parameters from the API
    * @param {*} searchParameters
-   * @returns
+   * @returns count of records matching the search parameters
    */
   async getRecordsCountBySearchParametersFromApi(searchParameters) {
     let recordsCountRequestModel =
@@ -42,6 +44,21 @@ export default class RecordService {
     let response = await this._apiService.get(
       this._recordsCountEndpoint,
       recordsCountRequestModel
+    );
+    return response;
+  }
+
+  /**
+   * Get amount of records by search parameters from the API
+   * @param {*} searchParameters
+   * @returns amount of records matching the search parameters
+   */
+  async getRecordsAmountBySearchParametersFromApi(searchParameters) {
+    let recordsAmountRequestModel =
+      RecordsAmountRequestModel.fromObject(searchParameters);
+    let response = await this._apiService.get(
+      this._recordsAmountEndpoint,
+      recordsAmountRequestModel
     );
     return response;
   }

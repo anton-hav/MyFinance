@@ -378,10 +378,6 @@ export function RecordsSection() {
                 onRejectClick={handleRejectClick}
               />
             </Paper>
-            <Paper sx={{ padding: 1 }}>
-              <Typography variant="h2">Another record widget</Typography>
-              <div>Curious information here</div>
-            </Paper>
           </Masonry>
         </Grid>
         <Grid item xs={8}>

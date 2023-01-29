@@ -16,4 +16,9 @@ public class GetRecordsCountRequestModel
     ///     Category type of the record category.
     /// </summary>
     public CategoryType? CategoryType { get; set; }
+
+    /// <summary>
+    ///     Status of the record
+    /// </summary>
+    public RecordStatus? RecordStatus { get; set; }
 }

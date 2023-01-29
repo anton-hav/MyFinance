@@ -4,9 +4,9 @@ using MyFinance.Core.Abstractions.SearchParameters;
 namespace MyFinance.Business.SearchModelImplementations;
 
 /// <summary>
-///     Class contains search model for retrieve the records count from the storage.
+///     Class contains search model for retrieve the amount of records from the storage.
 /// </summary>
-public class RecordsCountSearchModel : IRecordsCountSearchModel
+public class RecordsAmountSearchModel : IRecordsAmountSearchModel
 {
     /// <inheritdoc />
     public ICategorySearchParameters Category { get; set; }
@@ -16,4 +16,7 @@ public class RecordsCountSearchModel : IRecordsCountSearchModel
 
     /// <inheritdoc />
     public IRecordSearchParameters Record { get; set; }
+
+    /// <inheritdoc />
+    public ICreationDateTimeSearchParameters CreationDateTime { get; set; }
 }

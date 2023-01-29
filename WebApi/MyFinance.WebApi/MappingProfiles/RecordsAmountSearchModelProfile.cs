@@ -2,20 +2,21 @@
 using MyFinance.Business.SearchModelImplementations;
 using MyFinance.Business.SearchParametersImplementations;
 using MyFinance.WebApi.Models.RecordsCount.Request;
+using MyFinance.WebApi.Models.RecordsSum.Request;
 
 namespace MyFinance.WebApi.MappingProfiles;
 
 /// <summary>
-///     Mapper profile for RecordsCountSearchModel
+///     Mapper profile for RecordsAmountSearchModel
 /// </summary>
-public class RecordsCountSearchModelProfile : Profile
+public class RecordsAmountSearchModelProfile : Profile
 {
     /// <summary>
     ///     Mapper profile constructor
     /// </summary>
-    public RecordsCountSearchModelProfile()
+    public RecordsAmountSearchModelProfile()
     {
-        CreateMap<GetRecordsCountRequestModel, RecordsCountSearchModel>()
+        CreateMap<GetRecordsAmountRequestModel, RecordsAmountSearchModel>()
             .ForMember(searchParams => searchParams.Category,
                 opt =>
                     opt.MapFrom(request => new CategorySearchParameters
@@ -28,6 +29,14 @@ public class RecordsCountSearchModelProfile : Profile
                     => opt.MapFrom(request => new RecordSearchParameters()
                     {
                         RecordStatus = request.RecordStatus
+                    }))
+            .ForMember(searchParams => searchParams.CreationDateTime,
+                opt
+                    => opt.MapFrom(request => new CreationDateTimeSearchParameters()
+                    {
+                        Created = request.CreatedDate,
+                        DateFrom = request.DateFrom,
+                        DateTo = request.DateTo,
                     }));
     }
 }

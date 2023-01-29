@@ -40,6 +40,13 @@ public interface IRecordService
     Task<int> GetRecordsCountBySearchParametersAsync(IRecordsCountSearchModel model);
 
     /// <summary>
+    ///     Get the amount of records from the storage by search parameters.
+    /// </summary>
+    /// <param name="model">search model for records as a <see cref="IRecordsCountSearchModel" /></param>
+    /// <returns>amount of records matching the search model.</returns>
+    Task<double> GetRecordsAmountBySearchParametersAsync(IRecordsAmountSearchModel model);
+
+    /// <summary>
     ///     Checks if the record exists in the storage by Id.
     /// </summary>
     /// <param name="id">an unique identifier as a <see cref="Guid" /></param>

@@ -83,9 +83,27 @@ public class RecordService : IRecordService
         var entities = _unitOfWork.Records.Get();
 
         entities = GetQueryWithCategoryFilter(entities, model.Category);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithUserFilter(entities, model.User);
 
         var result = await entities.AsNoTracking().CountAsync();
+
+        return result;
+    }
+
+    /// <inheritdoc />
+    public async Task<double> GetRecordsAmountBySearchParametersAsync(IRecordsAmountSearchModel model)
+    {
+        var entities = _unitOfWork.Records.Get();
+
+        entities = GetQueryWithCategoryFilter(entities, model.Category);
+        entities = GetQueryWithRecordFilter(entities, model.Record);
+        entities = GetQueryWithUserFilter(entities, model.User);
+        entities = GetQueryWithCreationDateTimeFilter(entities, model.CreationDateTime);
+
+        var result = (await entities.AsNoTracking().ToListAsync())
+            .Select(entity => entity.Price)
+            .Sum();
 
         return result;
     }
