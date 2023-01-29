@@ -7,6 +7,7 @@ import {
   PieChartCategory,
   BarChartCategory,
   ColumnChartRecord,
+  SelectPeriodForRecords,
 } from "../../partLevel/index";
 // Import services
 import RecordService from "../../../services/record.service";
@@ -17,6 +18,7 @@ import CategoryTypes from "../../../utils/categoryTypes";
 import { formatter } from "../../../utils/formatter";
 import RecordStatus from "../../../utils/recordStatus.utils";
 import RecordAmountInColumnViewModel from "../../../types/model/view/recordAmountInColumnView.model";
+import Periods from "../../../utils/periods.utils";
 
 //#region LOCAL UTILS
 
@@ -166,6 +168,9 @@ export function SummarySection() {
     useState([]);
   // States for clolumn chart of the daily transactions amount
   const [dailyTransactionAmounts, setDailyTransactionAmounts] = useState([]);
+  const [columnChartPeriod, setColumnChartPeriod] = useState(
+    Periods.getPeriodNameByDefault()
+  );
 
   //#region COMMON FUNCTIONS
 
@@ -271,8 +276,10 @@ export function SummarySection() {
 
   useEffect(() => {
     const getModels = async () => {
-      const firstDayOfMonth = dayjs().startOf("month");
-      const lastDayOfMonth = dayjs().endOf("month");
+      // const firstDayOfMonth = dayjs().startOf("month");
+      // const lastDayOfMonth = dayjs().endOf("month");
+      const [firstDayOfMonth, lastDayOfMonth] =
+        Periods.convertPeriodNameToSearchParameters(columnChartPeriod);
       const incomeModels =
         await getDailyRecordAmountViewModelsByDateIntervalAndType(
           firstDayOfMonth,
@@ -291,7 +298,7 @@ export function SummarySection() {
     };
 
     getModels();
-  }, []);
+  }, [columnChartPeriod]);
 
   //#endregion COLUMN CHART FOR DAILY TRANSACTION AMOUNT
 
@@ -345,10 +352,16 @@ export function SummarySection() {
 
           <Masonry columns={2} spacing={2}>
             <Paper sx={{ padding: 1 }}>
-              <Typography variant="h2">Records in current month</Typography>
+              <Typography variant="h2">Transaction chart</Typography>
               <Typography variant="body1">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit
+                This graph shows the total inflow and outflow for each day for
+                the selected period.
               </Typography>
+              <SelectPeriodForRecords
+                periods={Periods.getPeriodsAsArrayOfString()}
+                period={columnChartPeriod}
+                onChange={(value) => setColumnChartPeriod(value)}
+              />
               <ColumnChartRecord data={dailyTransactionAmounts} />
             </Paper>
           </Masonry>
