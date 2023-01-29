@@ -99,6 +99,7 @@ public class RecordService : IRecordService
         entities = GetQueryWithCategoryFilter(entities, model.Category);
         entities = GetQueryWithRecordFilter(entities, model.Record);
         entities = GetQueryWithUserFilter(entities, model.User);
+        entities = GetQueryWithCreationDateTimeFilter(entities, model.CreationDateTime);
 
         var result = (await entities.AsNoTracking().ToListAsync())
             .Select(entity => entity.Price)

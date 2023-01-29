@@ -29,6 +29,14 @@ public class RecordsAmountSearchModelProfile : Profile
                     => opt.MapFrom(request => new RecordSearchParameters()
                     {
                         RecordStatus = request.RecordStatus
+                    }))
+            .ForMember(searchParams => searchParams.CreationDateTime,
+                opt
+                    => opt.MapFrom(request => new CreationDateTimeSearchParameters()
+                    {
+                        Created = request.CreatedDate,
+                        DateFrom = request.DateFrom,
+                        DateTo = request.DateTo,
                     }));
     }
 }

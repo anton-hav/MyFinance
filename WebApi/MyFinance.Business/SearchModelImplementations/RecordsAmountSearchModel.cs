@@ -16,4 +16,7 @@ public class RecordsAmountSearchModel : IRecordsAmountSearchModel
 
     /// <inheritdoc />
     public IRecordSearchParameters Record { get; set; }
+
+    /// <inheritdoc />
+    public ICreationDateTimeSearchParameters CreationDateTime { get; set; }
 }

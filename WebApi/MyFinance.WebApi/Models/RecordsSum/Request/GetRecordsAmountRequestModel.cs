@@ -21,4 +21,19 @@ public class GetRecordsAmountRequestModel
     ///     Status of the record
     /// </summary>
     public RecordStatus? RecordStatus { get; set; }
+
+    /// <summary>
+    ///     Date of creation
+    /// </summary>
+    public DateTime? CreatedDate { get; set; }
+
+    /// <summary>
+    ///     Start of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateFrom { get; set; }
+
+    /// <summary>
+    ///     End of the interval of the record creation period
+    /// </summary>
+    public DateTime? DateTo { get; set; }
 }

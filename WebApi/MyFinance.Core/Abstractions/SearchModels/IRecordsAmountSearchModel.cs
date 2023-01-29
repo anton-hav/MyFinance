@@ -21,4 +21,9 @@ public interface IRecordsAmountSearchModel
     ///     Record search parameters
     /// </summary>
     IRecordSearchParameters Record { get; set; }
+
+    /// <summary>
+    ///     Creation datetime search parameters
+    /// </summary>
+    ICreationDateTimeSearchParameters CreationDateTime { get; set; }
 }

@@ -808,6 +808,21 @@
                 Status of the record
             </summary>
         </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.CreatedDate">
+            <summary>
+                Date of creation
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.DateFrom">
+            <summary>
+                Start of the interval of the record creation period
+            </summary>
+        </member>
+        <member name="P:MyFinance.WebApi.Models.RecordsSum.Request.GetRecordsAmountRequestModel.DateTo">
+            <summary>
+                End of the interval of the record creation period
+            </summary>
+        </member>
         <member name="T:MyFinance.WebApi.Models.Records.Requests.AddRecordRequestModel">
             <summary>
                 Request model to create the record
