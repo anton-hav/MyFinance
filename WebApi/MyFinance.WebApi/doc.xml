@@ -398,7 +398,7 @@
                 Controller that provides API endpoints for the User resource.
             </summary>
         </member>
-        <member name="M:MyFinance.WebApi.Controllers.UserController.#ctor(MyFinance.Core.Abstractions.Services.IUserService,MyFinance.Core.Abstractions.Services.IRoleService,AutoMapper.IMapper,MyFinance.WebApi.Utils.IJwtUtil)">
+        <member name="M:MyFinance.WebApi.Controllers.UserController.#ctor(MyFinance.Core.Abstractions.Services.IUserService,MyFinance.Core.Abstractions.Services.IRoleService,AutoMapper.IMapper,MyFinance.WebApi.Utils.IJwtUtil,MyFinance.Core.Abstractions.Services.ICategoryService)">
             <summary>
             Constructor
             </summary>
@@ -406,6 +406,7 @@
             <param name="roleService"></param>
             <param name="mapper"></param>
             <param name="jwtUtil"></param>
+            <param name="categoryService"></param>
         </member>
         <member name="M:MyFinance.WebApi.Controllers.UserController.GetUserById(System.Guid)">
             <summary>
