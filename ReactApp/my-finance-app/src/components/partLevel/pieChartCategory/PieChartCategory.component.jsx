@@ -13,7 +13,7 @@ export function PieChartCategory(props) {
     label: {
       type: "spider",
       labelHeight: 28,
-      content: "{name}\n{percentage}",
+      content: "{percentage}",
     },
     interactions: [
       {

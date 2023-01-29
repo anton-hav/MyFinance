@@ -18,8 +18,16 @@ export default class RecordsAmountRequestModel extends UrlSearchParameters {
    * @property {*} recordStatus - the status of the record
    */
   recordStatus = null;
+  /**
+   * @property {string} dateFrom - start of the interval of the record creation period
+   */
+  dateFrom = null;
+  /**
+   * @property {string} dateTo - end of the interval of the record creation period
+   */
+  dateTo = null;
 
-  constructor(categoryId, categoryType, recordStatus) {
+  constructor(categoryId, categoryType, recordStatus, dateFrom, dateTo) {
     super();
     if (categoryId !== undefined) {
       this.categoryId = categoryId;
@@ -29,6 +37,12 @@ export default class RecordsAmountRequestModel extends UrlSearchParameters {
     }
     if (recordStatus !== undefined) {
       this.recordStatus = recordStatus;
+    }
+    if (dateFrom !== undefined) {
+      this.dateFrom = dateFrom;
+    }
+    if (dateTo !== undefined) {
+      this.dateTo = dateTo;
     }
   }
 
@@ -51,7 +65,9 @@ export default class RecordsAmountRequestModel extends UrlSearchParameters {
             ? null
             : object.categoryType.value
           : null,
-        object.recordStatus
+        object.recordStatus,
+        object.dateFrom,
+        object.dateTo
       );
     }
     return new RecordsAmountRequestModel();
