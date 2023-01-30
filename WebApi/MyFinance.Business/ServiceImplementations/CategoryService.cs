@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MyFinance.Core;
 using MyFinance.Core.Abstractions.Services;
 using MyFinance.Core.DataTransferObjects;
 using MyFinance.Data.Abstractions;
 using MyFinance.DataBase.Entities;
+using Newtonsoft.Json;
 
 namespace MyFinance.Business.ServiceImplementations;
 
@@ -15,12 +17,15 @@ public class CategoryService : ICategoryService
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IConfiguration _configuration;
 
     public CategoryService(IMapper mapper,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _configuration = configuration;
     }
 
     #region READ
@@ -56,13 +61,14 @@ public class CategoryService : ICategoryService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(CategoryType categoryType, Guid userId)
+    public async Task<IEnumerable<CategoryDto>> GetCategoriesBySearchParametersAsync(CategoryType categoryType,
+        Guid userId)
     {
         var entities = await _unitOfWork.Categories
             .Get()
             .AsNoTracking()
             .Where(entity => entity.Type.Equals(categoryType)
-                              && entity.UserId.Equals(userId))
+                             && entity.UserId.Equals(userId))
             .Select(entity => _mapper.Map<CategoryDto>(entity))
             .ToArrayAsync();
 
@@ -123,6 +129,18 @@ public class CategoryService : ICategoryService
         return result;
     }
 
+    /// <inheritdoc />
+    public async Task<int> CreateDefaultCategoriesForNewUserAsync(Guid userId)
+    {
+        var incomeCategories = GetDefaultIncomeCategoriesForUser(userId);
+        var expenseCategories = GetDefaultExpenseCategoriesForUser(userId);
+
+        await _unitOfWork.Categories.AddRangeAsync(incomeCategories);
+        await _unitOfWork.Categories.AddRangeAsync(expenseCategories);
+        var result = await _unitOfWork.Commit();
+        return result;
+    }
+
     #endregion CREATE
 
     #region UPDATE
@@ -164,4 +182,44 @@ public class CategoryService : ICategoryService
     }
 
     #endregion DELETE
+
+    #region Private methods
+
+    private IEnumerable<Category> GetDefaultIncomeCategoriesForUser(Guid userId)
+    {
+        var section = _configuration.GetSection("DefaultIncomeCategories");
+        var names = section
+            .GetChildren()
+            .Select(child => child.Value).ToArray();
+
+        if (names.Any(name => name == null))
+            throw new JsonException("Failed to retrieve a valid default income categories.");
+
+        var categories = names.Select(name => new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            Type = CategoryType.Income,
+            UserId = userId
+        }).ToArray();
+
+
+        return categories;
+    }
+
+    private IEnumerable<Category> GetDefaultExpenseCategoriesForUser(Guid userId)
+    {
+        var section = _configuration.GetSection("DefaultExpendituresCategories");
+        var categories = section.GetChildren().Select(child => new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = child.Value ?? throw new JsonException("Failed to retrieve a valid default income categories."),
+            Type = CategoryType.Expenses,
+            UserId = userId
+        }).ToArray();
+
+        return categories;
+    }
+
+    #endregion Private methods
 }
