@@ -9,7 +9,7 @@ namespace MyFinance.WebApi.Filters.ExceptionFilters;
 ///     It handles all unhandled exceptions and send response with 500 status code.
 /// </summary>
 /// <remarks>
-///     Use it as an controller attribute.
+///     Use it as a controller attribute.
 /// </remarks>
 public class InternalServerErrorFilter : Attribute, IExceptionFilter
 {
