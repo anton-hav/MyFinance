@@ -127,6 +127,11 @@ export function CategoriesTable(props) {
     onDeleteCategory(event, categories);
   };
 
+  const handleEditCategorySubmit = (values) => {
+    setSelected([]);
+    onEditCategorySubmit(values);
+  };
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -139,7 +144,7 @@ export function CategoriesTable(props) {
         <CategoriesTableToolbar
           selected={rows.filter((row) => selected.includes(row.name))}
           onAddCategorySubmit={onAddCategorySubmit}
-          onEditCategorySubmit={onEditCategorySubmit}
+          onEditCategorySubmit={handleEditCategorySubmit}
           onDeleteCategory={handleDeleteCategory}
           existingCategoryNames={existingCategoryNames}
         />

@@ -70,6 +70,13 @@ public interface ICategoryService
     /// <returns>the number of successfully created records in the storage.</returns>
     Task<int> CreateAsync(CategoryDto dto);
 
+    /// <summary>
+    /// Create new default categories in the database for new user.
+    /// </summary>
+    /// <param name="userId">an user unique identifier as a <see cref="Guid"/></param>
+    /// <returns>the number of successfully created records in the storage</returns>
+    Task<int> CreateDefaultCategoriesForNewUserAsync(Guid userId);
+
     #endregion CREATE
 
     #region UPDATE

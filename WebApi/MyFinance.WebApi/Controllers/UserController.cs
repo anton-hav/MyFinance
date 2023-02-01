@@ -24,6 +24,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IRoleService _roleService;
+    private readonly ICategoryService _categoryService;
     private readonly IMapper _mapper;
     private readonly IJwtUtil _jwtUtil;
 
@@ -34,15 +35,18 @@ public class UserController : ControllerBase
     /// <param name="roleService"></param>
     /// <param name="mapper"></param>
     /// <param name="jwtUtil"></param>
+    /// <param name="categoryService"></param>
     public UserController(IUserService userService,
         IRoleService roleService,
         IMapper mapper,
-        IJwtUtil jwtUtil)
+        IJwtUtil jwtUtil, 
+        ICategoryService categoryService)
     {
         _userService = userService;
         _roleService = roleService;
         _mapper = mapper;
         _jwtUtil = jwtUtil;
+        _categoryService = categoryService;
     }
 
     /// <summary>
@@ -100,6 +104,9 @@ public class UserController : ControllerBase
         var result = await _userService.RegisterUserAsync(userDto);
 
         var userInDbDto = await _userService.GetUserByEmailAsync(userDto.Email);
+
+        await _categoryService.CreateDefaultCategoriesForNewUserAsync(userInDbDto.Id);
+
         var response = await _jwtUtil.GenerateTokenAsync(userInDbDto);
         return Ok(response);
     }
