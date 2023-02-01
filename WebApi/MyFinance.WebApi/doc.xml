@@ -460,7 +460,7 @@
                 It handles all unhandled exceptions and send response with 500 status code.
             </summary>
             <remarks>
-                Use it as an controller attribute.
+                Use it as a controller attribute.
             </remarks>
         </member>
         <member name="M:MyFinance.WebApi.Filters.ExceptionFilters.InternalServerErrorFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
