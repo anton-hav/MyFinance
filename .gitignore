@@ -365,3 +365,4 @@ FodyWeavers.xsd
 # Visual Studio Code debugger configuration
 .vscode
 /ReactApp/.vscode/launch.json
+WebApi/.idea/
